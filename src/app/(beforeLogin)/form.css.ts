@@ -39,6 +39,7 @@ export const profileWrapper = style({
   display: 'flex',
   justifyContent: 'center',
   marginBottom: '20px',
+  overflow: 'hidden',
 });
 
 export const profileImage = style({
@@ -46,4 +47,5 @@ export const profileImage = style({
   height: '80px',
   borderRadius: '50%',
   objectFit: 'cover',
+  overflow: 'hidden',
 });
