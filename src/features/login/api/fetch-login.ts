@@ -1,4 +1,5 @@
-export const fetchLogin = (): Promise<{ ok: boolean }> => {
+export const fetchLogin = ({ loginId, loginPw }: { loginId: string; loginPw: string }): Promise<{ ok: boolean }> => {
+    console.log('loginId, loginPw  : ', loginId, loginPw);
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             // 랜덤으로 실패 시뮬레이션
