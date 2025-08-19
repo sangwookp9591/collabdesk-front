@@ -1,5 +1,8 @@
-export const fetchLogin = ({ loginId, loginPw }: { loginId: string; loginPw: string }): Promise<{ ok: boolean }> => {
+import { LoginDTO } from '../dto/type';
+
+export const fetchLogin = ({ loginId, loginPw }: LoginDTO): Promise<{ ok: boolean }> => {
     console.log('loginId, loginPw  : ', loginId, loginPw);
+    //login 정보 포함해서 , workspace가 존재하는지 유무도 필요함.
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             // 랜덤으로 실패 시뮬레이션
