@@ -3,6 +3,7 @@
 import { loginAction } from '@/features/login/action';
 import { redirect } from 'next/navigation';
 import { useActionState, useEffect, useRef } from 'react';
+import * as styles from './login.css';
 
 export default function Page() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -19,101 +20,27 @@ export default function Page() {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        minHeight: '100vh',
-        fontFamily: 'sans-serif',
-        backgroundColor: '#f8f8f8',
-      }}
-    >
+    <div className={styles.container}>
       {/* 왼쪽 브랜드 영역 */}
-      <div
-        style={{
-          flex: 1,
-          backgroundColor: '#350d36',
-          color: 'white',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontSize: '2rem',
-          fontWeight: 'bold',
-        }}
-      >
-        Collabdesk
-      </div>
+      <section className={styles.leftSection}>Collabdesk</section>
 
       {/* 오른쪽 로그인 폼 영역 */}
-      <div
-        style={{
-          flex: 1,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <form
-          ref={formRef}
-          action={formAction}
-          style={{
-            width: '300px',
-            padding: '40px',
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
+      <div className={styles.rightSection}>
+        <form ref={formRef} action={formAction} className={styles.formStyle}>
           <label htmlFor="loginId" style={{ marginBottom: '8px', fontWeight: 'bold' }}>
             ID
           </label>
-          <input
-            required
-            type="text"
-            name="loginId"
-            style={{
-              padding: '10px',
-              marginBottom: '20px',
-              borderRadius: '4px',
-              border: '1px solid #ccc',
-              outline: 'none',
-              fontSize: '1rem',
-            }}
-          />
+          <input required className={styles.inputStyle} type="text" name="loginId" />
 
           <label htmlFor="loginPw" style={{ marginBottom: '8px', fontWeight: 'bold' }}>
             PW
           </label>
-          <input
-            required
-            type="password"
-            name="loginPw"
-            style={{
-              padding: '10px',
-              marginBottom: '20px',
-              borderRadius: '4px',
-              border: '1px solid #ccc',
-              outline: 'none',
-              fontSize: '1rem',
-            }}
-          />
+          <input required className={styles.inputStyle} type="password" name="loginPw" />
 
           {isPending ? (
             <div style={{ textAlign: 'center', marginBottom: '10px' }}>로딩중...</div>
           ) : (
-            <div
-              onClick={onSumbit}
-              style={{
-                padding: '10px',
-                backgroundColor: '#611f69',
-                color: 'white',
-                textAlign: 'center',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontWeight: 'bold',
-              }}
-            >
+            <div className={styles.buttonStyle} onClick={onSumbit}>
               로그인
             </div>
           )}
