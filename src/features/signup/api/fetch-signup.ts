@@ -5,9 +5,9 @@ export const fetchSignup = ({
   loginPw,
   nickname,
   email,
-  profileImage,
+  profileFile,
 }: SignupDTO): Promise<{ ok: boolean }> => {
-  console.log('loginId, loginPw  : ', loginId, loginPw, nickname, email, profileImage);
+  console.log('loginId, loginPw  : ', loginId, loginPw, nickname, email, profileFile);
   //login 정보 포함해서 , workspace가 존재하는지 유무도 필요함.
   return new Promise((resolve, reject) => {
     setTimeout(() => {

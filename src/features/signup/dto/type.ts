@@ -3,5 +3,5 @@ export interface SignupDTO {
   loginPw: string;
   nickname: string;
   email: string;
-  profileImage?: string;
+  profileFile?: File | null;
 }
