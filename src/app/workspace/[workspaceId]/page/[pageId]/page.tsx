@@ -1,3 +1,3 @@
 export default function Page() {
-    return <div>TipTap Editor </div>;
+  return <div>TipTap Editor </div>;
 }
