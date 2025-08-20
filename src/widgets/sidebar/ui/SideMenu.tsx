@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import * as styles from './sidemenu.css';
 import { DirectMessageIcon, EllipsisIcon, HomeIcon } from '@/shared/ui/IconSvg';
+import { Avatar } from '@/entities/user';
 
 const SideMenu = () => {
   const pathname = usePathname(); // 현재 URL 가져오기
@@ -49,10 +50,12 @@ const SideMenu = () => {
       </div>
 
       <div className={styles.BottomSection}>
-        <div className={styles.userIcon}>
-          상욱
-          <div className={isActive ? styles.loginLight : styles.userIconInactive}></div>
-        </div>
+        <Avatar
+          isActive={isActive}
+          profileImageUrl={'/images/default_profile.png'}
+          name={'상욱'}
+          size={48}
+        />
       </div>
     </div>
   );

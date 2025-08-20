@@ -79,29 +79,3 @@ export const svgIconSize = style({
   width: '20px',
   height: '20px',
 });
-
-export const userIcon = style([
-  avatarSize,
-  {
-    backgroundColor: '#603321',
-    fontSize: '1rem',
-  },
-]);
-
-export const loginLight = style({
-  position: 'absolute',
-  bottom: '0px',
-  right: '0px',
-  width: '0.5em',
-  height: '0.5em',
-  borderRadius: '20px',
-  backgroundColor: 'green',
-  border: '3px gray solid',
-});
-
-export const userIconInactive = style([
-  loginLight,
-  {
-    backgroundColor: 'black',
-  },
-]);
