@@ -29,53 +29,44 @@ export default function ChannelSection({
   );
 
   return (
-    <section
-      style={{
-        display: 'flex',
-        width: '100%',
-        flexDirection: 'column',
-        justifyContent: 'center',
-      }}
-    >
-      <SidebarDropdown title={'채널'} isOpen={isOpen} onToggle={onToggle}>
-        {isOpen ? (
-          <div className={styles.wrapper}>
-            {channels.map((channel) => {
-              const currentPath = `/workspace/${channel?.workspaceId}/channel/${channel.id}`;
-              const isActiveItem = `${pathname}` === currentPath;
-              return (
-                <SidebarNavigationItem
-                  key={channel.id}
-                  href={currentPath}
-                  label={channel?.name}
-                  icon={
-                    <ChannelIcon size={20} color={isActiveItem ? 'rgba(57,6,58, 1)' : '#ffffff'} />
-                  }
-                  isActive={isActiveItem}
-                />
-              );
-            })}
+    <SidebarDropdown title={'채널'} isOpen={isOpen} onToggle={onToggle}>
+      {isOpen ? (
+        <div className={styles.wrapper}>
+          {channels.map((channel) => {
+            const currentPath = `/workspace/${channel?.workspaceId}/channel/${channel.id}`;
+            const isActiveItem = `${pathname}` === currentPath;
+            return (
+              <SidebarNavigationItem
+                key={channel.id}
+                href={currentPath}
+                label={channel?.name}
+                icon={
+                  <ChannelIcon size={20} color={isActiveItem ? 'rgba(57,6,58, 1)' : '#ffffff'} />
+                }
+                isActive={isActiveItem}
+              />
+            );
+          })}
 
-            <div className={styles.addRow}>
-              <div className={styles.plusBox} onClick={onAddChannel}>
-                <PlusIcon size={15} />
-              </div>
-              채널 추가
+          <div className={styles.addRow}>
+            <div className={styles.plusBox} onClick={onAddChannel}>
+              <PlusIcon size={15} />
             </div>
+            채널 추가
           </div>
-        ) : (
-          <div>
-            {currentChannel ? (
-              <div className={styles.activeItem}>
-                <ChannelIcon size={20} color="rgba(57,6,58, 1)" />
-                {currentChannel?.name as unknown as string}
-              </div>
-            ) : (
-              <div />
-            )}
-          </div>
-        )}
-      </SidebarDropdown>
-    </section>
+        </div>
+      ) : (
+        <div>
+          {currentChannel ? (
+            <div className={styles.activeItem}>
+              <ChannelIcon size={20} color="rgba(57,6,58, 1)" />
+              {currentChannel?.name as unknown as string}
+            </div>
+          ) : (
+            <div />
+          )}
+        </div>
+      )}
+    </SidebarDropdown>
   );
 }
