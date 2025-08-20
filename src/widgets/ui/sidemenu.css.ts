@@ -24,18 +24,21 @@ export const BottomSection = style({
 });
 
 export const avatarSize = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'column',
+  gap: '3px',
   width: '48px',
   height: '48px',
   position: 'relative',
   backgroundColor: 'gray',
   borderRadius: '12px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
+
   marginBottom: '12px',
   cursor: 'pointer',
   fontWeight: 'bold',
-  fontSize: '16px',
+  fontSize: '0.6rem',
   transition: 'background-color 0.2s',
 });
 
@@ -43,6 +46,7 @@ export const wsAvatar = style([
   avatarSize,
   {
     backgroundColor: 'gray',
+    fontSize: '1rem',
   },
 ]);
 
@@ -62,6 +66,7 @@ export const userIcon = style([
   avatarSize,
   {
     backgroundColor: '#603321',
+    fontSize: '1rem',
   },
 ]);
 
