@@ -5,28 +5,31 @@ import { useState, useRef } from 'react';
 import {
   ArrowBottomIcon,
   ArrowRightIcon,
-  ChannelIcon,
   ComposeIcon,
   HourglassIcon,
-  PlusIcon,
   SettingsIcon,
-} from '../../shared/ui/IconSvg';
-import Link from 'next/link';
+} from '../../../shared/ui/IconSvg';
 import { usePathname } from 'next/navigation';
-import SidebarDropdown from './SidebarDropdown';
+import ChannelSection from './ChannelSection';
+import { Channel } from '@/entities/channel/model/types';
 
-const TestChannels = [
+type ChannelWithoutCreateAt = Omit<Channel, 'createdAt'>;
+
+const TestChannels: ChannelWithoutCreateAt[] = [
   {
     id: 1,
     name: '채널',
+    workspaceId: 1,
   },
   {
     id: 2,
     name: '새 채널',
+    workspaceId: 1,
   },
   {
     id: 3,
     name: '뉴 채널',
+    workspaceId: 1,
   },
 ];
 
@@ -165,14 +168,11 @@ export default function Sidebar() {
             justifyContent: 'center',
           }}
         >
-          <SidebarDropdown
-            title={'채널'}
-            type={'channel'}
-            items={TestChannels}
-            isActive={activeDropDowns?.channel}
-            pathname={pathname}
-            keyName="name"
-            onClick={() => toggleDropdown('channel')}
+          <ChannelSection
+            channels={TestChannels}
+            isOpen={activeDropDowns?.channel}
+            onToggle={() => toggleDropdown('channel')}
+            onAddChannel={() => {}}
           />
         </section>
         {/* 드래그용 Resizer */}

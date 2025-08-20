@@ -1,5 +1,5 @@
-import Sidebar from '@/widgets/ui/Sidebar';
-import SideMenu from '@/widgets/ui/SideMenu';
+import Sidebar from '@/widgets/sidebar/ui/Sidebar';
+import SideMenu from '@/widgets/sidebar/ui/SideMenu';
 import { ReactNode } from 'react';
 
 export default function Layout({ children }: { children: ReactNode }) {
