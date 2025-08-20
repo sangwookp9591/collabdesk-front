@@ -8,19 +8,30 @@ type Message = {
   id: number;
   user: string;
   content: string;
+  createdAt: string | Date;
 };
 
 export default function Page() {
   const [messages, setMessages] = useState<Message[]>([
-    { id: 1, user: '홍길동', content: '안녕하세요!' },
-    { id: 2, user: '상욱', content: '반가워요!' },
+    { id: 1, user: '홍길동', content: '안녕하세요!', createdAt: new Date() },
+    { id: 2, user: '상욱', content: '반가워요!', createdAt: new Date() },
   ]);
   const [input, setInput] = useState('');
 
   const sendMessage = () => {
     if (!input.trim()) return;
-    setMessages([...messages, { id: Date.now(), user: '나', content: input }]);
+    setMessages([
+      ...messages,
+      { id: Date.now(), user: '나', content: input, createdAt: new Date() },
+    ]);
     setInput('');
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      sendMessage();
+    }
   };
 
   return (
@@ -58,9 +69,9 @@ export default function Page() {
           onChange={(e) => setInput(e.target.value)}
           className={styles.inputBox}
         />
-        <button onClick={sendMessage} className={styles.sendButton}>
+        <div onClick={sendMessage} onKeyDown={onKeyDown} className={styles.sendButton}>
           전송
-        </button>
+        </div>
       </div>
     </div>
   );
