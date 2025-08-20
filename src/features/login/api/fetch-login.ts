@@ -1,4 +1,4 @@
-import { LoginDTO } from '../dto/type';
+import { LoginDTO } from '../model/type';
 
 export const fetchLogin = ({ loginId, loginPw }: LoginDTO): Promise<{ ok: boolean }> => {
   console.log('loginId, loginPw  : ', loginId, loginPw);

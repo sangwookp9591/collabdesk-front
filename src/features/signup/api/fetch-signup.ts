@@ -1,4 +1,4 @@
-import { SignupDTO } from '../dto/type';
+import { SignupDTO } from '../model/type';
 
 export const fetchSignup = ({
   loginId,
