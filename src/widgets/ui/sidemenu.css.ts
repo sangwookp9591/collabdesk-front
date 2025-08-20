@@ -2,8 +2,8 @@ import { style } from '@vanilla-extract/css';
 
 export const sideMenu = style({
   width: '80px',
+  height: '100%',
   backgroundColor: '#350d36',
-
   color: 'white',
   display: 'flex',
   flexDirection: 'column',
@@ -15,12 +15,18 @@ export const sideMenu = style({
 export const topSection = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: '5px',
+  gap: '20px',
 });
 
 export const BottomSection = style({
   display: 'flex',
   flexDirection: 'column',
+});
+
+export const wsWrapper = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px',
 });
 
 export const avatarSize = style({
@@ -35,7 +41,6 @@ export const avatarSize = style({
   backgroundColor: 'gray',
   borderRadius: '12px',
 
-  marginBottom: '12px',
   cursor: 'pointer',
   fontWeight: 'bold',
   fontSize: '0.6rem',

@@ -5,8 +5,7 @@ export const sidebarStyle = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  paddingTop: '20px',
-  height: '100vh',
+  height: '100%',
   position: 'relative',
 });
 

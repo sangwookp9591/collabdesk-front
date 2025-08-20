@@ -8,7 +8,7 @@ const SideMenu = () => {
     <div className={styles.sideMenu}>
       <div className={styles.topSection}>
         <div className={styles.wsAvatar}>BLInk</div>
-        <div>
+        <div className={styles.wsWrapper}>
           <div className={styles.workspace}>
             <div>
               <HomeIcon size={20} />
