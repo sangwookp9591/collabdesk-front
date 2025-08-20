@@ -55,7 +55,7 @@ export default function Page() {
           const isSameUserWithinMinute =
             prevMsg?.user === msg.user &&
             prevDate &&
-            Math.abs(currentDate.getTime() - prevDate.getTime()) < 60 * 1000; // 1분 이내
+            currentDate.getMinutes() - prevDate.getMinutes() === 0; // 1분 이내
 
           return (
             <div key={msg.id} className={styles.messageItem}>
@@ -80,7 +80,7 @@ export default function Page() {
                     <div style={{ display: 'flex', gap: '10px' }}>
                       <span style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{msg.user}</span>
                       <span style={{ fontSize: '0.8rem', color: '#ADB5BD' }}>
-                        {format(currentDate, 'yyyy.MM.dd HH:mm:ss')}
+                        {format(currentDate, 'a h:mm')}
                       </span>
                     </div>
                     {msg.content}
