@@ -4,6 +4,7 @@ import { Avatar } from '@/entities/user';
 import * as styles from './page.css';
 import { ChannelIcon, PlusIcon } from '@/shared/ui/IconSvg';
 import { useState } from 'react';
+import { format } from 'date-fns';
 
 type Message = {
   id: number;
@@ -23,16 +24,9 @@ export default function Page() {
     if (!input.trim()) return;
     setMessages([
       ...messages,
-      { id: Date.now(), user: '나', content: input, createdAt: new Date() },
+      { id: Date.now(), user: '상욱', content: input, createdAt: new Date() },
     ]);
     setInput('');
-  };
-
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      sendMessage();
-    }
   };
 
   return (
@@ -54,55 +48,50 @@ export default function Page() {
 
       {/* Message List */}
       <div className={styles.messageList}>
-        {messages.map((msg) => (
-          <div key={msg.id} className={styles.messageItem}>
-            <div>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <Avatar
-                  isActive={true}
-                  profileImageUrl={'/images/default_profile.png'}
-                  name={msg.user}
-                  size={48}
-                />
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyItems: 'center',
-                    alignItems: 'flex-start',
-                    width: '100%',
-                    gap: '5px',
-                  }}
-                >
+        {messages.map((msg, index) => {
+          const prevMsg = messages[index - 1];
+          const currentDate = new Date(msg.createdAt);
+          const prevDate = prevMsg?.createdAt ? new Date(prevMsg.createdAt) : null;
+          const isSameUserWithinMinute =
+            prevMsg?.user === msg.user &&
+            prevDate &&
+            Math.abs(currentDate.getTime() - prevDate.getTime()) < 60 * 1000; // 1분 이내
+
+          return (
+            <div key={msg.id} className={styles.messageItem}>
+              {!isSameUserWithinMinute ? (
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <Avatar
+                    isActive={true}
+                    profileImageUrl={'/images/default_profile.png'}
+                    name={msg.user}
+                    size={48}
+                  />
                   <div
                     style={{
                       display: 'flex',
-                      gap: '10px',
+                      flexDirection: 'column',
+                      justifyItems: 'center',
+                      alignItems: 'flex-start',
+                      width: '100%',
+                      gap: '5px',
                     }}
                   >
-                    <span
-                      style={{
-                        fontSize: '1.1rem',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      {msg.user}
-                    </span>
-                    <span
-                      style={{
-                        fontSize: '0.8rem',
-                        color: '#ADB5BD',
-                      }}
-                    >
-                      {msg.createdAt.toLocaleString()}
-                    </span>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                      <span style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{msg.user}</span>
+                      <span style={{ fontSize: '0.8rem', color: '#ADB5BD' }}>
+                        {format(currentDate, 'yyyy.MM.dd HH:mm:ss')}
+                      </span>
+                    </div>
+                    {msg.content}
                   </div>
-                  {msg.content}
                 </div>
-              </div>
+              ) : (
+                <div style={{ marginLeft: '58px', marginTop: '2px' }}>{msg.content}</div>
+              )}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Send Message */}
@@ -114,7 +103,7 @@ export default function Page() {
           onChange={(e) => setInput(e.target.value)}
           className={styles.inputBox}
         />
-        <div onClick={sendMessage} onKeyDown={onKeyDown} className={styles.sendButton}>
+        <div onClick={sendMessage} className={styles.sendButton}>
           전송
         </div>
       </div>
