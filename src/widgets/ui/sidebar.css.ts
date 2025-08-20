@@ -7,6 +7,7 @@ export const sidebarStyle = style({
   alignItems: 'center',
   height: '100%',
   position: 'relative',
+  padding: '15px 10px',
 });
 
 export const resizerStyle = style({
