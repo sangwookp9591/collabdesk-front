@@ -1,4 +1,4 @@
-import { createVar, style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 
 export const sideMenu = style({
   width: '80px',
@@ -11,6 +11,7 @@ export const sideMenu = style({
   paddingTop: '16px',
   justifyContent: 'space-between',
 });
+
 export const topSection = style({
   display: 'flex',
   flexDirection: 'column',
@@ -22,7 +23,7 @@ export const BottomSection = style({
   flexDirection: 'column',
 });
 
-export const wsAvatar = style({
+export const avatarSize = style({
   width: '48px',
   height: '48px',
   position: 'relative',
@@ -38,43 +39,31 @@ export const wsAvatar = style({
   transition: 'background-color 0.2s',
 });
 
-export const workspace = style({
-  display: 'flex',
-  flexDirection: 'column',
-  width: '48px',
-  height: '48px',
-  backgroundColor: '#611f69',
-  borderRadius: '12px',
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginBottom: '12px',
-  cursor: 'pointer',
-  fontWeight: 'bold',
-  fontSize: '0.6rem',
-  gap: '5px',
-  transition: 'background-color 0.2s',
-});
+export const wsAvatar = style([
+  avatarSize,
+  {
+    backgroundColor: 'gray',
+  },
+]);
+
+export const workspace = style([
+  avatarSize,
+  {
+    backgroundColor: '#611f69',
+  },
+]);
 
 export const svgIconSize = style({
   width: '20px',
   height: '20px',
 });
 
-export const userIcon = style({
-  width: '48px',
-  height: '48px',
-  position: 'relative',
-  backgroundColor: '#603321',
-  borderRadius: '12px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginBottom: '12px',
-  cursor: 'pointer',
-  fontWeight: 'bold',
-  fontSize: '16px',
-  transition: 'background-color 0.2s',
-});
+export const userIcon = style([
+  avatarSize,
+  {
+    backgroundColor: '#603321',
+  },
+]);
 
 export const loginLight = style({
   position: 'absolute',
