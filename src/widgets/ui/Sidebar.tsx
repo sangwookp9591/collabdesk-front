@@ -13,6 +13,7 @@ import {
 } from '../../shared/ui/IconSvg';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import SidebarDropdown from './SidebarDropdown';
 
 const TestChannels = [
   {
@@ -164,104 +165,16 @@ export default function Sidebar() {
             justifyContent: 'center',
           }}
         >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', color: 'white' }}>
-            <div
-              style={{
-                display: 'flex',
-                fontWeight: 'bold',
-                alignItems: 'center',
-                gap: '10px',
-                cursor: 'pointer',
-              }}
-            >
-              <div
-                className={styles.dropdownIcon({ active: activeDropDowns?.channel })}
-                onClick={() => toggleDropdown('channel')}
-              >
-                {'▶'}
-              </div>
-              <div>채널</div>
-            </div>
-            {activeDropDowns?.channel ? (
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '10px',
-                }}
-              >
-                {TestChannels?.map((item) => {
-                  const isAtive = `${pathname}` === `/workspace/1/channel/${item?.id}`;
-                  const color = isAtive ? 'rgba(57,6,58, 1)' : '#ffffff';
-                  const backgroundColor = isAtive ? 'rgba(249,237,255, 1)' : '#3f0e40';
-                  return (
-                    <Link
-                      key={item?.id}
-                      href={`/workspace/1/channel/${item?.id}`}
-                      style={{
-                        display: 'flex',
-                        gap: '5px',
-                        borderRadius: '15px',
-                        textDecoration: 'none',
-                        color: color,
-                        padding: '5px 10px',
-                        backgroundColor: backgroundColor,
-                        transition: 'background-color 0.3s ease, color 0.3s ease',
-                      }}
-                    >
-                      <ChannelIcon size={20} color={color} />
-                      {item?.name}
-                    </Link>
-                  );
-                })}
-
-                <div
-                  style={{ display: 'flex', alignItems: 'center', gap: '5px', padding: '3px 10px' }}
-                >
-                  <div
-                    style={{
-                      borderRadius: '2px',
-                      padding: '2.5px',
-                      backgroundColor: '#611f69',
-                      color: 'white',
-                    }}
-                  >
-                    <PlusIcon size={15} />
-                  </div>
-                  채널 추가
-                </div>
-              </div>
-            ) : (
-              <div>
-                {TestChannels.some(
-                  (item) => `${pathname}` === `/workspace/1/channel/${item?.id}`,
-                ) ? (
-                  <div
-                    style={{
-                      display: 'flex',
-                      gap: '5px',
-                      textDecoration: 'none',
-                      color: 'rgba(57,6,58, 1)',
-                      backgroundColor: 'rgba(249,237,255, 1)',
-                      borderRadius: '15px',
-                      padding: '3px 10px',
-                    }}
-                  >
-                    <ChannelIcon size={20} color="rgba(57,6,58, 1)" />
-                    {
-                      TestChannels?.find(
-                        (item) => `${pathname}` === `/workspace/1/channel/${item?.id}`,
-                      )?.name
-                    }
-                  </div>
-                ) : (
-                  <div></div>
-                )}
-              </div>
-            )}
-          </div>
+          <SidebarDropdown
+            title={'채널'}
+            type={'channel'}
+            items={TestChannels}
+            isActive={activeDropDowns?.channel}
+            pathname={pathname}
+            keyName="name"
+            onClick={() => toggleDropdown('channel')}
+          />
         </section>
-
         {/* 드래그용 Resizer */}
         <div className={styles.resizerStyle} onMouseDown={onMouseDown} />
       </div>
