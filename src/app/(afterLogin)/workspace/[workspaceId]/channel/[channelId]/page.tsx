@@ -1,5 +1,6 @@
 'use client';
 
+import { Avatar } from '@/entities/user';
 import * as styles from './page.css';
 import { ChannelIcon, PlusIcon } from '@/shared/ui/IconSvg';
 import { useState } from 'react';
@@ -38,7 +39,7 @@ export default function Page() {
     <div className={styles.chatPage}>
       {/* Top Bar */}
       <div className={styles.topBar}>
-        <ChannelIcon />
+        <ChannelIcon size={20} color="" />
         <span className={styles.channelName}>채널이름</span>
       </div>
 
@@ -55,7 +56,51 @@ export default function Page() {
       <div className={styles.messageList}>
         {messages.map((msg) => (
           <div key={msg.id} className={styles.messageItem}>
-            <strong>{msg.user}:</strong> {msg.content}
+            <div>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <Avatar
+                  isActive={true}
+                  profileImageUrl={'/images/default_profile.png'}
+                  name={msg.user}
+                  size={48}
+                />
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyItems: 'center',
+                    alignItems: 'flex-start',
+                    width: '100%',
+                    gap: '5px',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '10px',
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: '1.1rem',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      {msg.user}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: '0.8rem',
+                        color: '#ADB5BD',
+                      }}
+                    >
+                      {msg.createdAt.toLocaleString()}
+                    </span>
+                  </div>
+                  {msg.content}
+                </div>
+              </div>
+            </div>
           </div>
         ))}
       </div>

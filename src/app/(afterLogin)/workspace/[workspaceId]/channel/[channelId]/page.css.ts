@@ -41,7 +41,6 @@ export const messageList = style({
 export const messageItem = style({
   padding: '8px 12px',
   borderRadius: '8px',
-  backgroundColor: '#f5f5f5',
   maxWidth: '60%',
 });
 
