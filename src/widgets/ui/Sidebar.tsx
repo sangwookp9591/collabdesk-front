@@ -1,29 +1,10 @@
 'use client';
 
-import { style } from '@vanilla-extract/css';
+import * as styles from './sidebar.css';
 import { useState, useRef } from 'react';
 
-export const sidebarStyle = style({
-  backgroundColor: '#350d36',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  paddingTop: '20px',
-  position: 'relative',
-});
-
-export const resizerStyle = style({
-  width: '5px',
-  cursor: 'ew-resize',
-  position: 'absolute',
-  top: 0,
-  right: 0,
-  bottom: 0,
-  backgroundColor: 'transparent',
-});
-
 export default function Sidebar() {
-  const [width, setWidth] = useState(80);
+  const [width, setWidth] = useState(300);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
 
@@ -34,7 +15,7 @@ export default function Sidebar() {
   const onMouseMove = (e: MouseEvent) => {
     if (!isDragging.current) return;
     const newWidth = e.clientX;
-    if (newWidth > 50 && newWidth < 300) {
+    if (newWidth > 100 && newWidth < 300) {
       // 최소/최대 너비 제한
       setWidth(newWidth);
     }
@@ -51,12 +32,14 @@ export default function Sidebar() {
   }
 
   return (
-    <div ref={sidebarRef} className={sidebarStyle} style={{ width }}>
-      {/* Workspace 아이콘 등 */}
-      <div style={{ marginBottom: '20px', color: 'white' }}>WS</div>
+    <div>
+      <div ref={sidebarRef} className={styles.sidebarStyle} style={{ width }}>
+        {/* Workspace 아이콘 등 */}
+        <div style={{ marginBottom: '20px', color: 'white' }}>Ws Name</div>
 
-      {/* 드래그용 Resizer */}
-      <div className={resizerStyle} onMouseDown={onMouseDown} />
+        {/* 드래그용 Resizer */}
+        <div className={styles.resizerStyle} onMouseDown={onMouseDown} />
+      </div>
     </div>
   );
 }
