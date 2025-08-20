@@ -1,4 +1,5 @@
 import { style } from '@vanilla-extract/css';
+import { recipe } from '@vanilla-extract/recipes';
 
 export const sideMenu = style({
   width: '80px',
@@ -9,7 +10,6 @@ export const sideMenu = style({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'space-between',
-  overflow: 'scroll',
 });
 
 export const topSection = style({
@@ -40,13 +40,10 @@ export const avatarSize = style({
   width: '48px',
   height: '48px',
   position: 'relative',
-  backgroundColor: 'gray',
   borderRadius: '12px',
-
   cursor: 'pointer',
   fontWeight: 'bold',
   fontSize: '0.6rem',
-  transition: 'background-color 0.2s',
 });
 
 export const wsAvatar = style([
@@ -57,12 +54,24 @@ export const wsAvatar = style([
   },
 ]);
 
-export const workspace = style([
-  avatarSize,
-  {
-    backgroundColor: '#611f69',
+//메뉴 아이템용 recipe
+export const workspace = recipe({
+  base: [
+    avatarSize,
+    {
+      backgroundColor: '#350d36', // 기본 색상
+      transition: 'background-color 1s',
+    },
+  ],
+  variants: {
+    active: {
+      true: {
+        backgroundColor: '#611f69', // 활성화 색상
+      },
+      false: {},
+    },
   },
-]);
+});
 
 export const svgIconSize = style({
   width: '20px',
