@@ -9,7 +9,6 @@ import {
   HourglassIcon,
   SettingsIcon,
 } from '../../../shared/ui/IconSvg';
-import { usePathname } from 'next/navigation';
 import ChannelSection from './ChannelSection';
 import { Channel } from '@/entities/channel/model/types';
 
@@ -40,7 +39,6 @@ type DropDown = {
 };
 export default function Sidebar() {
   const [width, setWidth] = useState(300);
-  const pathname = usePathname();
   const sidebarRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
 
