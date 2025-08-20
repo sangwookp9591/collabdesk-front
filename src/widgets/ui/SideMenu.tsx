@@ -1,42 +1,50 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import * as styles from './sidemenu.css';
 import { DirectMessageIcon, EllipsisIcon, HomeIcon } from '@/shared/ui/IconSvg';
 
-type MenuItem = 'home' | 'dm' | 'more';
-
 const SideMenu = () => {
-  const [activeMenu, setActiveMenu] = useState<MenuItem>('home');
+  const pathname = usePathname(); // 현재 URL 가져오기
   const isActive = true;
+
+  console.log('pathname : ', pathname);
+  const path = useMemo(() => {
+    if (!pathname.includes('dm') && !pathname.includes('page')) {
+      return '/';
+    } else if (pathname.includes('dm')) {
+      return '/dm';
+    } else if (pathname.includes('page')) {
+      return '/page';
+    }
+  }, [pathname]);
 
   return (
     <div className={styles.sideMenu}>
       <div className={styles.topSection}>
         <div className={styles.wsAvatar}>BLInk</div>
         <div className={styles.wsWrapper}>
-          <div
-            className={styles.workspace({ active: activeMenu === 'home' })}
-            onClick={() => setActiveMenu('home')}
+          <Link
+            href="/workspace/1/channel/1"
+            className={styles.workspace({ active: path === '/' })}
           >
             <HomeIcon size={20} />
             SW
-          </div>
+          </Link>
 
-          <div
-            className={styles.workspace({ active: activeMenu === 'dm' })}
-            onClick={() => setActiveMenu('dm')}
-          >
+          <Link href="/workspace/1/dm/1" className={styles.workspace({ active: path === '/dm' })}>
             <DirectMessageIcon size={20} />
             DM
-          </div>
+          </Link>
 
-          <div
-            className={styles.workspace({ active: activeMenu === 'more' })}
-            onClick={() => setActiveMenu('more')}
+          <Link
+            href="/workspace/1/page/2"
+            className={styles.workspace({ active: path === '/page' })}
           >
             <EllipsisIcon size={20} />더 보기
-          </div>
+          </Link>
         </div>
       </div>
 

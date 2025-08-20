@@ -59,6 +59,8 @@ export const workspace = recipe({
   base: [
     avatarSize,
     {
+      textDecorationLine: 'none',
+      color: 'white',
       backgroundColor: '#350d36', // 기본 색상
       transition: 'background-color 1s',
     },
