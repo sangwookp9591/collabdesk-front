@@ -8,19 +8,21 @@ export const sideMenu = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  paddingTop: '16px',
   justifyContent: 'space-between',
+  overflow: 'scroll',
 });
 
 export const topSection = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '20px',
+  paddingTop: '16px',
 });
 
 export const BottomSection = style({
   display: 'flex',
   flexDirection: 'column',
+  paddingBottom: '16px',
 });
 
 export const wsWrapper = style({
