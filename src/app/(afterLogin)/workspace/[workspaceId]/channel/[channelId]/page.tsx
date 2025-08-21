@@ -2,7 +2,7 @@
 
 import { Avatar } from '@/entities/user';
 import * as styles from './page.css';
-import { ChannelIcon, PlusIcon } from '@/shared/ui/IconSvg';
+import { ChannelIcon, MessageIcon, PageIcon, PlusIcon } from '@/shared/ui/IconSvg';
 import { useState } from 'react';
 import { format } from 'date-fns';
 
@@ -39,10 +39,15 @@ export default function Page() {
 
       {/* Tab */}
       <div className={styles.tabBar}>
-        <div className={styles.tabItem}>메시지</div>
-        <div className={styles.tabItem}>캔버스 추가</div>
         <div className={styles.tabItem}>
-          <PlusIcon size={24} />
+          <MessageIcon size={16} color="" /> 메시지
+        </div>
+        <div className={styles.tabItem}>
+          <PageIcon size={16} color="" />
+          캔버스 추가
+        </div>
+        <div className={styles.tabItem}>
+          <PlusIcon size={16} color="" />
         </div>
       </div>
 

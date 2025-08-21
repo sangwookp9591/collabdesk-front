@@ -20,13 +20,16 @@ export const channelName = style({
 
 export const tabBar = style({
   display: 'flex',
-  padding: '8px 16px',
   borderBottom: '1px solid #ddd',
-  gap: '16px',
+  gap: '2px',
 });
 
 export const tabItem = style({
   cursor: 'pointer',
+  borderBottomColor: '#3f0e40',
+  borderBottomWidth: '0.5',
+  borderBottomStyle: 'solid',
+  padding: '7px 10px',
 });
 
 export const messageList = style({
