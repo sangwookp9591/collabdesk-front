@@ -1,27 +1,15 @@
 // 📁 widgets/tab-navigation/ui/tab-navigation.css.ts
+import { themeTokens } from '@/shared/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
-
-// 색상 토큰
-const colors = {
-  primary: '#3f0e40',
-  text: '#1f2937',
-  textMuted: '#6b7280',
-  textDisabled: '#9ca3af',
-  bg: '#ffffff',
-  bgHover: '#f3f4f6',
-  bgActive: '#eff6ff',
-  border: '#e5e7eb',
-  borderActive: '#3f0e40',
-};
 
 // 탭 네비게이션 컨테이너
 export const tabNavigation = recipe({
   base: {
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: colors.bg,
-    borderBottom: `1px solid ${colors.border}`,
+    backgroundColor: themeTokens.colors.tab.background,
+    borderBottom: `1px solid ${themeTokens.colors.tab.borderBottom}`,
     overflow: 'auto',
     scrollbarWidth: 'none',
     '::-webkit-scrollbar': {
@@ -38,7 +26,7 @@ export const tabNavigation = recipe({
       pills: {
         gap: 8,
         padding: '8px',
-        backgroundColor: colors.bgHover,
+        backgroundColor: themeTokens.colors.tab.backgroundHover,
         borderRadius: '8px',
         border: 'none',
       },
@@ -78,7 +66,7 @@ export const tabItem = recipe({
     outline: 'none',
 
     ':focus-visible': {
-      outline: `2px solid ${colors.primary}`,
+      outline: `2px solid ${themeTokens.colors.primary}`,
       outlineOffset: '2px',
     },
   },
@@ -88,29 +76,29 @@ export const tabItem = recipe({
       default: {
         padding: '12px 16px',
         borderRadius: '6px',
-        color: colors.textMuted,
+        color: themeTokens.colors.textMuted,
 
         ':hover': {
-          color: colors.text,
-          backgroundColor: colors.bgHover,
+          color: themeTokens.colors.text,
+          backgroundColor: themeTokens.colors.tab.backgroundHover,
         },
       },
       pills: {
         padding: '8px 16px',
         borderRadius: '6px',
-        color: colors.textMuted,
+        color: themeTokens.colors.textMuted,
 
         ':hover': {
-          color: colors.text,
-          backgroundColor: colors.bg,
+          color: themeTokens.colors.text,
+          backgroundColor: themeTokens.colors.tab.background,
         },
       },
       underline: {
         padding: '16px 20px',
-        color: colors.textMuted,
+        color: themeTokens.colors.textMuted,
 
         ':hover': {
-          color: colors.text,
+          color: themeTokens.colors.text,
         },
       },
     },
@@ -137,7 +125,7 @@ export const tabItem = recipe({
 
     disabled: {
       true: {
-        color: colors.textDisabled,
+        color: themeTokens.colors.textDisabled,
         cursor: 'not-allowed',
         pointerEvents: 'none',
       },
@@ -150,16 +138,16 @@ export const tabItem = recipe({
     {
       variants: { variant: 'default', active: true },
       style: {
-        color: colors.primary,
-        backgroundColor: colors.bgActive,
+        color: themeTokens.colors.primary,
+        backgroundColor: themeTokens.colors.tab.backgroundActive,
       },
     },
     // pills + active
     {
       variants: { variant: 'pills', active: true },
       style: {
-        color: colors.primary,
-        backgroundColor: colors.bg,
+        color: themeTokens.colors.primary,
+        backgroundColor: themeTokens.colors.tab.pills.background,
         boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1)',
       },
     },
@@ -167,8 +155,8 @@ export const tabItem = recipe({
     {
       variants: { variant: 'underline', active: true },
       style: {
-        color: colors.primary,
-        borderBottomColor: colors.borderActive,
+        color: themeTokens.colors.primary,
+        borderBottomColor: themeTokens.colors.tab.underline.borderBottom,
       },
     },
   ],
@@ -240,6 +228,6 @@ export const activeIndicator = style({
   left: 0,
   right: 0,
   height: '2px',
-  backgroundColor: colors.primary,
+  backgroundColor: themeTokens.colors.primary,
   borderRadius: '1px 1px 0 0',
 });
