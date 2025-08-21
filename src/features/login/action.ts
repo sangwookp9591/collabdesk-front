@@ -1,16 +1,17 @@
 'use server';
 
-import { fetchLogin } from './api/fetch-login';
+import { userApi } from '@/entities/user/api/userApi';
+import { signIn } from 'next-auth/react';
 
 export async function loginAction(_: any, formData: FormData) {
-  const loginId = formData.get('loginId')?.toString();
+  const email = formData.get('email')?.toString();
   const loginPw = formData.get('loginPw')?.toString();
 
-  if (!loginId) {
+  if (!email) {
     return {
       state: false,
-      el: 'loginId',
-      error: 'Id를 입력해주세요.',
+      el: 'email',
+      error: 'email을 입력해주세요.',
     };
   }
 
@@ -24,7 +25,13 @@ export async function loginAction(_: any, formData: FormData) {
   // const res = await fetch(`${process.env}`,{})
 
   try {
-    const res = await fetchLogin({ loginId, loginPw });
+    const res = await signIn('credentials', {
+      redirect: false,
+      email,
+      password,
+    });
+    console.log('res : ', res);
+
     if (res?.ok) {
       return {
         state: true,

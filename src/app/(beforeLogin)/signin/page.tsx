@@ -12,7 +12,7 @@ export default function Page() {
 
   useEffect(() => {
     if (state?.status) {
-      redirect('/');
+      redirect('/workspace/1/channel/1');
     }
   }, [state?.status]);
 
@@ -23,10 +23,10 @@ export default function Page() {
   return (
     <>
       <form ref={formRef} action={formAction} className={styles.formStyle}>
-        <label htmlFor="loginId" className={styles.labelStyle}>
-          ID
+        <label htmlFor="email" className={styles.labelStyle}>
+          Email
         </label>
-        <input required className={styles.inputStyle} type="text" name="loginId" />
+        <input required className={styles.inputStyle} type="text" name="email" />
 
         <label htmlFor="loginPw" className={styles.labelStyle}>
           Password
