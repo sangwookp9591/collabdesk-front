@@ -13,7 +13,6 @@ export const container = style({
 export const trigger = style({
   display: 'flex',
   alignItems: 'center',
-  padding: '3px 0px 5px 10px',
 });
 
 // 드롭다운
