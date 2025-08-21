@@ -1,8 +1,10 @@
+import { themeTokens } from '@/shared/styles/theme.css';
 import { style } from '@vanilla-extract/css';
+
 export const item = style({
   display: 'flex',
   gap: '5px',
-  color: '#ffffff',
+  color: themeTokens.colors.textSecondary,
   borderRadius: '15px',
   textDecoration: 'none',
   textAlign: 'center',
@@ -15,7 +17,7 @@ export const item = style({
 export const activeItem = style([
   item,
   {
-    color: 'rgba(57,6,58, 1)',
-    backgroundColor: 'rgba(249,237,255, 1)',
+    color: themeTokens.colors.primary,
+    backgroundColor: themeTokens.colors.primaryActive,
   },
 ]);

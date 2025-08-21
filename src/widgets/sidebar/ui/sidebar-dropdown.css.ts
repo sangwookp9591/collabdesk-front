@@ -1,3 +1,4 @@
+import { themeTokens } from '@/shared/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
@@ -36,7 +37,7 @@ export const dropdownIcon = recipe({
 export const item = style({
   display: 'flex',
   gap: '5px',
-  color: '#ffffff',
+  color: themeTokens.colors.textSecondary,
   borderRadius: '15px',
   textDecoration: 'none',
   textAlign: 'center',
@@ -49,8 +50,10 @@ export const item = style({
 export const activeItem = style([
   item,
   {
-    color: 'rgba(57,6,58, 1)',
-    backgroundColor: 'rgba(249,237,255, 1)',
+    color: themeTokens.colors.primary,
+    backgroundColor: themeTokens.colors.primaryActive,
+    // color: 'rgba(57,6,58, 1)',
+    // backgroundColor: 'rgba(249,237,255, 1)',
   },
 ]);
 
@@ -64,7 +67,7 @@ export const addRow = style({
 export const plusBox = style({
   borderRadius: '2px',
   padding: '2.5px',
-  backgroundColor: '#611f69',
-  color: 'white',
+  backgroundColor: themeTokens.colors.primaryHover,
+  color: themeTokens.colors.textSecondary,
   cursor: 'pointer',
 });
