@@ -39,7 +39,12 @@ export const searchBar = style({
   borderRadius: '8px',
   borderColor: '#0000',
   padding: '5px 0px 5px 25px',
+  color: themeTokens.colors.textSecondary,
   backgroundColor: themeTokens.colors.backgroundTertiary,
+  ':focus-visible': {
+    outline: `2px solid ${themeTokens.colors.background}`,
+    outlineOffset: '2px',
+  },
 });
 
 export const searchIcon = style({

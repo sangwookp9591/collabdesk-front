@@ -1,4 +1,4 @@
-import { PrevIcon, NextIcon, HelpIcon } from '@/shared/ui';
+import { PrevIcon, NextIcon, HelpIcon, SearchIcon } from '@/shared/ui';
 import * as styles from './header.css';
 import { themeTokens } from '@/shared/styles/theme.css';
 import { ThemeSelector } from '@/widgets/theme-selector';
@@ -19,7 +19,7 @@ export default function Header() {
       <div className={styles.middleContainer}>
         <input type="text" className={styles.searchBar}></input>
         <div className={styles.searchIcon}>
-          <HelpIcon size={20} color={themeTokens.colors.primary} />
+          <SearchIcon size={20} color={themeTokens.colors.textSecondary} />
         </div>
       </div>
 
