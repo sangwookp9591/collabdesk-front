@@ -3,7 +3,7 @@ import { style } from '@vanilla-extract/css';
 export const chatPage = style({
   display: 'flex',
   flexDirection: 'column',
-  height: '100vh',
+  height: '100%',
 });
 
 export const topBar = style({
