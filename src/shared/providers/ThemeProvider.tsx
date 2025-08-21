@@ -104,7 +104,6 @@ export function ThemeProvider({ children, defaultTheme = 'default' }: ThemeProvi
         availableThemes,
       }}
     >
-      <div>{'🎯 ThemeContext.Provider 렌더링됨'}</div>
       <div className={themes[theme]}>{children}</div>
     </ThemeContext.Provider>
   );
