@@ -2,7 +2,6 @@
 
 import { Avatar } from '@/entities/user';
 import * as styles from './page.css';
-import { ChannelIcon, MessageIcon, PageIcon, PlusIcon } from '@/shared/ui/IconSvg';
 import { useState } from 'react';
 import { format } from 'date-fns';
 
@@ -30,27 +29,7 @@ export default function Page() {
   };
 
   return (
-    <div className={styles.chatPage}>
-      {/* Top Bar */}
-      <div className={styles.topBar}>
-        <ChannelIcon size={20} color="" />
-        <span className={styles.channelName}>채널이름</span>
-      </div>
-
-      {/* Tab */}
-      <div className={styles.tabBar}>
-        <div className={styles.tabItem}>
-          <MessageIcon size={16} color="" /> 메시지
-        </div>
-        <div className={styles.tabItem}>
-          <PageIcon size={16} color="" />
-          캔버스 추가
-        </div>
-        <div className={styles.tabItem}>
-          <PlusIcon size={16} color="" />
-        </div>
-      </div>
-
+    <>
       {/* Message List */}
       <div className={styles.messageList}>
         {messages.map((msg, index) => {
@@ -112,6 +91,6 @@ export default function Page() {
           전송
         </div>
       </div>
-    </div>
+    </>
   );
 }

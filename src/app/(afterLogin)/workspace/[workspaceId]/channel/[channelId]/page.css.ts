@@ -1,37 +1,5 @@
 import { style } from '@vanilla-extract/css';
 
-export const chatPage = style({
-  display: 'flex',
-  flexDirection: 'column',
-  height: '100vh',
-});
-
-export const topBar = style({
-  display: 'flex',
-  alignItems: 'center',
-  padding: '10px 16px',
-  borderBottom: '1px solid #ddd',
-  fontWeight: 'bold',
-});
-
-export const channelName = style({
-  marginLeft: '8px',
-});
-
-export const tabBar = style({
-  display: 'flex',
-  borderBottom: '1px solid #ddd',
-  gap: '2px',
-});
-
-export const tabItem = style({
-  cursor: 'pointer',
-  borderBottomColor: '#3f0e40',
-  borderBottomWidth: '0.5',
-  borderBottomStyle: 'solid',
-  padding: '7px 10px',
-});
-
 export const messageList = style({
   flex: 1,
   overflowY: 'auto',
