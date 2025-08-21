@@ -1,10 +1,11 @@
+import { themeTokens } from '@/shared/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
 export const sideMenu = style({
   width: '80px',
   height: '100%',
-  backgroundColor: '#350d36',
+  backgroundColor: themeTokens.colors.sidebarMenu.background,
   color: 'white',
   display: 'flex',
   flexDirection: 'column',
@@ -60,15 +61,15 @@ export const workspace = recipe({
     avatarSize,
     {
       textDecorationLine: 'none',
-      color: 'white',
-      backgroundColor: '#350d36', // 기본 색상
+      color: themeTokens.colors.sidebarMenu.text, // 기본 색상
+      backgroundColor: themeTokens.colors.sidebarMenu.background, // 기본 색상
       transition: 'background-color 1s',
     },
   ],
   variants: {
     active: {
       true: {
-        backgroundColor: '#611f69', // 활성화 색상
+        backgroundColor: themeTokens.colors.sidebarMenu.backgroundActive, // 활성화 색상
       },
       false: {},
     },
