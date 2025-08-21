@@ -1,11 +1,10 @@
 'use server';
 
-import { userApi } from '@/entities/user/api/userApi';
 import { signIn } from 'next-auth/react';
 
 export async function loginAction(_: any, formData: FormData) {
   const email = formData.get('email')?.toString();
-  const loginPw = formData.get('loginPw')?.toString();
+  const password = formData.get('password')?.toString();
 
   if (!email) {
     return {
@@ -15,10 +14,10 @@ export async function loginAction(_: any, formData: FormData) {
     };
   }
 
-  if (!loginPw) {
+  if (!password) {
     return {
       state: false,
-      el: 'loginPw',
+      el: 'password',
       error: 'PW를 입력해주세요.',
     };
   }
@@ -30,7 +29,6 @@ export async function loginAction(_: any, formData: FormData) {
       email,
       password,
     });
-    console.log('res : ', res);
 
     if (res?.ok) {
       return {
@@ -39,6 +37,7 @@ export async function loginAction(_: any, formData: FormData) {
       };
     }
   } catch (err: any) {
+    console.log('err : ', err);
     return {
       status: false,
       error: '로그인에 실패했습니다.',

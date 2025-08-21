@@ -4,6 +4,10 @@ import GoogleProvider from 'next-auth/providers/google';
 import { userApi } from '@/entities/user/api/userApi';
 
 export const authOptions: NextAuthOptions = {
+  pages: {
+    signIn: '/signin',
+    error: '/auth/error',
+  },
   providers: [
     // Credentials Provider (MSW로 mock 가능)
     CredentialsProvider({
@@ -14,6 +18,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        console.log('credentials : ', credentials);
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
@@ -25,13 +30,20 @@ export const authOptions: NextAuthOptions = {
             email: credentials.email,
             password: credentials.password,
           });
+          console.log('user : ', user);
 
           if (user) {
+            // return {
+            //   id: user.id,
+            //   email: user.email,
+            //   name: user.name,
+            //   image: user.profileImgUrl,
+            // };
             return {
-              id: user.id,
-              email: user.email,
-              name: user.name,
-              image: user.profileImgUrl,
+              id: 'ksdiasd1dsfadads',
+              email: 'test@test.com',
+              name: 'name',
+              image: '/images/default_profile.png',
             };
           }
           return null;
@@ -82,11 +94,6 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-  },
-
-  pages: {
-    signIn: '/auth/signin',
-    error: '/auth/error',
   },
 
   events: {
