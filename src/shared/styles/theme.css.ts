@@ -389,7 +389,7 @@ export const aubergineTheme = createTheme(themeTokens, {
     primaryActive: 'rgba(249,237,255, 1)',
 
     background: '#ffffff',
-    backgroundSecondary: '#fdf2f8',
+    backgroundSecondary: '#4a154b',
     backgroundTertiary: '#fce7f3',
     backgroundHover: 'rgba(74, 21, 75, 0.04)',
     backgroundActive: 'rgba(74, 21, 75, 0.08)',

@@ -13,26 +13,7 @@ export const container = style({
 export const trigger = style({
   display: 'flex',
   alignItems: 'center',
-  gap: 8,
-  padding: '8px 12px',
-  backgroundColor: themeTokens.colors.backgroundSecondary,
-  border: `1px solid ${themeTokens.colors.border}`,
-  borderRadius: themeTokens.radii.md,
-  color: themeTokens.colors.text,
-  cursor: 'pointer',
-  fontSize: '14px',
-  fontWeight: 500,
-  transition: 'all 0.2s ease',
-
-  ':hover': {
-    backgroundColor: themeTokens.colors.backgroundHover,
-    borderColor: themeTokens.colors.borderFocus,
-  },
-
-  ':focus-visible': {
-    outline: `2px solid ${themeTokens.colors.borderFocus}`,
-    outlineOffset: '2px',
-  },
+  padding: '3px 0px 5px 10px',
 });
 
 // 드롭다운

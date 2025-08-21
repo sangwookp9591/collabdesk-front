@@ -6,7 +6,7 @@ import * as styles from './theme-selector.css';
 import { useState } from 'react';
 import { HomeIcon } from '@/shared/ui/IconSvg';
 import { useTheme } from '@/shared/providers/ThemeProvider';
-import { themeTokens } from '@/shared/styles/theme.css';
+import { themeTokens, ThemeType } from '@/shared/styles/theme.css';
 
 export default function ThemeSelector() {
   const { theme, setTheme, availableThemes } = useTheme();
@@ -14,10 +14,15 @@ export default function ThemeSelector() {
 
   return (
     <div className={styles.container}>
-      <button className={styles.trigger} onClick={() => setIsOpen(!isOpen)} aria-label="테마 선택">
-        {/* <PaletteIcon size={20} /> */}
-        <span>테마</span>
-      </button>
+      {/* <PaletteIcon size={20} /> */}
+
+      <div className={styles.trigger}>
+        <div
+          className={styles.themePreview({ theme: theme as any })}
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="테마 선택"
+        ></div>
+      </div>
 
       {isOpen && (
         <div className={styles.dropdown}>
