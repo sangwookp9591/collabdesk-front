@@ -7,6 +7,7 @@ import { Channel } from '@/entities/channel/model/types';
 import SidebarDropdown from './SidebarDropdown';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
+import { themeTokens } from '@/shared/styles/theme.css';
 
 type ChannelSectionProps = {
   channels: Omit<Channel, 'createdAt'>[];
@@ -41,7 +42,14 @@ export default function ChannelSection({
                 href={currentPath}
                 label={channel?.name}
                 icon={
-                  <ChannelIcon size={20} color={isActiveItem ? 'rgba(57,6,58, 1)' : '#ffffff'} />
+                  <ChannelIcon
+                    size={20}
+                    color={
+                      isActiveItem
+                        ? `${themeTokens.colors.primary}`
+                        : `${themeTokens.colors.textSecondary}`
+                    }
+                  />
                 }
                 isActive={isActiveItem}
               />
