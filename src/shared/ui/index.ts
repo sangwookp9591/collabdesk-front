@@ -17,3 +17,4 @@ export {
   HelpIcon,
   SearchIcon,
 } from './IconSvg';
+export { default as Button } from './Button';
