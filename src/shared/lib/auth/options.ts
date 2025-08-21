@@ -30,7 +30,6 @@ export const authOptions: NextAuthOptions = {
             email: credentials.email,
             password: credentials.password,
           });
-          console.log('user : ', user);
 
           if (user) {
             // return {
