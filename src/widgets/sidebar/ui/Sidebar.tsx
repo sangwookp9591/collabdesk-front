@@ -8,7 +8,7 @@ import {
   ComposeIcon,
   HourglassIcon,
   SettingsIcon,
-} from '../../../shared/ui/IconSvg';
+} from '@/shared/ui';
 import ChannelSection from './ChannelSection';
 import { Channel } from '@/entities/channel/model/types';
 import { themeTokens } from '@/shared/styles/theme.css';

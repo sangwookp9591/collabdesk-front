@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import * as styles from './sidemenu.css';
-import { DirectMessageIcon, EllipsisIcon, HomeIcon } from '@/shared/ui/IconSvg';
+import { DirectMessageIcon, EllipsisIcon, HomeIcon } from '@/shared/ui';
 import { Avatar } from '@/entities/user';
 
 const SideMenu = () => {

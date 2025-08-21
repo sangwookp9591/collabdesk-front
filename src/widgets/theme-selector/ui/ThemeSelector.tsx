@@ -2,11 +2,10 @@
 'use client';
 
 import * as styles from './theme-selector.css';
-// import { CheckIcon, PaletteIcon } from '@/shared/ui/icons';
 import { useState } from 'react';
-import { HomeIcon } from '@/shared/ui/IconSvg';
-import { useTheme } from '@/shared/providers/ThemeProvider';
-import { themeTokens, ThemeType } from '@/shared/styles/theme.css';
+import { HomeIcon } from '@/shared/ui';
+import { useTheme } from '@/shared/providers';
+import { themeTokens } from '@/shared/styles';
 
 export default function ThemeSelector() {
   const { theme, setTheme, availableThemes } = useTheme();

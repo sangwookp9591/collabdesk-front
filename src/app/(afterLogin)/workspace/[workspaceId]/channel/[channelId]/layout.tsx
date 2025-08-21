@@ -1,6 +1,6 @@
 import * as styles from './layout.css';
-import { ChannelIcon, MessageIcon, PageIcon, PlusIcon } from '@/shared/ui/IconSvg';
-import TabNavigation from '@/widgets/tab-navigation/ui/TabNavigation';
+import { ChannelIcon, MessageIcon, PageIcon, PlusIcon } from '@/shared/ui';
+import { TabNavigation } from '@/widgets/tab-navigation';
 import { ReactNode } from 'react';
 
 export default function Layout({ children }: { children: ReactNode }) {

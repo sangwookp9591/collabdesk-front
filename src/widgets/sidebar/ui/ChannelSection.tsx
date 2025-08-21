@@ -1,13 +1,13 @@
 'use client';
 
-import { ChannelIcon, PlusIcon } from '@/shared/ui/IconSvg';
+import { ChannelIcon, PlusIcon } from '@/shared/ui';
 import * as styles from './sidebar-dropdown.css';
 import SidebarNavigationItem from './SidebarNavigationItem';
 import { Channel } from '@/entities/channel/model/types';
 import SidebarDropdown from './SidebarDropdown';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
-import { themeTokens } from '@/shared/styles/theme.css';
+import { themeTokens } from '@/shared/styles';
 
 type ChannelSectionProps = {
   channels: Omit<Channel, 'createdAt'>[];
