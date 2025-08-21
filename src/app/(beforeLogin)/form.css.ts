@@ -1,4 +1,4 @@
-import { themeVars } from '@/shared/styles/theme.css';
+import { themeTokens } from '@/shared/styles';
 import { style } from '@vanilla-extract/css';
 
 export const formStyle = style({
@@ -27,7 +27,7 @@ export const inputStyle = style({
 
 export const buttonStyle = style({
   padding: '10px',
-  backgroundColor: themeVars.color.primary,
+  backgroundColor: themeTokens.colors.button.background,
   color: 'white',
   textAlign: 'center',
   borderRadius: '4px',
