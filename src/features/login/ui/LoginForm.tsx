@@ -41,7 +41,18 @@ export default function LoginForm() {
 
       {error && <div style={{ color: 'red' }}>{error}</div>}
 
-      <Link href="/signup">회원가입</Link>
+      <Link
+        href={'/signup'}
+        style={{
+          textDecoration: 'none',
+          fontSize: '0.8rem',
+          color: 'gray',
+          textAlign: 'center',
+          marginTop: '10px',
+        }}
+      >
+        회원가입
+      </Link>
     </form>
   );
 }
