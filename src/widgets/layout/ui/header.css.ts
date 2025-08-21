@@ -4,6 +4,8 @@ import { style } from '@vanilla-extract/css';
 export const container = style({
   display: 'flex',
   height: '40px',
+  padding: '0px 10px',
+  gap: '4px',
   flexShrink: 0,
   backgroundColor: themeTokens.colors.backgroundSecondary,
 });
@@ -11,7 +13,14 @@ export const container = style({
 export const leftContainer = style({
   display: 'flex',
   flex: '1 0 auto',
-  justifyContent: 'flex-start',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+});
+
+export const historyControls = style({
+  display: 'flex',
+  gap: '2px',
+  cursor: 'pointer',
 });
 
 export const middleContainer = style({
@@ -21,9 +30,26 @@ export const middleContainer = style({
   maxWidth: '1000px',
   height: '100%',
   justifyContent: 'center',
+  alignItems: 'center',
+  position: 'relative',
+});
+
+export const searchBar = style({
+  flex: '1 1',
+  borderRadius: '8px',
+  borderColor: '#0000',
+  padding: '5px 0px 5px 25px',
+  backgroundColor: themeTokens.colors.backgroundTertiary,
+});
+
+export const searchIcon = style({
+  position: 'absolute',
+  left: '4px',
 });
 
 export const rightContainer = style({
   display: 'flex',
   flex: '1 0 auto',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
 });
