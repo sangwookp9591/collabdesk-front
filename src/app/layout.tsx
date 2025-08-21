@@ -14,7 +14,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div>루트</div>
         <Providers>{children}</Providers>
       </body>
     </html>
