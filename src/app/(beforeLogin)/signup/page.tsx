@@ -73,15 +73,15 @@ export default function Page() {
         />
       </div>
 
-      {/* ID */}
-      <label className={styles.labelStyle} htmlFor="loginId">
-        ID
+      {/* email */}
+      <label className={styles.labelStyle} htmlFor="email">
+        EMAIL
       </label>
-      <input required className={styles.inputStyle} type="text" name="loginId" />
+      <input required className={styles.inputStyle} type="text" name="email" />
 
-      {/* Nickname */}
+      {/* name */}
       <label className={styles.labelStyle}>Nickname</label>
-      <input required className={styles.inputStyle} type="text" name="nickname" />
+      <input required className={styles.inputStyle} type="text" name="name" />
 
       {/* Password */}
       <label className={styles.labelStyle} htmlFor="loginPw">

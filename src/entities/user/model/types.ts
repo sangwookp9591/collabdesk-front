@@ -16,5 +16,5 @@ export interface SignInData {
 export interface UpsertUserData {
   email: string;
   name: string;
-  profileImgUrl: string;
+  profileImgUrl?: string;
 }

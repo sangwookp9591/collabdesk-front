@@ -1,13 +1,11 @@
 import { SignupDTO } from '../model/type';
 
 export const fetchSignup = ({
-  loginId,
-  loginPw,
-  nickname,
   email,
+  loginPw,
+  name,
   profileFile,
 }: SignupDTO): Promise<{ ok: boolean }> => {
-  console.log('loginId, loginPw  : ', loginId, loginPw, nickname, email, profileFile);
   //login 정보 포함해서 , workspace가 존재하는지 유무도 필요함.
   return new Promise((resolve, reject) => {
     setTimeout(() => {
