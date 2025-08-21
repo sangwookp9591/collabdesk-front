@@ -1,6 +1,38 @@
-body,
-html {
+html,
+body {
   margin: 0;
   padding: 0;
-  font-family: 'Helvetica', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+/* 다크모드 시스템 감지 */
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+} */
+
+/* 스크롤바 스타일링 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 포커스 아웃라인 개선 */
+*:focus-visible {
+  outline: 2px solid #1264a3;
+  outline-offset: 2px;
 }
