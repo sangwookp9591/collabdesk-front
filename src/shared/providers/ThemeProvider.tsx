@@ -35,14 +35,14 @@ export function ThemeProvider({ children, defaultTheme = 'default' }: ThemeProvi
       description: '어두운 테마',
     },
     {
-      key: 'aubergine' as ThemeType,
-      name: 'Aubergine',
-      description: 'Slack 클래식 테마',
+      key: 'green' as ThemeType,
+      name: 'Green',
+      description: '초록색 클래식 테마',
     },
     {
       key: 'default' as ThemeType,
       name: 'Default',
-      description: 'Slack 기본 테마',
+      description: ' 기본 테마',
     },
   ];
 

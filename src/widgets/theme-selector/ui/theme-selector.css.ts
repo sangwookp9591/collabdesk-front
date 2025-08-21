@@ -128,8 +128,8 @@ export const themePreview = recipe({
       dark: {
         background: 'linear-gradient(135deg, #1a1d29 50%, #19171d 50%)',
       },
-      aubergine: {
-        background: 'linear-gradient(135deg, #ffffff 50%, #4a154b 50%)',
+      green: {
+        background: 'linear-gradient(135deg, #ffffff 50%,green 50%)',
       },
       default: {
         background: 'linear-gradient(135deg, #ffffff 50%, #4a154b 50%)',

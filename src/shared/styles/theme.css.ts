@@ -80,6 +80,11 @@ export const themeTokens = createThemeContract({
       },
       borderBottom: null,
     },
+    // button
+    button: {
+      background: null,
+      backgroundDisable: null,
+    },
   },
 
   // 그림자
@@ -102,9 +107,9 @@ export const themeTokens = createThemeContract({
 // 2. 다크 테마 정의
 export const darkTheme = createTheme(themeTokens, {
   colors: {
-    primary: '#1264a3',
-    primaryHover: 'rgba(255, 255, 255, 0.04)',
-    primaryActive: '#094785',
+    primary: '#1a8cff',
+    primaryHover: '#0d7ce8',
+    primaryActive: '#0570d6',
 
     background: '#1a1d29',
     backgroundSecondary: '#232937',
@@ -120,19 +125,19 @@ export const darkTheme = createTheme(themeTokens, {
     textInverse: '#1a1d29',
 
     border: 'rgba(255, 255, 255, 0.13)',
-    borderFocus: '#1264a3',
-    borderError: '#e01e5a',
-    borderSuccess: '#2eb67d',
+    borderFocus: '#1a8cff',
+    borderError: '#ff4757',
+    borderSuccess: '#2dd4bf',
 
-    success: '#2eb67d',
-    warning: '#ecb22e',
-    error: '#e01e5a',
-    info: '#36c5f0',
+    success: '#2dd4bf',
+    warning: '#fbbf24',
+    error: '#ff4757',
+    info: '#06b6d4',
 
     sidebarMenu: {
-      background: '#19171d',
+      background: '#0f1419',
       backgroundHover: 'rgba(255, 255, 255, 0.06)',
-      backgroundActive: '#1264a3',
+      backgroundActive: '#1a8cff',
       text: '#d1d2d3',
       textActive: '#ffffff',
       border: 'rgba(255, 255, 255, 0.08)',
@@ -141,9 +146,9 @@ export const darkTheme = createTheme(themeTokens, {
     },
 
     sidebar: {
-      background: '#19171d',
+      background: '#151920',
       backgroundHover: 'rgba(255, 255, 255, 0.06)',
-      backgroundActive: '#1264a3',
+      backgroundActive: '#1a8cff',
       text: '#d1d2d3',
       textActive: '#ffffff',
       border: 'rgba(255, 255, 255, 0.08)',
@@ -154,22 +159,26 @@ export const darkTheme = createTheme(themeTokens, {
     channel: {
       background: 'transparent',
       backgroundUnread: 'rgba(255, 255, 255, 0.06)',
-      backgroundMention: 'rgba(224, 30, 90, 0.2)',
+      backgroundMention: 'rgba(255, 71, 87, 0.2)',
       text: '#d1d2d3',
       textUnread: '#ffffff',
-      badge: '#e01e5a',
+      badge: '#ff4757',
     },
     tab: {
-      background: '#ffffff',
-      backgroundHover: '#f3f4f6',
-      backgroundActive: '#eff6ff',
+      background: '#2f3349',
+      backgroundHover: '#3a4056',
+      backgroundActive: '#1a8cff',
       pills: {
-        background: '#eff6ff',
+        background: '#1a8cff',
       },
       underline: {
-        borderBottom: '#ffffff',
+        borderBottom: '#1a8cff',
       },
-      borderBottom: '#ddd',
+      borderBottom: 'rgba(255, 255, 255, 0.13)',
+    },
+    button: {
+      background: '#1a8cff',
+      backgroundDisable: '#616061',
     },
   },
 
@@ -177,7 +186,7 @@ export const darkTheme = createTheme(themeTokens, {
     sm: '0 1px 3px 0 rgba(0, 0, 0, 0.3)',
     md: '0 4px 12px 0 rgba(0, 0, 0, 0.4)',
     lg: '0 20px 25px -5px rgba(0, 0, 0, 0.5)',
-    focus: '0 0 0 2px rgba(18, 100, 163, 0.3)',
+    focus: '0 0 0 2px rgba(26, 140, 255, 0.3)',
   },
 
   radii: {
@@ -188,52 +197,52 @@ export const darkTheme = createTheme(themeTokens, {
   },
 });
 
-// 3. 라이트 테마 정의
-export const lightTheme = createTheme(themeTokens, {
+// 2. 보라색 테마 정의 (Purple Theme) - 기존 purpleTheme 개선
+export const purpleTheme = createTheme(themeTokens, {
   colors: {
-    primary: '#1264a3',
-    primaryHover: '#0b5394',
-    primaryActive: '#094785',
+    primary: '#8b5cf6',
+    primaryHover: '#7c3aed',
+    primaryActive: '#6d28d9',
 
     background: '#ffffff',
-    backgroundSecondary: '#f8f8f8',
-    backgroundTertiary: '#f5f5f5',
-    backgroundHover: 'rgba(29, 28, 29, 0.04)',
-    backgroundActive: 'rgba(29, 28, 29, 0.08)',
+    backgroundSecondary: '#faf5ff',
+    backgroundTertiary: '#f3e8ff',
+    backgroundHover: 'rgba(139, 92, 246, 0.04)',
+    backgroundActive: 'rgba(139, 92, 246, 0.08)',
 
-    text: '#1d1c1d',
-    textSecondary: '#616061',
-    textMuted: '#868686',
-    textDisabled: '#b9b9b9',
-    textDate: 'rgb(173, 181, 189)',
+    text: '#1f2937',
+    textSecondary: '#4b5563',
+    textMuted: '#6b7280',
+    textDisabled: '#9ca3af',
+    textDate: '#6b7280',
     textInverse: '#ffffff',
 
-    border: 'rgba(29, 28, 29, 0.13)',
-    borderFocus: '#1264a3',
-    borderError: '#e01e5a',
-    borderSuccess: '#2eb67d',
+    border: '#e5e7eb',
+    borderFocus: '#8b5cf6',
+    borderError: '#f87171',
+    borderSuccess: '#34d399',
 
-    success: '#2eb67d',
-    warning: '#ecb22e',
-    error: '#e01e5a',
-    info: '#36c5f0',
+    success: '#34d399',
+    warning: '#fbbf24',
+    error: '#f87171',
+    info: '#60a5fa',
 
     sidebarMenu: {
-      background: '#522653',
+      background: '#6d28d9',
       backgroundHover: 'rgba(255, 255, 255, 0.13)',
-      backgroundActive: '#1264a3',
+      backgroundActive: '#ffffff',
       text: '#ffffff',
-      textActive: '#ffffff',
+      textActive: '#6d28d9',
       border: 'rgba(255, 255, 255, 0.1)',
       resizer: 'transparent',
       resizerHover: 'rgba(255, 255, 255, 0.3)',
     },
     sidebar: {
-      background: '#522653',
+      background: '#7c3aed',
       backgroundHover: 'rgba(255, 255, 255, 0.13)',
-      backgroundActive: '#1264a3',
+      backgroundActive: '#ffffff',
       text: '#ffffff',
-      textActive: '#ffffff',
+      textActive: '#6d28d9',
       border: 'rgba(255, 255, 255, 0.1)',
       resizer: 'transparent',
       resizerHover: 'rgba(255, 255, 255, 0.3)',
@@ -241,23 +250,27 @@ export const lightTheme = createTheme(themeTokens, {
 
     channel: {
       background: 'transparent',
-      backgroundUnread: 'rgba(255, 255, 255, 0.13)',
-      backgroundMention: 'rgba(224, 30, 90, 0.2)',
+      backgroundUnread: 'rgba(139, 92, 246, 0.08)',
+      backgroundMention: 'rgba(248, 113, 113, 0.2)',
       text: '#ffffff',
       textUnread: '#ffffff',
-      badge: '#e01e5a',
+      badge: '#f87171',
     },
     tab: {
       background: '#ffffff',
-      backgroundHover: '#f3f4f6',
-      backgroundActive: '#eff6ff',
+      backgroundHover: '#faf5ff',
+      backgroundActive: '#ede9fe',
       pills: {
-        background: '#eff6ff',
+        background: '#ede9fe',
       },
       underline: {
-        borderBottom: '#ffffff',
+        borderBottom: '#8b5cf6',
       },
-      borderBottom: '#ddd',
+      borderBottom: '#e5e7eb',
+    },
+    button: {
+      background: '#8b5cf6',
+      backgroundDisable: '#9ca3af',
     },
   },
 
@@ -265,7 +278,7 @@ export const lightTheme = createTheme(themeTokens, {
     sm: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
     md: '0 4px 12px 0 rgba(0, 0, 0, 0.15)',
     lg: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
-    focus: '0 0 0 2px rgba(18, 100, 163, 0.3)',
+    focus: '0 0 0 2px rgba(139, 92, 246, 0.3)',
   },
 
   radii: {
@@ -276,7 +289,99 @@ export const lightTheme = createTheme(themeTokens, {
   },
 });
 
-// 4. 커스텀 테마들 (Slack의 다양한 테마처럼)
+// 3. 라이트 테마 정의 (개선된 색상)
+export const lightTheme = createTheme(themeTokens, {
+  colors: {
+    primary: '#2563eb',
+    primaryHover: '#1d4ed8',
+    primaryActive: '#1e40af',
+
+    background: '#ffffff',
+    backgroundSecondary: '#f8fafc',
+    backgroundTertiary: '#f1f5f9',
+    backgroundHover: 'rgba(37, 99, 235, 0.04)',
+    backgroundActive: 'rgba(37, 99, 235, 0.08)',
+
+    text: '#0f172a',
+    textSecondary: '#475569',
+    textMuted: '#64748b',
+    textDisabled: '#94a3b8',
+    textDate: '#64748b',
+    textInverse: '#ffffff',
+
+    border: '#e2e8f0',
+    borderFocus: '#2563eb',
+    borderError: '#ef4444',
+    borderSuccess: '#10b981',
+
+    success: '#10b981',
+    warning: '#f59e0b',
+    error: '#ef4444',
+    info: '#0ea5e9',
+
+    sidebarMenu: {
+      background: '#1e40af',
+      backgroundHover: 'rgba(255, 255, 255, 0.13)',
+      backgroundActive: '#ffffff',
+      text: '#ffffff',
+      textActive: '#1e40af',
+      border: 'rgba(255, 255, 255, 0.1)',
+      resizer: 'transparent',
+      resizerHover: 'rgba(255, 255, 255, 0.3)',
+    },
+    sidebar: {
+      background: '#2563eb',
+      backgroundHover: 'rgba(255, 255, 255, 0.13)',
+      backgroundActive: '#ffffff',
+      text: '#ffffff',
+      textActive: '#1e40af',
+      border: 'rgba(255, 255, 255, 0.1)',
+      resizer: 'transparent',
+      resizerHover: 'rgba(255, 255, 255, 0.3)',
+    },
+
+    channel: {
+      background: 'transparent',
+      backgroundUnread: 'rgba(37, 99, 235, 0.08)',
+      backgroundMention: 'rgba(239, 68, 68, 0.1)',
+      text: '#ffffff',
+      textUnread: '#ffffff',
+      badge: '#ef4444',
+    },
+    tab: {
+      background: '#ffffff',
+      backgroundHover: '#f1f5f9',
+      backgroundActive: '#dbeafe',
+      pills: {
+        background: '#dbeafe',
+      },
+      underline: {
+        borderBottom: '#2563eb',
+      },
+      borderBottom: '#e2e8f0',
+    },
+    button: {
+      background: '#2563eb',
+      backgroundDisable: '#94a3b8',
+    },
+  },
+
+  shadows: {
+    sm: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+    md: '0 4px 12px 0 rgba(0, 0, 0, 0.15)',
+    lg: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+    focus: '0 0 0 2px rgba(37, 99, 235, 0.3)',
+  },
+
+  radii: {
+    sm: '4px',
+    md: '8px',
+    lg: '12px',
+    full: '9999px',
+  },
+});
+
+// 4. Aubergine 테마 정의 (Slack 클래식 보라색 - 개선)
 export const aubergineTheme = createTheme(themeTokens, {
   colors: {
     primary: '#4a154b',
@@ -284,27 +389,28 @@ export const aubergineTheme = createTheme(themeTokens, {
     primaryActive: '#350e38',
 
     background: '#ffffff',
-    backgroundSecondary: '#f8f8f8',
-    backgroundTertiary: '#f5f5f5',
-    backgroundHover: 'rgba(29, 28, 29, 0.04)',
-    backgroundActive: 'rgba(29, 28, 29, 0.08)',
+    backgroundSecondary: '#fdf2f8',
+    backgroundTertiary: '#fce7f3',
+    backgroundHover: 'rgba(74, 21, 75, 0.04)',
+    backgroundActive: 'rgba(74, 21, 75, 0.08)',
 
-    text: '#1d1c1d',
-    textSecondary: '#616061',
-    textMuted: '#868686',
-    textDisabled: '#b9b9b9',
-    textDate: 'rgb(173, 181, 189)',
+    text: '#1f2937',
+    textSecondary: '#4b5563',
+    textMuted: '#6b7280',
+    textDisabled: '#9ca3af',
+    textDate: '#6b7280',
     textInverse: '#ffffff',
 
-    border: 'rgba(29, 28, 29, 0.13)',
+    border: '#e5e7eb',
     borderFocus: '#4a154b',
-    borderError: '#e01e5a',
-    borderSuccess: '#2eb67d',
+    borderError: '#f43f5e',
+    borderSuccess: '#22c55e',
 
-    success: '#2eb67d',
-    warning: '#ecb22e',
-    error: '#e01e5a',
-    info: '#36c5f0',
+    success: '#22c55e',
+    warning: '#eab308',
+    error: '#f43f5e',
+    info: '#8b5cf6',
+
     sidebarMenu: {
       background: '#4a154b',
       backgroundHover: 'rgba(255, 255, 255, 0.13)',
@@ -316,7 +422,7 @@ export const aubergineTheme = createTheme(themeTokens, {
       resizerHover: 'rgba(255, 255, 255, 0.3)',
     },
     sidebar: {
-      background: '#4a154b',
+      background: '#5b1d5d',
       backgroundHover: 'rgba(255, 255, 255, 0.13)',
       backgroundActive: '#ffffff',
       text: '#ffffff',
@@ -328,23 +434,27 @@ export const aubergineTheme = createTheme(themeTokens, {
 
     channel: {
       background: 'transparent',
-      backgroundUnread: 'rgba(255, 255, 255, 0.13)',
-      backgroundMention: 'rgba(224, 30, 90, 0.2)',
+      backgroundUnread: 'rgba(74, 21, 75, 0.08)',
+      backgroundMention: 'rgba(244, 63, 94, 0.2)',
       text: '#ffffff',
       textUnread: '#ffffff',
-      badge: '#e01e5a',
+      badge: '#f43f5e',
     },
     tab: {
       background: '#ffffff',
-      backgroundHover: '#f3f4f6',
-      backgroundActive: '#eff6ff',
+      backgroundHover: '#fdf2f8',
+      backgroundActive: '#f3e8ff',
       pills: {
-        background: '#eff6ff',
+        background: '#f3e8ff',
       },
       underline: {
-        borderBottom: '#ffffff',
+        borderBottom: '#4a154b',
       },
-      borderBottom: '#ddd',
+      borderBottom: '#e5e7eb',
+    },
+    button: {
+      background: '#4a154b',
+      backgroundDisable: '#9ca3af',
     },
   },
 
@@ -363,50 +473,52 @@ export const aubergineTheme = createTheme(themeTokens, {
   },
 });
 
-export const purpleTheme = createTheme(themeTokens, {
+// 5. Green 테마 정의 (기본 테마 - 초록색)
+export const greenTheme = createTheme(themeTokens, {
   colors: {
-    primary: '#3f0e40',
-    primaryHover: '#611f69',
-    primaryActive: 'rgba(249,237,255, 1)',
+    primary: '#15803d', // 메인 초록색 (emerald 계열)
+    primaryHover: '#166534',
+    primaryActive: '#14532d',
 
     background: '#ffffff',
-    backgroundSecondary: '#f8f8f8',
-    backgroundTertiary: '#f5f5f5',
-    backgroundHover: 'rgba(29, 28, 29, 0.04)',
-    backgroundActive: 'rgba(81, 52, 81, 0.08)',
+    backgroundSecondary: '#f0fdf4',
+    backgroundTertiary: '#dcfce7',
+    backgroundHover: 'rgba(22, 101, 52, 0.04)',
+    backgroundActive: 'rgba(22, 101, 52, 0.08)',
 
-    text: '#3f0e40',
-    textSecondary: '#ffffff',
+    text: '#1f2937',
+    textSecondary: '#4b5563',
     textMuted: '#6b7280',
     textDisabled: '#9ca3af',
-    textDate: 'rgb(173, 181, 189)',
+    textDate: '#6b7280',
     textInverse: '#ffffff',
 
-    border: 'rgba(29, 28, 29, 0.13)',
-    borderFocus: '#4a154b',
-    borderError: '#e01e5a',
-    borderSuccess: '#2eb67d',
+    border: '#e5e7eb',
+    borderFocus: '#15803d',
+    borderError: '#f43f5e',
+    borderSuccess: '#22c55e',
 
-    success: '#2eb67d',
-    warning: '#ecb22e',
-    error: '#e01e5a',
-    info: '#36c5f0',
+    success: '#22c55e',
+    warning: '#eab308',
+    error: '#f43f5e',
+    info: '#10b981',
+
     sidebarMenu: {
-      background: '#350d36',
+      background: '#15803d',
       backgroundHover: 'rgba(255, 255, 255, 0.13)',
-      backgroundActive: '#611f69',
+      backgroundActive: '#ffffff',
       text: '#ffffff',
-      textActive: '#4a154b',
+      textActive: '#15803d',
       border: 'rgba(255, 255, 255, 0.1)',
       resizer: 'transparent',
       resizerHover: 'rgba(255, 255, 255, 0.3)',
     },
     sidebar: {
-      background: '#3f0e40',
+      background: '#166534',
       backgroundHover: 'rgba(255, 255, 255, 0.13)',
       backgroundActive: '#ffffff',
       text: '#ffffff',
-      textActive: '#4a154b',
+      textActive: '#15803d',
       border: 'rgba(255, 255, 255, 0.1)',
       resizer: 'transparent',
       resizerHover: 'rgba(255, 255, 255, 0.3)',
@@ -414,23 +526,27 @@ export const purpleTheme = createTheme(themeTokens, {
 
     channel: {
       background: 'transparent',
-      backgroundUnread: 'rgba(255, 255, 255, 0.13)',
-      backgroundMention: 'rgba(224, 30, 90, 0.2)',
+      backgroundUnread: 'rgba(22, 101, 52, 0.08)',
+      backgroundMention: 'rgba(244, 63, 94, 0.2)',
       text: '#ffffff',
       textUnread: '#ffffff',
-      badge: '#e01e5a',
+      badge: '#f43f5e',
     },
     tab: {
       background: '#ffffff',
-      backgroundHover: '#f3f4f6',
-      backgroundActive: '#eff6ff',
+      backgroundHover: '#f0fdf4',
+      backgroundActive: '#dcfce7',
       pills: {
-        background: '#eff6ff',
+        background: '#dcfce7',
       },
       underline: {
-        borderBottom: '#ffffff',
+        borderBottom: '#15803d',
       },
-      borderBottom: '#ddd',
+      borderBottom: '#e5e7eb',
+    },
+    button: {
+      background: '#15803d',
+      backgroundDisable: '#9ca3af',
     },
   },
 
@@ -438,7 +554,7 @@ export const purpleTheme = createTheme(themeTokens, {
     sm: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
     md: '0 4px 12px 0 rgba(0, 0, 0, 0.15)',
     lg: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
-    focus: '0 0 0 2px rgba(74, 21, 75, 0.3)',
+    focus: '0 0 0 2px rgba(21, 128, 61, 0.3)',
   },
 
   radii: {
@@ -451,10 +567,11 @@ export const purpleTheme = createTheme(themeTokens, {
 
 // 5. 테마 맵핑
 export const themes = {
-  default: purpleTheme,
+  default: aubergineTheme,
   light: lightTheme,
   dark: darkTheme,
-  aubergine: aubergineTheme,
+  green: greenTheme,
+  purpleTheme: purpleTheme,
 } as const;
 
 export type ThemeType = keyof typeof themes;
