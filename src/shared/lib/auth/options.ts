@@ -18,6 +18,7 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        console.log('credentials : ', credentials);
         try {
           // MSW가 활성화되면 mock API 호출, 아니면 실제 API 호출
           const user = await userApi.signIn({
