@@ -1,13 +1,12 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { useState } from 'react';
 import * as styles from './login-form.css';
 import Link from 'next/link';
 
 export default function LoginForm() {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -21,7 +20,7 @@ export default function LoginForm() {
     });
 
     if (res?.ok) {
-      router.push('/workspace/1/channel/1'); // 로그인 성공 시 이동
+      redirect('/workspace/1/channel/1');
     } else {
       setError(res?.error || '로그인 실패');
     }
