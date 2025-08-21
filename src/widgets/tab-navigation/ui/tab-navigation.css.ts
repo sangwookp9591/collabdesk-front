@@ -188,7 +188,7 @@ export const tabBadge = recipe({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#ef4444',
-    color: 'white',
+    color: themeTokens.colors.textSecondary,
     borderRadius: '50px',
     fontWeight: 600,
     fontSize: '11px',

@@ -1,3 +1,4 @@
+import { themeTokens } from '@/shared/styles/theme.css';
 import Sidebar from '@/widgets/sidebar/ui/Sidebar';
 import SideMenu from '@/widgets/sidebar/ui/SideMenu';
 import Header from '@/widgets/ui/Header';
@@ -18,7 +19,16 @@ export default function Layout({ children }: { children: ReactNode }) {
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         <SideMenu />
         <Sidebar />
-        <main style={{ flex: 1, overflowY: 'auto', padding: '16px' }}>{children}</main>
+        <main
+          style={{
+            flex: 1,
+            overflowY: 'auto',
+            padding: '16px',
+            backgroundColor: themeTokens.colors.background,
+          }}
+        >
+          {children}
+        </main>
       </div>
     </div>
   );

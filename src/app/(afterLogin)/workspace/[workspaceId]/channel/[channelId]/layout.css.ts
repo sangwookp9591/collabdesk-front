@@ -5,6 +5,7 @@ export const chatPage = style({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
+  color: themeTokens.colors.text,
 });
 
 export const topBar = style({

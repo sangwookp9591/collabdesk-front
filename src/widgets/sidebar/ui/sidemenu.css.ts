@@ -6,7 +6,7 @@ export const sideMenu = style({
   width: '80px',
   height: '100%',
   backgroundColor: themeTokens.colors.sidebarMenu.background,
-  color: 'white',
+  color: themeTokens.colors.textSecondary,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',

@@ -11,6 +11,7 @@ import {
 } from '../../../shared/ui/IconSvg';
 import ChannelSection from './ChannelSection';
 import { Channel } from '@/entities/channel/model/types';
+import { themeTokens } from '@/shared/styles/theme.css';
 
 type ChannelWithoutCreateAt = Omit<Channel, 'createdAt'>;
 
@@ -82,7 +83,7 @@ export default function Sidebar() {
         <section
           style={{
             display: 'flex',
-            color: 'white',
+            color: themeTokens.colors.textSecondary,
             justifyContent: 'space-between',
 
             width: '100%',
@@ -138,7 +139,7 @@ export default function Sidebar() {
             width: '90%',
             justifyContent: 'space-between',
             alignItems: 'center',
-            color: 'white',
+            color: themeTokens.colors.textSecondary,
             padding: '12px',
             borderRadius: '12px',
             border: '1px solid rgba(220, 214, 223, 0.42)',

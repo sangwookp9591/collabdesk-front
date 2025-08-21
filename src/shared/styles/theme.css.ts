@@ -386,7 +386,7 @@ export const aubergineTheme = createTheme(themeTokens, {
   colors: {
     primary: '#4a154b',
     primaryHover: '#3d1142',
-    primaryActive: '#350e38',
+    primaryActive: 'rgba(249,237,255, 1)',
 
     background: '#ffffff',
     backgroundSecondary: '#fdf2f8',
@@ -395,7 +395,7 @@ export const aubergineTheme = createTheme(themeTokens, {
     backgroundActive: 'rgba(74, 21, 75, 0.08)',
 
     text: '#1f2937',
-    textSecondary: '#4b5563',
+    textSecondary: '#ffffff',
     textMuted: '#6b7280',
     textDisabled: '#9ca3af',
     textDate: '#6b7280',
@@ -414,7 +414,7 @@ export const aubergineTheme = createTheme(themeTokens, {
     sidebarMenu: {
       background: '#4a154b',
       backgroundHover: 'rgba(255, 255, 255, 0.13)',
-      backgroundActive: '#ffffff',
+      backgroundActive: '#611f69',
       text: '#ffffff',
       textActive: '#4a154b',
       border: 'rgba(255, 255, 255, 0.1)',
@@ -478,16 +478,16 @@ export const greenTheme = createTheme(themeTokens, {
   colors: {
     primary: '#15803d', // 메인 초록색 (emerald 계열)
     primaryHover: '#166534',
-    primaryActive: '#14532d',
+    primaryActive: 'rgba(196, 213, 203, 0.82)',
 
     background: '#ffffff',
     backgroundSecondary: '#f0fdf4',
     backgroundTertiary: '#dcfce7',
     backgroundHover: 'rgba(22, 101, 52, 0.04)',
-    backgroundActive: 'rgba(22, 101, 52, 0.08)',
+    backgroundActive: 'rgba(118, 159, 135, 0.08)',
 
     text: '#1f2937',
-    textSecondary: '#4b5563',
+    textSecondary: '#ffffff',
     textMuted: '#6b7280',
     textDisabled: '#9ca3af',
     textDate: '#6b7280',

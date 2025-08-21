@@ -6,7 +6,7 @@ export const wrapper = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '10px',
-  color: 'white',
+  color: themeTokens.colors.textSecondary,
 });
 
 export const title = style({
