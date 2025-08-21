@@ -1,5 +1,6 @@
 import Sidebar from '@/widgets/sidebar/ui/Sidebar';
 import SideMenu from '@/widgets/sidebar/ui/SideMenu';
+import Header from '@/widgets/ui/Header';
 import { ReactNode } from 'react';
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -13,7 +14,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         overflow: 'hidden',
       }}
     >
-      <header style={{ height: '40px', flexShrink: 0, backgroundColor: 'red' }}></header>
+      <Header />
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         <SideMenu />
         <Sidebar />

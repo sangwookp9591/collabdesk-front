@@ -1,9 +1,7 @@
 import { style } from '@vanilla-extract/css';
 
 export const container = style({
-  width: '100wh',
-  height: '30px',
-  justifyItems: 'center',
-  alignItems: 'center',
-  backgroundColor: '#350d36',
+  height: '40px',
+  flexShrink: 0,
+  backgroundColor: 'red',
 });
