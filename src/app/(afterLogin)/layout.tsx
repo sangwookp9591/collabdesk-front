@@ -15,7 +15,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       }}
     >
       <Header />
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+      <div style={{ display: 'flex', flex: 1 }}>
         <SideMenu />
         <Sidebar />
         <main
