@@ -4,6 +4,13 @@ export interface Workspace {
   id: string;
   name: string;
 }
+export interface WorkspaceCard {
+  id: string;
+  name: string;
+  image: string;
+  memberCount: number;
+  ownerId: string;
+}
 
 export interface WorkspaceSidebar {
   id: string;
