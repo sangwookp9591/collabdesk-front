@@ -14,10 +14,6 @@ export const avatarSize = style({
   boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
   backgroundColor: '#dfdsad',
   transition: 'transform 0.2s ease',
-  ':hover': {
-    transform: 'translateX(5px)',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
-  },
 });
 
 export const workspaceIcon = style([
