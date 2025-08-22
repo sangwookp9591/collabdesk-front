@@ -45,6 +45,7 @@ export const workspaceList = style({
 });
 
 export const workspaceContainer = style({
+  transition: 'transform 0.5s ease-in-out',
   selectors: {
     '&:hover': {
       backgroundColor: themeTokens.colors.backgroundActive,
