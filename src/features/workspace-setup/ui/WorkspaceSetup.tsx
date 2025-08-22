@@ -2,7 +2,7 @@
 
 import { userApi } from '@/entities/user/api/userApi';
 import { useEffect, useState } from 'react';
-import { Avatar } from '@/entities/workspace';
+import { Avatar, InfoCardSkeleton } from '@/entities/workspace';
 import * as styles from './workspace-setup.css';
 import Image from 'next/image';
 import { PlusIcon } from '@/shared/ui';
@@ -10,6 +10,7 @@ import { themeTokens } from '@/shared/styles';
 import { Session } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { Skeleton } from 'sw-skeleton';
+import { InfoCard } from '../../../entities/workspace/ui/InfoCard';
 
 export default function WorkspaceSetup({ session }: { session: Session }) {
   const [workspaces, setWorkspaces] = useState([]);
@@ -38,38 +39,20 @@ export default function WorkspaceSetup({ session }: { session: Session }) {
         </div>
       </div>
       <div className={styles.workspaceList}>
-        {!isLoading ? (
+        {isLoading ? (
           <>
             {Array(3).map((_, i) => (
-              <div key={i} className={styles.skeletonContainer}>
-                <Skeleton width={50} height={50} style={{ borderRadius: '5px' }}></Skeleton>
-                <div className={styles.workspaceInfo}>
-                  <div className={styles.workspaceName}>
-                    <Skeleton width={100} height={20} style={{ borderRadius: '5px' }}></Skeleton>
-                  </div>
-                  <div className={styles.workspaceMemberCount}>
-                    <Skeleton width={40} height={20} style={{ borderRadius: '5px' }}></Skeleton>
-                  </div>
-                </div>
-              </div>
+              <InfoCardSkeleton key={i} />
             ))}
           </>
         ) : (
           workspaces?.map((item: any) => (
-            <div
+            <InfoCard
               key={item?.id}
               className={styles.workspaceContainer}
+              workspace={item}
               onClick={() => onClick(item?.id)}
-            >
-              <Avatar url={item?.image} name={item?.name} size={50} />
-              <div className={styles.workspaceInfo}>
-                <div className={styles.workspaceName}>{item?.name}</div>
-                <div className={styles.workspaceMemberCount}>
-                  <Image src={'/images/members-2.svg'} width={20} height={20} alt="" />
-                  {item?.memberCount}
-                </div>
-              </div>
-            </div>
+            />
           ))
         )}
       </div>
