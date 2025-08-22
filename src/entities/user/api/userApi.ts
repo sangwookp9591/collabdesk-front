@@ -25,4 +25,9 @@ export const userApi = {
     const response = await apiClient.put(`/users/${userId}/profile`, data);
     return response.data;
   },
+
+  getUserWorkspaces: async (userId: string) => {
+    const response = await apiClient.get(`/user/workspaces/${userId}`);
+    return response.data;
+  },
 };
