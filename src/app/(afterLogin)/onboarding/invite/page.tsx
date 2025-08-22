@@ -25,10 +25,5 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ c
     }
   }
 
-  return (
-    <div>
-      <h1>초대코드 직접입력</h1>
-      <Invite initialCode={code} />
-    </div>
-  );
+  return <Invite initialCode={code} />;
 }
