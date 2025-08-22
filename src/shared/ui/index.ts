@@ -18,3 +18,5 @@ export {
   SearchIcon,
 } from './IconSvg';
 export { default as Button } from './Button';
+export { Modal } from './Modal';
+export { NextModal } from './NextModal';
