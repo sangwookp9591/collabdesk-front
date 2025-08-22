@@ -30,7 +30,6 @@ export function Avatar({ url, name, size }: AvatarProps) {
         />
       ) : (
         <div
-          className={styles.workspaceIcon}
           style={{
             color: colorUtils.getContrastColor(bgColor),
           }}
