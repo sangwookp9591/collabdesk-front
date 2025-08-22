@@ -2,7 +2,7 @@
 
 import { Avatar } from '@/entities/user';
 import * as styles from './page.css';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { format } from 'date-fns';
 
 type Message = {
@@ -13,9 +13,14 @@ type Message = {
 };
 
 export default function Page() {
+  const endRef = useRef<HTMLDivElement | null>(null);
   const [messages, setMessages] = useState<Message[]>([
     { id: 1, user: '홍길동', content: '안녕하세요!', createdAt: new Date() },
     { id: 2, user: '상욱', content: '반가워요!', createdAt: new Date() },
+    { id: 3, user: '민수', content: '반가워요!', createdAt: new Date() },
+    { id: 4, user: '철수', content: '반가워요!', createdAt: new Date() },
+    { id: 5, user: '김수', content: '반가워요!', createdAt: new Date() },
+    { id: 6, user: '양수', content: '반가워요!', createdAt: new Date() },
   ]);
   const [input, setInput] = useState('');
 
@@ -27,6 +32,10 @@ export default function Page() {
     ]);
     setInput('');
   };
+
+  useEffect(() => {
+    if (endRef?.current) endRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   return (
     <>
@@ -76,6 +85,7 @@ export default function Page() {
             </div>
           );
         })}
+        <div ref={endRef}></div>
       </div>
 
       {/* Send Message */}

@@ -2,7 +2,7 @@ import { PrevIcon, NextIcon, HelpIcon, SearchIcon } from '@/shared/ui';
 import * as styles from './header.css';
 import { themeTokens } from '@/shared/styles/theme.css';
 import { ThemeSelector } from '@/widgets/theme-selector';
-import LogoutButton from '@/features/auth/ui/LogoutButton';
+import { LogoutButton } from '@/features/auth';
 
 export default function Header() {
   return (
