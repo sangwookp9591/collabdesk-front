@@ -277,3 +277,18 @@ export const SearchIcon: React.FC<IconProps> = ({ size = 48, color = 'white' }) 
     ></path>
   </svg>
 );
+export const CloseIcon: React.FC<IconProps> = ({ size = 48, color = 'white' }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 20 20"
+    fill={color}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M-160.4 434.2l-37.2-37.2 37.1-37.1-7-7-37.1 37.1-37.1-37.1-7 7 37.1 37.1-37.2 37.2 7.1 7 37.1-37.2 37.2 37.2"
+    ></path>
+  </svg>
+);
