@@ -1,43 +1,15 @@
-'use client';
+import { WorkspaceSetup } from '@/features/workspace-setup';
+import { getSession } from '@/shared/lib';
 
-import { userApi } from '@/entities/user/api/userApi';
-import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
-import { Avatar } from '@/entities/workspace';
-
-export default function Page() {
-  const { data: session } = useSession();
-  const [workspaces, setWorkspaces] = useState([]);
-
-  useEffect(() => {
-    if (session?.user) {
-      const fn = async () => {
-        const workspaces = await userApi.getUserWorkspaces(session.user.id);
-        console.log('workspaces : ', workspaces);
-        setWorkspaces(workspaces?.workspaces);
-      };
-      fn();
-    }
-  }, [session?.user]);
-
+export default async function Page() {
+  const session = await getSession();
   if (!session?.user) {
     return (
       <div>
-        <div>보유한 workspace 없음</div>
+        <h1>워크스페이스 만들기</h1>
       </div>
     );
   }
 
-  return (
-    <div>
-      <div>워크 스페이스 선택</div>
-      <div>
-        {workspaces?.map((item: any) => (
-          <div key={item?.id}>
-            <Avatar url={item?.imageUrl} name={item?.name} size={50} />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  return <WorkspaceSetup session={session} />;
 }
