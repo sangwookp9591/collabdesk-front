@@ -3,7 +3,7 @@
 import { userApi } from '@/entities/user/api/userApi';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { workspace } from '@/widgets/sidebar/ui/sidemenu.css';
+import { Avatar } from '@/entities/workspace';
 
 export default function Page() {
   const { data: session } = useSession();
@@ -30,10 +30,12 @@ export default function Page() {
 
   return (
     <div>
-      <div>보유한 workspace있음.</div>
+      <div>워크 스페이스 선택</div>
       <div>
         {workspaces?.map((item: any) => (
-          <div key={item?.id}>{item?.name}</div>
+          <div key={item?.id}>
+            <Avatar url={item?.imageUrl} name={item?.name} size={50} />
+          </div>
         ))}
       </div>
     </div>
