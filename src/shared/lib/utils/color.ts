@@ -1,4 +1,5 @@
 export const colorUtils = {
+  // string을 color hash로 변경
   stringToColor(str: string) {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
@@ -7,6 +8,7 @@ export const colorUtils = {
     const color = `hsl(${hash % 360}, 60%, 70%)`;
     return color;
   },
+  // string에서 대비되는 font color로 변경
   getContrastColor(hexColor: string) {
     // hex → RGB
     const r = parseInt(hexColor.slice(1, 3), 16);
