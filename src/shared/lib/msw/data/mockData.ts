@@ -46,7 +46,21 @@ export const mockWorkspaces = [
     name: '심플 컴퍼니',
     slug: 'simple-company',
     memberCount: 25,
-    ownerId: '2',
+    ownerId: '1',
+  },
+  {
+    id: '4',
+    name: '기타 파티',
+    slug: 'etc-party',
+    memberCount: 25,
+    ownerId: '1',
+  },
+  {
+    id: '5',
+    name: '혼자 공부',
+    slug: 'alone-study',
+    memberCount: 25,
+    ownerId: '1',
   },
 ];
 
