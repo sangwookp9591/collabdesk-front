@@ -4,6 +4,7 @@ import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import * as styles from './modal.css';
 import { useRouter } from 'next/navigation';
+import { CloseIcon } from './IconSvg';
 
 interface ModalProps {
   children: ReactNode;
@@ -27,7 +28,7 @@ export function NextModal({ children }: ModalProps) {
     return () => document.removeEventListener('keydown', handleEsc);
   }, [closeModal]);
 
-  if (!open || !mounted) return null;
+  if (!mounted) return null;
 
   return createPortal(
     <div className={styles.overlay} onClick={closeModal}>
@@ -35,6 +36,17 @@ export function NextModal({ children }: ModalProps) {
         className={styles.modal}
         onClick={(e) => e.stopPropagation()} // 내부 클릭 시 닫히지 않도록
       >
+        <div
+          style={{
+            position: 'absolute',
+            right: '10px',
+            top: '25px',
+          }}
+        >
+          <div onClick={closeModal}>
+            <CloseIcon size={25} color="black" />
+          </div>
+        </div>
         {children}
       </div>
     </div>,

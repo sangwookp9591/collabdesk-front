@@ -12,10 +12,15 @@ export const overlay = style({
 });
 
 export const modal = style({
+  position: 'relative',
   backgroundColor: themeTokens.colors.background,
   borderRadius: '12px',
   padding: '24px',
   minWidth: '300px',
   maxWidth: '90%',
   boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
+});
+
+export const close = style({
+  backgroundColor: themeTokens.colors.background,
 });
