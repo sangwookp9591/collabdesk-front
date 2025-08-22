@@ -17,14 +17,6 @@ export const workspaceContainer = style({
   padding: '10px 12px',
   borderRadius: '8px',
   cursor: 'pointer',
-  transition: 'all 0.2s ease-in-out',
-  selectors: {
-    '&:hover': {
-      backgroundColor: themeTokens.colors.backgroundActive,
-      transform: 'translateX(5px)',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
-    },
-  },
 });
 
 export const workspaceInfo = style({
