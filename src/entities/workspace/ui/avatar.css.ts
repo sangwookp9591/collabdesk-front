@@ -11,12 +11,14 @@ export const avatarSize = style({
   cursor: 'pointer',
   fontWeight: 'bold',
   fontSize: '0.6rem',
+  border: '1px solid #e0e0e0',
+  boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
 });
 
 export const workspaceIcon = style([
   avatarSize,
   {
-    backgroundColor: '#603321',
+    backgroundColor: '#dfdsad',
     fontSize: '1rem',
   },
 ]);

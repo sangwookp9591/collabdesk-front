@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import * as styles from './avatar.css';
+import { colorUtils } from '@/shared/lib';
 
 type AvatarProps = {
   url?: string;
@@ -8,10 +9,16 @@ type AvatarProps = {
 };
 
 export function Avatar({ url, name, size }: AvatarProps) {
+  const bgColor = colorUtils.stringToColor(name);
   return (
     <div
       className={url ? styles.imageIcon : styles.workspaceIcon}
-      style={{ width: size, height: size, position: 'relative' }}
+      style={{
+        width: size,
+        height: size,
+        position: 'relative',
+        backgroundColor: url ? 'none' : bgColor,
+      }}
     >
       {url ? (
         <Image
@@ -22,7 +29,14 @@ export function Avatar({ url, name, size }: AvatarProps) {
           style={{ borderRadius: '20px' }}
         />
       ) : (
-        <div className={styles.workspaceIcon}>{name[0].toUpperCase()}</div>
+        <div
+          className={styles.workspaceIcon}
+          style={{
+            color: colorUtils.getContrastColor(bgColor),
+          }}
+        >
+          {name[0].toUpperCase()}
+        </div>
       )}
     </div>
   );
