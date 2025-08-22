@@ -3,7 +3,7 @@
 import { signIn } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import { useState } from 'react';
-import * as styles from './login-form.css';
+import { formBasicStyle as styles } from '@/shared/styles';
 import Link from 'next/link';
 
 export default function LoginForm() {

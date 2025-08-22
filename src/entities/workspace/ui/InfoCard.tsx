@@ -1,3 +1,5 @@
+'use client';
+
 import { Avatar } from '@/entities/workspace';
 import * as styles from './info-card.css';
 import Image from 'next/image';

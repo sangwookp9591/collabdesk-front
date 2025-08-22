@@ -2,9 +2,10 @@
 
 import { redirect } from 'next/navigation';
 import { useActionState, useEffect, useRef, useState } from 'react';
-import * as styles from '@/app/(beforeLogin)/form.css';
+
 import { signupAction } from '@/features/signup/action';
 import Image from 'next/image';
+import { formBasicStyle as styles } from '@/shared/styles';
 
 export default function SignupForm() {
   const formRef = useRef<HTMLFormElement>(null);
