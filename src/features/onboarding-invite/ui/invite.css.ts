@@ -1,4 +1,27 @@
+import { themeTokens } from '@/shared/styles';
 import { style } from '@vanilla-extract/css';
+
+export const titleContainer = style({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+});
+
+export const boxContainer = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '2px 2px',
+  borderRadius: '10px',
+  border: `3px solid ${themeTokens.colors.primary}`,
+  cursor: 'pointer',
+  transition: 'transform 0.1s ease',
+  selectors: {
+    '&:hover': {
+      transform: 'scale(1.1)',
+    },
+  },
+});
 
 export const boxStyle = style({
   width: '300px',

@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { ArrowRightIcon } from '@/shared/ui';
+import { ArrowRightIcon, PlusIcon } from '@/shared/ui';
 import * as styles from './invite.css';
 import { useRouter } from 'next/navigation';
+import { themeTokens } from '@/shared/styles';
 
 interface InviteProps {
   initialCode?: string;
@@ -86,23 +87,31 @@ export function Invite({ initialCode = '' }: InviteProps) {
   };
 
   return (
-    <div className={styles.boxStyle}>
-      <div style={{ display: 'flex', gap: '3px', alignItems: 'center' }}>
-        {values.map((v, idx) => (
-          <input
-            key={idx}
-            className={styles.inputStyle}
-            onPaste={handlePaste}
-            type="text"
-            maxLength={1}
-            value={v}
-            ref={(el: any) => (inputsRef.current[idx] = el!)}
-            onChange={(e) => handleChange(e, idx)}
-            onKeyDown={(e) => handleKeyDown(e, idx)}
-          />
-        ))}
-        <div className={styles.buttonStyle} onClick={onClick}>
-          <ArrowRightIcon size={50} color="black" />
+    <div>
+      <div className={styles.titleContainer}>
+        <h1>초대코드 직접입력</h1>
+        <div className={styles.boxContainer}>
+          <PlusIcon size={30} color={themeTokens.colors.text} />
+        </div>
+      </div>
+      <div className={styles.boxStyle}>
+        <div style={{ display: 'flex', gap: '3px', alignItems: 'center' }}>
+          {values.map((v, idx) => (
+            <input
+              key={idx}
+              className={styles.inputStyle}
+              onPaste={handlePaste}
+              type="text"
+              maxLength={1}
+              value={v}
+              ref={(el: any) => (inputsRef.current[idx] = el!)}
+              onChange={(e) => handleChange(e, idx)}
+              onKeyDown={(e) => handleKeyDown(e, idx)}
+            />
+          ))}
+          <div className={styles.buttonStyle} onClick={onClick}>
+            <ArrowRightIcon size={50} color="black" />
+          </div>
         </div>
       </div>
     </div>
