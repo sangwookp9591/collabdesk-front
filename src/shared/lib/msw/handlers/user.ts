@@ -2,7 +2,7 @@
 import { http, HttpResponse } from 'msw';
 import { mockWorkspaces } from '../data/mockData';
 export const userHandlers = [
-  http.get('/api/user/workspaces/:id', ({ request }) => {
+  http.get('/api/user/workspaces/:userId', ({ request }) => {
     const authHeader = request.headers.get('authorization');
 
     if (!authHeader) {
