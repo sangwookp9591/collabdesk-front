@@ -2,15 +2,12 @@
 
 import { userApi } from '@/entities/user/api/userApi';
 import { useEffect, useState } from 'react';
-import { Avatar, InfoCardSkeleton } from '@/entities/workspace';
+import { InfoCard, InfoCardSkeleton } from '@/entities/workspace';
 import * as styles from './workspace-setup.css';
-import Image from 'next/image';
 import { PlusIcon } from '@/shared/ui';
 import { themeTokens } from '@/shared/styles';
 import { Session } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { Skeleton } from 'sw-skeleton';
-import { InfoCard } from '../../../entities/workspace/ui/InfoCard';
 
 export default function WorkspaceSetup({ session }: { session: Session }) {
   const [workspaces, setWorkspaces] = useState([]);
