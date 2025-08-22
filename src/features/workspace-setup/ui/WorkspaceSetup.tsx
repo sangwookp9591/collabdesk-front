@@ -7,9 +7,11 @@ import * as styles from './workspace-setup.css';
 import { PlusIcon } from '@/shared/ui';
 import { themeTokens } from '@/shared/styles';
 import { Session } from 'next-auth';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 
 export default function WorkspaceSetup({ session }: { session: Session }) {
+  const router = useRouter();
+
   const [workspaces, setWorkspaces] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -31,7 +33,7 @@ export default function WorkspaceSetup({ session }: { session: Session }) {
     <div>
       <div className={styles.titleContainer}>
         <h1>워크스페이스 선택</h1>
-        <div className={styles.boxContainer}>
+        <div className={styles.boxContainer} onClick={() => router.push('/workspace/create')}>
           <PlusIcon size={30} color={themeTokens.colors.text} />
         </div>
       </div>
