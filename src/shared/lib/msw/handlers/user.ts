@@ -14,7 +14,7 @@ export const userHandlers = [
         id: ws.id,
         name: ws.name,
         slug: ws.slug,
-        imageUrl: ws.image,
+        image: ws.image,
         memberCount: ws.memberCount,
       })),
       hasWorkspaces: mockWorkspaces.length > 0,
