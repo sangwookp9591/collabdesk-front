@@ -20,7 +20,7 @@ export default function LoginForm() {
     });
 
     if (res?.ok) {
-      redirect('/workspace/1/channel/1');
+      redirect('/');
     } else {
       setError(res?.error || '로그인 실패');
     }
