@@ -16,4 +16,8 @@ export {
   NextIcon,
   HelpIcon,
   SearchIcon,
+  CloseIcon,
 } from './IconSvg';
+export { default as Button } from './Button';
+export { Modal } from './Modal';
+export { NextModal } from './NextModal';

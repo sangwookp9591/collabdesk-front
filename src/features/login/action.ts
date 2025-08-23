@@ -1,30 +1,35 @@
 'use server';
 
-import { fetchLogin } from './api/fetch-login';
+import { signIn } from 'next-auth/react';
 
 export async function loginAction(_: any, formData: FormData) {
-  const loginId = formData.get('loginId')?.toString();
-  const loginPw = formData.get('loginPw')?.toString();
+  const email = formData.get('email')?.toString();
+  const password = formData.get('password')?.toString();
 
-  if (!loginId) {
+  if (!email) {
     return {
       state: false,
-      el: 'loginId',
-      error: 'Id를 입력해주세요.',
+      el: 'email',
+      error: 'email을 입력해주세요.',
     };
   }
 
-  if (!loginPw) {
+  if (!password) {
     return {
       state: false,
-      el: 'loginPw',
+      el: 'password',
       error: 'PW를 입력해주세요.',
     };
   }
   // const res = await fetch(`${process.env}`,{})
 
   try {
-    const res = await fetchLogin({ loginId, loginPw });
+    const res = await signIn('credentials', {
+      redirect: false,
+      email,
+      password,
+    });
+
     if (res?.ok) {
       return {
         state: true,
@@ -32,6 +37,7 @@ export async function loginAction(_: any, formData: FormData) {
       };
     }
   } catch (err: any) {
+    console.log('err : ', err);
     return {
       status: false,
       error: '로그인에 실패했습니다.',

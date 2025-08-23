@@ -77,106 +77,104 @@ export default function Sidebar() {
   };
 
   return (
-    <div>
-      <div ref={sidebarRef} className={styles.sidebarStyle} style={{ width }}>
-        {/* Workspace 아이콘 등 */}
-        <section
+    <div ref={sidebarRef} className={styles.sidebarStyle} style={{ width }}>
+      {/* Workspace 아이콘 등 */}
+      <section
+        style={{
+          display: 'flex',
+          color: themeTokens.colors.textSecondary,
+          justifyContent: 'space-between',
+
+          width: '100%',
+        }}
+      >
+        <div
           style={{
             display: 'flex',
-            color: themeTokens.colors.textSecondary,
-            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          Ws Name
+          <ArrowBottomIcon size={20} />
+        </div>
 
-            width: '100%',
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '5px',
           }}
         >
           <div
             style={{
               display: 'flex',
+              justifyContent: 'center',
               alignItems: 'center',
+              borderRadius: '4px',
+              padding: '2px 2px',
+              border: '1px solid #ffffff',
             }}
           >
-            Ws Name
-            <ArrowBottomIcon size={20} />
+            <SettingsIcon size={20} />
           </div>
-
           <div
             style={{
               display: 'flex',
+              justifyContent: 'center',
               alignItems: 'center',
-              gap: '5px',
+              borderRadius: '4px',
+              padding: '2px 2px',
+              border: '1px solid #ffffff',
             }}
           >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: '4px',
-                padding: '2px 2px',
-                border: '1px solid #ffffff',
-              }}
-            >
-              <SettingsIcon size={20} />
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: '4px',
-                padding: '2px 2px',
-                border: '1px solid #ffffff',
-              }}
-            >
-              <ComposeIcon size={20} />
-            </div>
+            <ComposeIcon size={20} />
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section
+      <section
+        style={{
+          display: 'flex',
+          width: '90%',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          color: themeTokens.colors.textSecondary,
+          padding: '12px',
+          borderRadius: '12px',
+          border: '1px solid rgba(220, 214, 223, 0.42)',
+          backgroundColor: 'rgba(231, 224, 234, 0.25)',
+        }}
+      >
+        <div
           style={{
             display: 'flex',
-            width: '90%',
             justifyContent: 'space-between',
             alignItems: 'center',
-            color: themeTokens.colors.textSecondary,
-            padding: '12px',
-            borderRadius: '12px',
-            border: '1px solid rgba(220, 214, 223, 0.42)',
-            backgroundColor: 'rgba(231, 224, 234, 0.25)',
           }}
         >
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <HourglassIcon size={20} />
-            <div>평가판이 28일 남았습니다.</div>
-          </div>
-          <ArrowRightIcon size={20} />
-        </section>
+          <HourglassIcon size={20} />
+          <div>평가판이 28일 남았습니다.</div>
+        </div>
+        <ArrowRightIcon size={20} />
+      </section>
 
-        <section
-          style={{
-            display: 'flex',
-            width: '100%',
-            flexDirection: 'column',
-            justifyContent: 'center',
-          }}
-        >
-          <ChannelSection
-            channels={TestChannels}
-            isOpen={activeDropDowns?.channel}
-            onToggle={() => toggleDropdown('channel')}
-            onAddChannel={() => {}}
-          />
-        </section>
-        {/* 드래그용 Resizer */}
-        <div className={styles.resizerStyle} onMouseDown={onMouseDown} />
-      </div>
+      <section
+        style={{
+          display: 'flex',
+          width: '100%',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}
+      >
+        <ChannelSection
+          channels={TestChannels}
+          isOpen={activeDropDowns?.channel}
+          onToggle={() => toggleDropdown('channel')}
+          onAddChannel={() => {}}
+        />
+      </section>
+      {/* 드래그용 Resizer */}
+      <div className={styles.resizerStyle} onMouseDown={onMouseDown} />
     </div>
   );
 }

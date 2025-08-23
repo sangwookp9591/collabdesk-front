@@ -1,3 +1,3 @@
 export default function Page() {
-    return <div>B페이지</div>;
+  return <div>생성하기</div>;
 }

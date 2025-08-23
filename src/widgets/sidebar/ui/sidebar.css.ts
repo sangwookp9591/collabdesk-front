@@ -6,7 +6,6 @@ export const sidebarStyle = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  height: '100%',
   position: 'relative',
   padding: '15px 10px',
   gap: '10px',

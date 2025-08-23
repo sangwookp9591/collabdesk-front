@@ -1,0 +1,182 @@
+export const mockUsers = [
+  {
+    id: '1',
+    name: '김상욱',
+    email: 'sangwook@example.com',
+    image: '/images/default_profile.png',
+    status: 'online',
+    lastActiveAt: new Date().toISOString(),
+  },
+  {
+    id: '2',
+    name: '이영희',
+    email: 'younghee@example.com',
+    image: '/images/default_profile.png',
+    status: 'away',
+    lastActiveAt: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+  },
+  {
+    id: '3',
+    name: '박철수',
+    email: 'chulsoo@example.com',
+    image: '/images/default_profile.png',
+    status: 'offline',
+    lastActiveAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+  },
+];
+
+export const mockWorkspaces = [
+  {
+    id: '1',
+    name: '상욱 컴퍼니',
+    slug: 'sangwook-company',
+    image: '/images/workspace1.jpg',
+    memberCount: 15,
+    ownerId: '1',
+  },
+  {
+    id: '2',
+    name: '킴 컴퍼니',
+    slug: 'kim-company',
+    memberCount: 8,
+    ownerId: '1',
+  },
+  {
+    id: '3',
+    name: '심플 컴퍼니',
+    slug: 'simple-company',
+    memberCount: 25,
+    ownerId: '1',
+  },
+  {
+    id: '4',
+    name: '기타 파티',
+    slug: 'etc-party',
+    memberCount: 25,
+    ownerId: '1',
+  },
+  {
+    id: '5',
+    name: '혼자 공부',
+    slug: 'alone-study',
+    memberCount: 25,
+    ownerId: '1',
+  },
+];
+
+export const mockChannels = [
+  {
+    id: '1',
+    name: 'general',
+    description: '일반적인 대화를 나누는 채널입니다',
+    workspaceId: '1',
+    isPublic: true,
+    isDefault: true,
+    memberCount: 12,
+    unreadCount: 3,
+    lastMessage: {
+      content: '안녕하세요! 새로운 기능이 추가되었습니다.',
+      userId: '2',
+      userName: '이영희',
+      createdAt: new Date().toISOString(),
+    },
+  },
+  {
+    id: '2',
+    name: 'development',
+    description: '개발 관련 논의',
+    workspaceId: '1',
+    isPublic: true,
+    isDefault: false,
+    memberCount: 8,
+    unreadCount: 0,
+    lastMessage: {
+      content: 'PR 리뷰 완료했습니다.',
+      userId: '3',
+      userName: '박철수',
+      createdAt: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+    },
+  },
+  {
+    id: '3',
+    name: 'design',
+    description: '디자인 관련 논의',
+    workspaceId: '1',
+    isPublic: false,
+    isDefault: false,
+    memberCount: 5,
+    unreadCount: 1,
+    lastMessage: {
+      content: '새로운 브랜딩 가이드라인 공유드립니다.',
+      userId: '1',
+      userName: '김상욱',
+      createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+    },
+  },
+];
+
+export const mockChannelTabs = [
+  {
+    id: '1',
+    name: 'Sprint Board',
+    type: 'board',
+    channelId: '2',
+    order: 1,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: '2',
+    name: 'API 문서',
+    type: 'document',
+    channelId: '2',
+    order: 2,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: '3',
+    name: '회의록',
+    type: 'document',
+    channelId: '1',
+    order: 1,
+    createdAt: new Date().toISOString(),
+  },
+];
+
+export const mockMessages = [
+  {
+    id: '1',
+    content: '안녕하세요! 새로운 프로젝트 시작합니다.',
+    channelId: '1',
+    userId: '1',
+    userName: '김상욱',
+    userImage: '/images/default_profile.png',
+    createdAt: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
+    updatedAt: null,
+    reactions: [
+      { emoji: '👍', count: 3, users: ['2', '3'] },
+      { emoji: '🎉', count: 1, users: ['2'] },
+    ],
+  },
+  {
+    id: '2',
+    content: '좋은 아이디어네요! 언제 시작할까요?',
+    channelId: '1',
+    userId: '2',
+    userName: '이영희',
+    userImage: '/images/default_profile.png',
+    createdAt: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+    updatedAt: null,
+    reactions: [],
+  },
+  {
+    id: '3',
+    content: '다음 주부터 시작하면 어떨까요?',
+    channelId: '1',
+    userId: '3',
+    userName: '박철수',
+    userImage: '/images/default_profile.png',
+    createdAt: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
+    updatedAt: null,
+    reactions: [{ emoji: '✅', count: 2, users: ['1', '2'] }],
+  },
+];

@@ -2,6 +2,7 @@ import { PrevIcon, NextIcon, HelpIcon, SearchIcon } from '@/shared/ui';
 import * as styles from './header.css';
 import { themeTokens } from '@/shared/styles/theme.css';
 import { ThemeSelector } from '@/widgets/theme-selector';
+import { LogoutButton } from '@/features/auth';
 
 export default function Header() {
   return (
@@ -25,6 +26,7 @@ export default function Header() {
 
       {/* right */}
       <div className={styles.rightContainer}>
+        <LogoutButton />
         <HelpIcon size={20} />
       </div>
     </header>

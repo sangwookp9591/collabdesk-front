@@ -1,13 +1,14 @@
+import { apiClient } from '@/shared/api/base';
 import { Channel } from '../model/types';
 
 export const channelApi = {
   getChannels: async (workspaceId: number): Promise<Channel[]> => {
-    // API 호출 로직
+    const response = await apiClient.get(`/workspace/${workspaceId}/channel`);
+    return response.data;
   },
-  createChannel: async (data: Omit<Channel, 'id' | 'createdAt'>): Promise<Channel> => {
-    // 생성 로직
-  },
-  deleteChannel: async (id: number): Promise<void> => {
-    // 삭제 로직
+
+  getChannel: async (channelId: number): Promise<Channel> => {
+    const response = await apiClient.get(`/channel/${channelId}`);
+    return response.data;
   },
 };
