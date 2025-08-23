@@ -4,7 +4,7 @@ import { style } from '@vanilla-extract/css';
 export const container = style({
   display: 'flex',
   height: '40px',
-  padding: '0px 10px',
+  padding: '0px 21px',
   gap: '4px',
   flexShrink: 0,
   backgroundColor: themeTokens.colors.backgroundSecondary,
