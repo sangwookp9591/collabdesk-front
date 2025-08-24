@@ -42,7 +42,7 @@ export default function SignupForm() {
 
     const formData = new FormData(formRef.current);
     if (imageFile) {
-      formData.append('profile', imageFile); // 파일 추가
+      formData.append('profileImage', imageFile); // 파일 추가
     }
 
     // action 실행
@@ -85,16 +85,16 @@ export default function SignupForm() {
       <input required className={styles.inputStyle} type="text" name="name" />
 
       {/* Password */}
-      <label className={styles.labelStyle} htmlFor="loginPw">
+      <label className={styles.labelStyle} htmlFor="password">
         Password
       </label>
-      <input required className={styles.inputStyle} type="password" name="loginPw" />
+      <input required className={styles.inputStyle} type="password" name="password" />
 
       {/* Check Password */}
-      <label className={styles.labelStyle} htmlFor="checkPw">
+      <label className={styles.labelStyle} htmlFor="confirmPassword">
         Check Password
       </label>
-      <input required className={styles.inputStyle} type="password" name="checkPw" />
+      <input required className={styles.inputStyle} type="password" name="confirmPassword" />
 
       {/* 버튼 */}
       {isPending ? (

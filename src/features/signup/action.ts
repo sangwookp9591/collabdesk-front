@@ -1,34 +1,47 @@
 'use server';
 
-import { userApi } from '@/entities/user/api/userApi';
-
 export async function signupAction(_: any, formData: FormData) {
   const email = formData.get('email')?.toString();
-  const loginPw = formData.get('loginPw')?.toString();
   const name = formData.get('name')?.toString();
+  const password = formData.get('password')?.toString();
+  const confirmPassword = formData.get('confirmPassword')?.toString();
+  const profileImage = formData.get('profileImage') as File | null;
 
-  // FormData에서 프로필 이미지 파일 가져오기
-  const profileFile = formData.get('profile') as File | null;
-
-  if (!email) {
-    return { state: false, el: 'loginId', error: 'ID를 입력해주세요.' };
+  // 이메일 체크
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRegex.test(email)) {
+    return { state: false, el: 'email', error: '올바른 이메일을 입력해주세요.' };
   }
 
-  if (!loginPw) {
-    return { state: false, el: 'loginPw', error: 'PW를 입력해주세요.' };
+  // 비밀번호 체크
+  if (!password) {
+    return { state: false, el: 'password', error: '비밀번호를 입력해주세요.' };
   }
 
-  if (!name) {
-    return { state: false, el: 'nickname', error: 'Nickname을 입력해주세요.' };
+  // 비밀번호 규칙
+  // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  // if (!passwordRegex.test(password)) {
+  //   return {
+  //     state: false,
+  //     el: 'password',
+  //     error: '비밀번호는 8자 이상, 대/소문자, 숫자, 특수문자를 포함해야 합니다.',
+  //   };
+  // }
+
+  // 비밀번호 확인
+  if (password !== confirmPassword) {
+    return { state: false, el: 'confirmPassword', error: '비밀번호가 일치하지 않습니다.' };
+  }
+
+  // 닉네임 체크
+  if (!name || name.length < 2) {
+    return { state: false, el: 'nickname', error: '닉네임을 2자 이상 입력해주세요.' };
   }
 
   try {
-    // fetchSignup은 서버 API 호출 함수
-    // 파일이 있다면 FormData 그대로 전달하거나 파일 업로드 로직을 구현
-    const res = await userApi.upsertUser({
-      email,
-      name,
-      profileImgUrl: profileFile ? URL.createObjectURL(profileFile) : undefined, // 간단하게 이미지 URL 처리
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signup`, {
+      method: 'POST',
+      body: formData,
     });
 
     if (res?.ok) {
