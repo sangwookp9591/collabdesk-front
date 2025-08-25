@@ -40,15 +40,17 @@ export default function SignupForm() {
   const onSubmit = () => {
     if (!formRef.current) return;
 
-    const formData = new FormData(formRef.current);
-    if (imageFile) {
-      formData.append('profileImage', imageFile); // 파일 추가
-    }
-
     // action 실행
-    formAction(formData);
+    formRef.current.requestSubmit();
   };
-
+  // 이미지 제거
+  const removeImage = () => {
+    setImageFile(null);
+    setImagePreview('');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
   return (
     <form ref={formRef} action={formAction} className={styles.formStyle}>
       {/* 프로필 이미지 */}
@@ -59,7 +61,7 @@ export default function SignupForm() {
       >
         <Image
           src={imagePreview}
-          alt="profile"
+          alt="profileImage"
           className={styles.profileImage}
           width={80}
           height={80}
@@ -70,7 +72,7 @@ export default function SignupForm() {
           accept="image/*"
           style={{ display: 'none' }}
           onChange={handleImageChange}
-          name="profile"
+          name="profileImage"
         />
       </div>
 
