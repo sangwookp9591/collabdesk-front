@@ -11,7 +11,6 @@ interface AuthResponse {
     status: string;
   };
   accessToken: string;
-  refreshToken: string;
   expiresIn: number;
 }
 
@@ -59,7 +58,7 @@ export const authOptions: NextAuthOptions = {
               profileImageUrl: data?.user?.profileImageUrl,
               status: data?.user?.status,
               accessToken: data?.accessToken,
-              refreshToken: data?.refreshToken,
+              expiresIn: data?.expiresIn,
             };
           }
           return null;
@@ -92,7 +91,7 @@ export const authOptions: NextAuthOptions = {
         session.user.profileImageUrl = user?.profileImageUrl ?? token.profileImageUrl;
         session.user.status = user?.status ?? token.status;
         session.user.accessToken = token.accessToken as string;
-        session.user.refreshToken = token.refreshToken as string;
+        session.user.expiresIn = token.expiresIn as number;
       }
       return session;
     },
@@ -105,7 +104,7 @@ export const authOptions: NextAuthOptions = {
         token.profileImageUrl = user.profileImageUrl ?? undefined;
         token.status = user.status;
         token.accessToken = user.accessToken;
-        token.refreshToken = user.refreshToken;
+        token.expiresIn = user.expiresIn;
       }
 
       // 토큰 만료 확인 및 리프레시
@@ -114,17 +113,22 @@ export const authOptions: NextAuthOptions = {
           const payload = JSON.parse(atob((token.accessToken as string).split('.')[1]));
           const now = Math.floor(Date.now() / 1000);
 
+          console.log('payload : ', payload, ' now : ', now);
+          const accessTokenExpires = Date.now() + token.expiresIn * 1000;
           // 토큰이 5분 내에 만료되면 리프레시
-          if (payload.exp - now < 300 && token.refreshToken) {
-            const refreshedTokens = await refreshAccessToken(token.refreshToken as string);
 
-            if (refreshedTokens) {
-              token.accessToken = refreshedTokens.accessToken;
-              token.refreshToken = refreshedTokens.refreshToken;
-            } else {
-              // 리프레시 실패시 로그아웃
-              return null;
-            }
+          if (Date.now() < (accessTokenExpires as number)) {
+            return token;
+          }
+          const refreshedTokens = await refreshAccessToken();
+
+          if (refreshedTokens) {
+            token.accessToken = refreshedTokens.accessToken;
+            token.expiresIn = refreshedTokens.expiresIn;
+          } else {
+            // 리프레시 실패시 로그아웃
+            await logout();
+            return null;
           }
         } catch (error) {
           console.error('Token refresh error:', error);
@@ -135,32 +139,48 @@ export const authOptions: NextAuthOptions = {
     },
   },
 
-  // events: {
-  //   async signIn(message) {
-  //     console.log('User signed in:', message);
-  //   },
-  //   async signOut(message) {
-  //     console.log('User signed out:', message);
-  //   },
-  // },
+  events: {
+    // async signIn(message) {
+    //   console.log('User signed in:', message);
+    // },
+    async signOut(message) {
+      console.log('User signed out:', message);
+      await logout();
+    },
+  },
 };
 // 토큰 리프레시 함수
-async function refreshAccessToken(refreshToken: string) {
+async function refreshAccessToken() {
   try {
     const res = await apiFetch('/auth/refresh', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refreshToken }),
+      credentials: 'include',
     });
 
+    console.log('refreshAccessToken res : ', res);
     if (!res.ok) return null;
 
     const data: AuthResponse = await res.json();
 
     return {
       accessToken: data.accessToken,
-      refreshToken: data.refreshToken,
+      expiresIn: data.expiresIn,
     };
+  } catch (error) {
+    console.error('Refresh token error:', error);
+    return null;
+  }
+}
+
+// 토큰 리프레시 함수
+async function logout() {
+  try {
+    const res = await apiFetch('/auth/logout', {
+      method: 'POST',
+      credentials: 'include',
+    });
+    console.log('logout res : ', res);
+    if (!res.ok) return null;
   } catch (error) {
     console.error('Refresh token error:', error);
     return null;
