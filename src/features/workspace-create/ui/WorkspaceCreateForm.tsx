@@ -104,12 +104,6 @@ export default function WorkspaceCreateForm() {
           Name
         </label>
         <input className={inputStyle} name="name" />
-
-        <label className={labelStyle} htmlFor="slug">
-          Slug
-        </label>
-        <input className={inputStyle} name="slug" />
-
         {/* 버튼 */}
         {isPending ? (
           <div style={{ textAlign: 'center', marginBottom: '10px' }}>로딩중...</div>
