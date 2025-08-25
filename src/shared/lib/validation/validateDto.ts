@@ -4,7 +4,7 @@ import { plainToInstance } from 'class-transformer';
 import { validate, ValidationError } from 'class-validator';
 
 type ValidationResult = {
-  state: boolean;
+  status: boolean;
   el?: string | null;
   error?: string | null;
 };
@@ -25,8 +25,8 @@ export async function validateDto<T extends object>(
     const el = firstError.property;
     const errorMessage = Object.values(constraints)[0];
 
-    return { state: false, el, error: errorMessage };
+    return { status: false, el, error: errorMessage };
   }
 
-  return { state: true, el: null, error: null };
+  return { status: true, el: null, error: null };
 }

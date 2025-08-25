@@ -15,12 +15,12 @@ export async function signupAction(_: any, formData: FormData) {
 
   const validation = await validateDto(SignupDto, dto);
 
-  if (!validation.state) {
+  if (!validation.status) {
     return validation;
   }
 
   if (dto.password !== dto.confirmPassword) {
-    return { state: false, el: 'confirmPassword', error: '비밀번호가 일치하지 않습니다.' };
+    return { status: false, el: 'confirmPassword', error: '비밀번호가 일치하지 않습니다.' };
   }
 
   // 비밀번호 규칙
@@ -37,7 +37,7 @@ export async function signupAction(_: any, formData: FormData) {
     const res = await fetchSignup(formData);
 
     if (res?.ok) {
-      return { state: true, error: '' };
+      return { status: true, error: '' };
     }
   } catch (err: any) {
     return { status: false, error: '회원가입에 실패했습니다.' };
