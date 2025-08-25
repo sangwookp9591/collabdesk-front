@@ -21,13 +21,12 @@ export default async function HomePage() {
       Authorization: `Bearer ${session.user?.accessToken}`,
     },
   });
-
+  if (!res.ok) {
+    redirect('/signin');
+  }
   const result = await res.json();
   console.log('lastWorkspace : ', result);
 
-  if (!result.ok) {
-    redirect('/signin');
-  }
   if (result.data?.lastActiveWorkspaceId) {
     redirect(`/workspace/${result?.data?.lastActiveWorkspaceId}`);
   }
