@@ -1,6 +1,7 @@
 'use server';
 
 import { signIn } from 'next-auth/react';
+import { fetchLogin } from './api/fetch-login';
 
 export async function loginAction(_: any, formData: FormData) {
   const email = formData.get('email')?.toString();
@@ -24,11 +25,9 @@ export async function loginAction(_: any, formData: FormData) {
   // const res = await fetch(`${process.env}`,{})
 
   try {
-    const res = await signIn('credentials', {
-      redirect: false,
-      email,
-      password,
-    });
+    const res = await fetchLogin({ email, password });
+
+    console.log('res : ', res);
 
     if (res?.ok) {
       return {

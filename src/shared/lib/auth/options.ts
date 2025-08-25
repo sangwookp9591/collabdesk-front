@@ -2,6 +2,7 @@ import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import { userApi } from '@/entities/user/api/userApi';
+import { apiFetch } from '@/shared/api';
 
 export const authOptions: NextAuthOptions = {
   pages: {
@@ -26,23 +27,26 @@ export const authOptions: NextAuthOptions = {
         console.log('credentials : ', credentials);
         try {
           // MSW가 활성화되면 mock API 호출, 아니면 실제 API 호출
-          const user = await userApi.signIn({
-            email: credentials.email,
-            password: credentials.password,
+
+          const res = await apiFetch(`/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: credentials.email,
+              password: credentials.password,
+            }),
           });
 
-          if (user) {
-            // return {
-            //   id: user.id,
-            //   email: user.email,
-            //   name: user.name,
-            //   image: user.profileImgUrl,
-            // };
+          const data = await res.json();
+          console.log('user : ', data);
+
+          if (data) {
             return {
-              id: 'ksdiasd1dsfadads',
-              email: 'test@test.com',
-              name: 'name',
-              image: '/images/default_profile.png',
+              id: data?.id,
+              email: data?.email,
+              name: data?.name,
+              profileImageUrl: data?.profileImageUrl,
+              status: data?.status,
             };
           }
           return null;

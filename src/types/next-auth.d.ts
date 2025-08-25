@@ -7,11 +7,13 @@ declare module 'next-auth' {
       id: string;
       name: string;
       email: string;
-      profileImgUrl?: string; // 여기에 원하는 필드 추가
+      profileImageUrl?: string; // 여기에 원하는 필드 추가
+      status?: 'ONLINE' | 'AWAY' | 'OFFLINE' | 'DO_NOT_DISTURB';
     } & DefaultSession['user'];
   }
 
   interface User extends DefaultUser {
     profileImgUrl?: string; // 여기에도 추가
+    status?: 'ONLINE' | 'AWAY' | 'OFFLINE' | 'DO_NOT_DISTURB';
   }
 }
