@@ -1,31 +1,22 @@
 'use server';
 
 import { SignupDto } from './model/signup.dto';
-import { plainToInstance } from 'class-transformer';
-import { validate } from 'class-validator';
 import { fetchSignup } from './api/fetch-signup';
+import { validateDto } from '@/shared/lib';
 
 export async function signupAction(_: any, formData: FormData) {
-  const dto = plainToInstance(SignupDto, {
+  const dto = {
     email: formData.get('email')?.toString(),
     name: formData.get('name')?.toString(),
     password: formData.get('password')?.toString(),
     confirmPassword: formData.get('confirmPassword')?.toString(),
     profileImage: formData.get('profileImage') as File | null,
-  });
+  };
 
-  const errors = await validate(dto);
-  if (errors.length > 0) {
-    // 첫 번째 에러 메시지만 반환
-    const firstError = errors[0];
-    const constraints = firstError.constraints || {};
+  const validation = await validateDto(SignupDto, dto);
 
-    // 필드 이름(el) 포함
-    const el = firstError.property;
-
-    // 첫 번째 constraint 메시지
-    const errorMessage = Object.values(constraints)[0];
-    return { state: false, el: el, error: errorMessage };
+  if (!validation.state) {
+    return validation;
   }
 
   if (dto.password !== dto.confirmPassword) {
