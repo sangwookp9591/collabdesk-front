@@ -1,23 +1,35 @@
 'use server';
 
 import { apiFetch } from '@/shared/api/fetcher';
+import { SignupDto } from './model/signup.dto';
+import { plainToInstance } from 'class-transformer';
+import { validate } from 'class-validator';
 
 export async function signupAction(_: any, formData: FormData) {
-  const email = formData.get('email')?.toString();
-  const name = formData.get('name')?.toString();
-  const password = formData.get('password')?.toString();
-  const confirmPassword = formData.get('confirmPassword')?.toString();
-  const profileImage = formData.get('profileImage') as File | null;
+  const dto = plainToInstance(SignupDto, {
+    email: formData.get('email')?.toString(),
+    name: formData.get('name')?.toString(),
+    password: formData.get('password')?.toString(),
+    confirmPassword: formData.get('confirmPassword')?.toString(),
+    profileImage: formData.get('profileImage') as File | null,
+  });
 
-  // 이메일 체크
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!email || !emailRegex.test(email)) {
-    return { state: false, el: 'email', error: '올바른 이메일을 입력해주세요.' };
+  const errors = await validate(dto);
+  if (errors.length > 0) {
+    // 첫 번째 에러 메시지만 반환
+    const firstError = errors[0];
+    const constraints = firstError.constraints || {};
+
+    // 필드 이름(el) 포함
+    const el = firstError.property;
+
+    // 첫 번째 constraint 메시지
+    const errorMessage = Object.values(constraints)[0];
+    return { state: false, el: el, error: errorMessage };
   }
 
-  // 비밀번호 체크
-  if (!password) {
-    return { state: false, el: 'password', error: '비밀번호를 입력해주세요.' };
+  if (dto.password !== dto.confirmPassword) {
+    return { state: false, el: 'confirmPassword', error: '비밀번호가 일치하지 않습니다.' };
   }
 
   // 비밀번호 규칙
@@ -29,16 +41,6 @@ export async function signupAction(_: any, formData: FormData) {
   //     error: '비밀번호는 8자 이상, 대/소문자, 숫자, 특수문자를 포함해야 합니다.',
   //   };
   // }
-
-  // 비밀번호 확인
-  if (password !== confirmPassword) {
-    return { state: false, el: 'confirmPassword', error: '비밀번호가 일치하지 않습니다.' };
-  }
-
-  // 닉네임 체크
-  if (!name || name.length < 2) {
-    return { state: false, el: 'nickname', error: '닉네임을 2자 이상 입력해주세요.' };
-  }
 
   try {
     const res = await apiFetch('/auth/signup', {
