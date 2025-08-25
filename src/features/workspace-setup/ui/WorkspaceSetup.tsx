@@ -1,6 +1,5 @@
 'use client';
 
-import { userApi } from '@/entities/user/api/userApi';
 import { useEffect, useState } from 'react';
 import { InfoCard, InfoCardSkeleton } from '@/entities/workspace';
 import * as styles from './workspace-setup.css';
@@ -8,6 +7,7 @@ import { PlusIcon } from '@/shared/ui';
 import { themeTokens } from '@/shared/styles';
 import { Session } from 'next-auth';
 import { redirect, useRouter } from 'next/navigation';
+import fetchUserWorkspaces from '../api/user-workspaces';
 
 export default function WorkspaceSetup({ session }: { session: Session }) {
   const router = useRouter();
@@ -18,10 +18,15 @@ export default function WorkspaceSetup({ session }: { session: Session }) {
   useEffect(() => {
     const fn = async () => {
       if (session?.user) {
-        const workspaces = await userApi.getUserWorkspaces(session?.user.id);
-        console.log('workspaces : ', workspaces);
-        setWorkspaces(workspaces?.workspaces);
-        setIsLoading(false);
+        const res = await fetchUserWorkspaces(session?.user?.accessToken);
+
+        console.log('res : ', res);
+        if (res?.ok) {
+          const result = await res.json();
+          console.log('workspaces : ', result);
+          setWorkspaces(result?.data?.workspaces);
+          setIsLoading(false);
+        }
       }
     };
 
@@ -48,11 +53,12 @@ export default function WorkspaceSetup({ session }: { session: Session }) {
             ))}
           </>
         ) : (
+          workspaces?.length > 0 &&
           workspaces?.map((item: any) => (
             <InfoCard
-              key={item?.id}
+              key={item?.workspace?.id}
               className={styles.workspaceContainer}
-              workspace={item}
+              workspace={item?.workspace}
               onClick={() => onClick(item?.id)}
             />
           ))

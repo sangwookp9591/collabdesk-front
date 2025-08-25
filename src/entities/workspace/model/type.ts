@@ -8,7 +8,8 @@ export interface WorkspaceCard {
   id: string;
   name: string;
   image: string;
-  memberCount: number;
+  slug: string;
+  members: { id: string }[];
   ownerId: string;
 }
 

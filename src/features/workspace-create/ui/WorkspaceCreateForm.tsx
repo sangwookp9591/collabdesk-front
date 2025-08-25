@@ -32,7 +32,7 @@ export default function WorkspaceCreateForm() {
 
   useEffect(() => {
     if (state?.status) {
-      router.replace(`/workspace/${state.workspace?.id}`);
+      router.replace(`/workspace/${state.workspace?.slug}`);
     }
   }, [state?.status]);
 
