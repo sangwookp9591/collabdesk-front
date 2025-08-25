@@ -1,7 +1,6 @@
-import type { NextAuthOptions } from 'next-auth';
+import type { NextAuthOptions, Session, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
-import { userApi } from '@/entities/user/api/userApi';
 import { apiFetch } from '@/shared/api';
 
 export const authOptions: NextAuthOptions = {
@@ -37,16 +36,15 @@ export const authOptions: NextAuthOptions = {
             }),
           });
 
-          const data = await res.json();
-          console.log('user : ', data);
+          const result = await res.json();
 
-          if (data) {
+          if (result?.data) {
             return {
-              id: data?.id,
-              email: data?.email,
-              name: data?.name,
-              profileImageUrl: data?.profileImageUrl,
-              status: data?.status,
+              id: result?.data?.id,
+              email: result?.data?.email,
+              name: result?.data?.name,
+              profileImageUrl: result?.data?.profileImageUrl,
+              status: result?.data?.status,
             };
           }
           return null;
@@ -70,41 +68,36 @@ export const authOptions: NextAuthOptions = {
   },
 
   callbacks: {
-    async jwt({ token, user, account }) {
-      if (user) {
-        token.id = user.id;
-
-        // OAuth 로그인 시 사용자 정보를 DB에 저장/업데이트
-        if (account?.provider !== 'credentials') {
-          try {
-            const dbUser = await userApi.upsertUser({
-              email: user.email!,
-              name: user.name!,
-              profileImgUrl: user.profileImgUrl!,
-            });
-            token.id = dbUser.id;
-          } catch (error) {
-            console.error('User upsert error:', error);
-          }
-        }
-      }
-      return token;
-    },
-
-    async session({ session, token }: { session: any; token: any }) {
-      if (token) {
-        session.user.id = token.id as string;
+    async session({ session, token, user }: { session: Session; token: any; user?: User }) {
+      console.log('session, token, user', session, token, user);
+      if (session.user) {
+        session.user.id = user?.id ?? token.id ?? '';
+        session.user.name = user?.name ?? token.name;
+        session.user.email = user?.email ?? token.email;
+        session.user.profileImageUrl = user?.profileImageUrl ?? token.profileImageUrl;
+        session.user.status = user?.status ?? token.status;
       }
       return session;
     },
+    async jwt({ token, user }: { token: any; user?: User }) {
+      console.log(' token, user', token, user);
+      if (user) {
+        token.id = user.id;
+        token.name = user.name;
+        token.email = user.email;
+        token.profileImageUrl = user.profileImageUrl ?? undefined;
+        token.status = user.status;
+      }
+      return token;
+    },
   },
 
-  events: {
-    async signIn(message) {
-      console.log('User signed in:', message);
-    },
-    async signOut(message) {
-      console.log('User signed out:', message);
-    },
-  },
+  // events: {
+  //   async signIn(message) {
+  //     console.log('User signed in:', message);
+  //   },
+  //   async signOut(message) {
+  //     console.log('User signed out:', message);
+  //   },
+  // },
 };

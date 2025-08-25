@@ -1,6 +1,5 @@
 'use server';
 
-import { signIn } from 'next-auth/react';
 import { fetchLogin } from './api/fetch-login';
 
 export async function loginAction(_: any, formData: FormData) {
