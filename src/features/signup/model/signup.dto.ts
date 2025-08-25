@@ -1,5 +1,5 @@
 // dtos/signup.dto.ts
-import { IsEmail, IsNotEmpty, MinLength, Matches, IsOptional } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength, Matches } from 'class-validator';
 
 export class SignupDto {
   @IsEmail({}, { message: '올바른 이메일을 입력해주세요.' })
@@ -18,7 +18,4 @@ export class SignupDto {
 
   @IsNotEmpty({ message: '비밀번호 확인을 입력해주세요.' })
   confirmPassword!: string;
-
-  @IsOptional()
-  profileImage?: File;
 }

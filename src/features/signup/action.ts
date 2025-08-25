@@ -10,8 +10,9 @@ export async function signupAction(_: any, formData: FormData) {
     name: formData.get('name')?.toString(),
     password: formData.get('password')?.toString(),
     confirmPassword: formData.get('confirmPassword')?.toString(),
-    profileImage: formData.get('profileImage') as File | null,
   };
+
+  const profileImage = formData.get('profileImage') as File | null;
 
   const validation = await validateDto(SignupDto, dto);
 
