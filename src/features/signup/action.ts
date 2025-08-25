@@ -4,6 +4,7 @@ import { apiFetch } from '@/shared/api/fetcher';
 import { SignupDto } from './model/signup.dto';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
+import { fetchSignup } from './api/fetch-signup';
 
 export async function signupAction(_: any, formData: FormData) {
   const dto = plainToInstance(SignupDto, {
@@ -43,10 +44,7 @@ export async function signupAction(_: any, formData: FormData) {
   // }
 
   try {
-    const res = await apiFetch('/auth/signup', {
-      method: 'POST',
-      body: formData,
-    });
+    const res = await fetchSignup(formData);
 
     if (res?.ok) {
       return { state: true, error: '' };
