@@ -13,7 +13,7 @@ export default function SignupForm() {
   const [state, formAction, isPending] = useActionState(signupAction, null);
 
   // 프로필 이미지 관련 상태
-  const [imagePreview, setImagePreview] = useState<string>('https://i.pravatar.cc/100?img=4');
+  const [imagePreview, setImagePreview] = useState<string>('/images/default_profile.png');
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   useEffect(() => {
