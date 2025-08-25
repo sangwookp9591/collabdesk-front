@@ -2,6 +2,18 @@ import type { NextAuthOptions, Session, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import { apiFetch } from '@/shared/api';
+interface AuthResponse {
+  user: {
+    id: string;
+    email: string;
+    name?: string;
+    profileImageUrl?: string;
+    status: string;
+  };
+  accessToken: string;
+  refreshToken: string;
+  expiresIn: number;
+}
 
 export const authOptions: NextAuthOptions = {
   pages: {
@@ -38,13 +50,16 @@ export const authOptions: NextAuthOptions = {
 
           const result = await res.json();
 
-          if (result?.data) {
+          const data = result?.data;
+          if (data) {
             return {
-              id: result?.data?.id,
-              email: result?.data?.email,
-              name: result?.data?.name,
-              profileImageUrl: result?.data?.profileImageUrl,
-              status: result?.data?.status,
+              id: data?.user?.id,
+              email: data?.user?.email,
+              name: data?.user?.name,
+              profileImageUrl: data?.user?.profileImageUrl,
+              status: data?.user?.status,
+              accessToken: data?.accessToken,
+              refreshToken: data?.refreshToken,
             };
           }
           return null;
@@ -76,6 +91,8 @@ export const authOptions: NextAuthOptions = {
         session.user.email = user?.email ?? token.email;
         session.user.profileImageUrl = user?.profileImageUrl ?? token.profileImageUrl;
         session.user.status = user?.status ?? token.status;
+        session.user.accessToken = token.accessToken as string;
+        session.user.refreshToken = token.refreshToken as string;
       }
       return session;
     },
@@ -87,6 +104,32 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email;
         token.profileImageUrl = user.profileImageUrl ?? undefined;
         token.status = user.status;
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
+      }
+
+      // 토큰 만료 확인 및 리프레시
+      if (token.accessToken) {
+        try {
+          const payload = JSON.parse(atob((token.accessToken as string).split('.')[1]));
+          const now = Math.floor(Date.now() / 1000);
+
+          // 토큰이 5분 내에 만료되면 리프레시
+          if (payload.exp - now < 300 && token.refreshToken) {
+            const refreshedTokens = await refreshAccessToken(token.refreshToken as string);
+
+            if (refreshedTokens) {
+              token.accessToken = refreshedTokens.accessToken;
+              token.refreshToken = refreshedTokens.refreshToken;
+            } else {
+              // 리프레시 실패시 로그아웃
+              return null;
+            }
+          }
+        } catch (error) {
+          console.error('Token refresh error:', error);
+          return null;
+        }
       }
       return token;
     },
@@ -101,3 +144,25 @@ export const authOptions: NextAuthOptions = {
   //   },
   // },
 };
+// 토큰 리프레시 함수
+async function refreshAccessToken(refreshToken: string) {
+  try {
+    const res = await apiFetch('/auth/refresh', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken }),
+    });
+
+    if (!res.ok) return null;
+
+    const data: AuthResponse = await res.json();
+
+    return {
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
+    };
+  } catch (error) {
+    console.error('Refresh token error:', error);
+    return null;
+  }
+}
