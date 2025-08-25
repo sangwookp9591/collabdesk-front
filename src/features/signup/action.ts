@@ -1,6 +1,5 @@
 'use server';
 
-import { apiFetch } from '@/shared/api/fetcher';
 import { SignupDto } from './model/signup.dto';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
