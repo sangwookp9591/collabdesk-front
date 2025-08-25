@@ -1,5 +1,7 @@
 'use server';
 
+import { apiFetch } from '@/shared/api/fetcher';
+
 export async function signupAction(_: any, formData: FormData) {
   const email = formData.get('email')?.toString();
   const name = formData.get('name')?.toString();
@@ -39,7 +41,7 @@ export async function signupAction(_: any, formData: FormData) {
   }
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signup`, {
+    const res = await apiFetch('/auth/signup', {
       method: 'POST',
       body: formData,
     });
