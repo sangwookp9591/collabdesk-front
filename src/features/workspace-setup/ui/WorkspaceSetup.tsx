@@ -17,11 +17,14 @@ export default function WorkspaceSetup({ session }: { session: Session }) {
 
   useEffect(() => {
     const fn = async () => {
-      const workspaces = await userApi.getUserWorkspaces(session.user.id);
-      console.log('workspaces : ', workspaces);
-      setWorkspaces(workspaces?.workspaces);
-      setIsLoading(false);
+      if (session?.user) {
+        const workspaces = await userApi.getUserWorkspaces(session?.user.id);
+        console.log('workspaces : ', workspaces);
+        setWorkspaces(workspaces?.workspaces);
+        setIsLoading(false);
+      }
     };
+
     fn();
   }, [session?.user]);
 
