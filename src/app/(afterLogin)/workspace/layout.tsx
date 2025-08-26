@@ -2,6 +2,7 @@ import { Sidebar, SideMenu } from '@/widgets/sidebar';
 import { Header } from '@/widgets/layout';
 import { ReactNode } from 'react';
 import { themeTokens } from '@/shared/styles';
+import { WorkspaceClient } from '@/entities/workspace/WorkspaceClient';
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -15,6 +16,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       }}
     >
       <Header />
+      {/* <WorkspaceClient> */}
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         <SideMenu />
         <Sidebar />
@@ -29,6 +31,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           {children}
         </main>
       </div>
+      {/* </WorkspaceClient> */}
     </div>
   );
 }
