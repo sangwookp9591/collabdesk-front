@@ -2,7 +2,7 @@
 
 import { updateLastWorkspace } from '@/shared/api';
 import { getSession } from '@/shared/lib';
-import { createWorkspace } from './api/workspace-create.api';
+import { createWorkspace } from '../api/workspace-create.api';
 
 export async function createWorkspaceAction(_: any, formData: FormData) {
   const session = await getSession();

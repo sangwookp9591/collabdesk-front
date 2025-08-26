@@ -3,8 +3,8 @@
 import { buttonStyle, inputStyle, labelStyle } from '@/shared/styles/form-basic.css';
 import Image from 'next/image';
 import { useActionState, useEffect, useRef, useState } from 'react';
-import { createWorkspaceAction } from '../createWorkspace';
 import { useRouter } from 'next/navigation';
+import { createWorkspaceAction } from '../model/createWorkspaceAction';
 
 export default function WorkspaceCreateForm() {
   const formRef = useRef<HTMLFormElement>(null);
