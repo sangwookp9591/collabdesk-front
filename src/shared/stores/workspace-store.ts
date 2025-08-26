@@ -12,7 +12,7 @@ interface WorkspaceState {
 
   // Actions
   setWorkspaces: (workspaces: Workspace[]) => void;
-  setCurrentWorkspace: (workspaces: Workspace) => void;
+  setCurrentWorkspace: (workspaceId: string) => void;
 
   // Async Actions
   //   loadWorkspaces: () => Promise<void>;
@@ -32,8 +32,9 @@ export const useWorkspaceStore = create<WorkspaceState>()(
             state.workspaces = workspaces;
           }),
 
-        setCurrentWorkspace: (workspace) =>
+        setCurrentWorkspace: (workspaceId) =>
           set((state) => {
+            const workspace = state.workspaces.find((w: Workspace) => w.id === workspaceId) || null;
             state.currentWorkspace = workspace;
           }),
         // Reset State
