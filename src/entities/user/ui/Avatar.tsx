@@ -23,7 +23,7 @@ export function Avatar({ isActive, profileImageUrl, name, size }: AvatarProps) {
           style={{ borderRadius: '20px' }}
         />
       ) : (
-        <div className={styles.userIcon}>{name[0].toUpperCase()}</div>
+        <div className={styles.userIcon}>{name && name[0].toUpperCase()}</div>
       )}
 
       {/* 상태 표시 */}

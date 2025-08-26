@@ -6,10 +6,12 @@ import { usePathname } from 'next/navigation';
 import * as styles from './sidemenu.css';
 import { DirectMessageIcon, EllipsisIcon, HomeIcon } from '@/shared/ui';
 import { Avatar } from '@/entities/user';
+import { Avatar as WorkspaceAvatar } from '@/entities/workspace';
+import { useSession } from 'next-auth/react';
 
 const SideMenu = () => {
+  const { data: session } = useSession();
   const pathname = usePathname(); // 현재 URL 가져오기
-  const isActive = true;
 
   console.log('pathname : ', pathname);
   const path = useMemo(() => {
@@ -26,6 +28,7 @@ const SideMenu = () => {
     <div className={styles.sideMenu}>
       <div className={styles.topSection}>
         <div className={styles.wsAvatar}>BLInk</div>
+        {/* <WorkspaceAvatar /> */}
         <div className={styles.wsWrapper}>
           <Link
             href="/workspace/1/channel/1"
@@ -51,9 +54,9 @@ const SideMenu = () => {
 
       <div className={styles.BottomSection}>
         <Avatar
-          isActive={isActive}
-          profileImageUrl={'/images/default_profile.png'}
-          name={'상욱'}
+          isActive={session?.user?.status === 'ONLINE'}
+          profileImageUrl={session?.user?.profileImageUrl}
+          name={session?.user?.name || ''}
           size={48}
         />
       </div>
