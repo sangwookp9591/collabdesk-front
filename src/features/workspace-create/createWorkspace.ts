@@ -1,7 +1,8 @@
 'use server';
 
-import { apiFetch } from '@/shared/api';
+import { updateLastWorkspace } from '@/shared/api';
 import { getSession } from '@/shared/lib';
+import { createWorkspace } from './api/workspace-create.api';
 
 export async function createWorkspaceAction(_: any, formData: FormData) {
   const session = await getSession();
@@ -30,22 +31,13 @@ export async function createWorkspaceAction(_: any, formData: FormData) {
     }
 
     console.log('formData :', formData);
-    const res = await apiFetch(`/workspace`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        Authorization: `Bearer ${session.user?.accessToken}`,
-      },
-      body: submitFormData,
-    });
-
-    if (!res.ok) {
-      throw new Error('워크스페이스 생성 실패');
-    }
-    const result = await res.json();
+    const result = await createWorkspace(submitFormData);
 
     console.log('workspace : ', result);
-    return { status: true, workspace: result?.data?.workspace };
+    const workspace = result?.data?.workspace;
+    await updateLastWorkspace(workspace?.id);
+
+    return { status: true, workspace };
   } catch (err) {
     console.error(err);
     return { status: false, error: '워크스페이스 생성 실패' };
