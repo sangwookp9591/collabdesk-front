@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useActionState, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createWorkspaceAction } from '../model/createWorkspaceAction';
+import { useWorkspaceStore } from '@/shared/stores/workspace-store';
 
 export default function WorkspaceCreateForm() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -12,6 +13,9 @@ export default function WorkspaceCreateForm() {
   const router = useRouter();
   const [state, formAction, isPending] = useActionState(createWorkspaceAction, null);
   const [preview, setPreview] = useState<string | null>(null);
+  const { setCurrentWorkspace } = useWorkspaceStore((state) => ({
+    setCurrentWorkspace: state.setCurrentWorkspace,
+  }));
 
   // 파일 선택 핸들러
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,6 +36,7 @@ export default function WorkspaceCreateForm() {
 
   useEffect(() => {
     if (state?.status) {
+      setCurrentWorkspace(state.workspace?.id);
       router.replace(`/workspace/${state.workspace?.slug}`);
     }
   }, [state?.status]);
