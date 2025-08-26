@@ -1,9 +1,5 @@
 import { Channel } from '@/entities/channel';
 
-export interface Workspace {
-  id: string;
-  name: string;
-}
 export interface WorkspaceCard {
   id: string;
   name: string;
