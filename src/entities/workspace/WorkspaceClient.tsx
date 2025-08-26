@@ -6,7 +6,7 @@ export function WorkspaceClient({ workspace, children }: any) {
   const { currentWorkspace, setCurrentWorkspace } = useWorkspaceStore();
 
   useEffect(() => {
-    if (!currentWorkspace || currentWorkspace.id !== workspace.id) {
+    if (!currentWorkspace || currentWorkspace?.id !== workspace.id) {
       setCurrentWorkspace(workspace);
     }
   }, [workspace, currentWorkspace, setCurrentWorkspace]);
