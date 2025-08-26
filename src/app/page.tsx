@@ -10,10 +10,6 @@ export default async function HomePage() {
     redirect('/signin');
   }
 
-  // 사용자의 마지막 워크스페이스나 기본 워크스페이스로 리다이렉트
-  // const lastWorkspace = await getUserLastWorkspace(user.id);
-  // const lastWorkspace = { id: 1 };
-
   const res = await apiFetch('/user/lastworkspace', {
     method: 'GET',
     credentials: 'include',
