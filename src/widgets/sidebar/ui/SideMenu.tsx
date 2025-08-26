@@ -8,9 +8,11 @@ import { DirectMessageIcon, EllipsisIcon, HomeIcon } from '@/shared/ui';
 import { Avatar } from '@/entities/user';
 import { Avatar as WorkspaceAvatar } from '@/entities/workspace';
 import { useSession } from 'next-auth/react';
+import { useWorkspaceStore } from '@/shared/stores/workspace-store';
 
 const SideMenu = () => {
   const { data: session } = useSession();
+  const currentWorkspace = useWorkspaceStore((state) => state.currentWorkspace);
   const pathname = usePathname(); // 현재 URL 가져오기
 
   console.log('pathname : ', pathname);
@@ -24,11 +26,17 @@ const SideMenu = () => {
     }
   }, [pathname]);
 
+  console.log('currentWorkspace :', currentWorkspace);
+
   return (
     <div className={styles.sideMenu}>
       <div className={styles.topSection}>
-        <div className={styles.wsAvatar}>BLInk</div>
-        {/* <WorkspaceAvatar /> */}
+        {/* <div className={styles.wsAvatar}>BLInk</div> */}
+        <WorkspaceAvatar
+          url={currentWorkspace?.imageUrl}
+          name={currentWorkspace?.name || ''}
+          size={48}
+        />
         <div className={styles.wsWrapper}>
           <Link
             href="/workspace/1/channel/1"
