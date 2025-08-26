@@ -34,7 +34,7 @@ export function Avatar({ url, name, size }: AvatarProps) {
             color: colorUtils.getContrastColor(bgColor),
           }}
         >
-          {name[0].toUpperCase()}
+          {name && name[0].toUpperCase()}
         </div>
       )}
     </div>
