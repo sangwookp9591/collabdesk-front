@@ -11,7 +11,8 @@ export default function Providers({
 }>) {
   return (
     <SessionProvider>
-      {/* <MockProvider> */}s<ThemeProvider defaultTheme="default">{children}</ThemeProvider>
+      {/* <MockProvider> */}
+      <ThemeProvider defaultTheme="default">{children}</ThemeProvider>
       {/* </MockProvider> */}
     </SessionProvider>
   );
