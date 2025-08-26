@@ -28,7 +28,7 @@ export default async function HomePage() {
   console.log('lastWorkspace : ', result);
 
   if (result.data?.lastActiveWorkspaceId) {
-    redirect(`/workspace/${result?.data?.lastActiveWorkspaceId}`);
+    redirect(`/workspace/${result?.data?.workspaceSlug}`);
   }
 
   // 워크스페이스가 없으면 온보딩으로
