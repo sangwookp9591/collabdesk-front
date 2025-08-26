@@ -8,7 +8,7 @@ import { clsx } from 'clsx';
 
 type InfoCardProps = {
   workspace: WorkspaceCard;
-  onClick?: (id: string) => void;
+  onClick?: (id: string, slug: string) => void;
   className?: string;
 };
 
@@ -16,7 +16,7 @@ export function InfoCard({ workspace, onClick, className }: InfoCardProps) {
   return (
     <div
       className={clsx(styles.workspaceContainer, className)}
-      onClick={onClick ? () => onClick(workspace?.slug) : () => {}}
+      onClick={onClick ? () => onClick(workspace?.id, workspace?.slug) : () => {}}
     >
       <Avatar url={workspace?.image} name={workspace?.name} size={50} />
       <div className={styles.workspaceInfo}>

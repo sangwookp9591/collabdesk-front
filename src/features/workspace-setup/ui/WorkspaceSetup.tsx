@@ -8,6 +8,7 @@ import { themeTokens } from '@/shared/styles';
 import { Session } from 'next-auth';
 import { redirect, useRouter } from 'next/navigation';
 import fetchUserWorkspaces from '../api/user-workspaces';
+import { updateLastWorkspace } from '@/shared/api';
 
 export default function WorkspaceSetup({ session }: { session: Session }) {
   const router = useRouter();
@@ -33,8 +34,9 @@ export default function WorkspaceSetup({ session }: { session: Session }) {
     fn();
   }, [session?.user]);
 
-  const onClick = (workspaceId: string) => {
-    redirect(`/workspace/${workspaceId}`);
+  const onClick = async (workspaceId: string, slug: string) => {
+    await updateLastWorkspace(workspaceId);
+    redirect(`/workspace/${slug}`);
   };
 
   return (
@@ -59,7 +61,7 @@ export default function WorkspaceSetup({ session }: { session: Session }) {
               key={item?.workspace?.id}
               className={styles.workspaceContainer}
               workspace={item?.workspace}
-              onClick={() => onClick(item?.id)}
+              onClick={onClick}
             />
           ))
         )}
