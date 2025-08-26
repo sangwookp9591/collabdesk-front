@@ -5,7 +5,7 @@ const withVanillaExtract = createVanillaExtractPlugin();
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
-    domains: ['i.pravatar.cc', 'http://localhost:3000'],
+    domains: ['i.pravatar.cc', 'http://localhost:3000', 'lrvgaewvumulriyxnwfe.supabase.co'],
   },
 };
 
