@@ -2,7 +2,7 @@
 
 import { SessionProvider } from 'next-auth/react';
 import { ThemeProvider } from './ThemeProvider';
-import { MockProvider } from './MockProvider';
+// import { MockProvider } from './MockProvider';
 
 export default function Providers({
   children,
@@ -11,9 +11,8 @@ export default function Providers({
 }>) {
   return (
     <SessionProvider>
-      <MockProvider>
-        <ThemeProvider defaultTheme="default">{children}</ThemeProvider>
-      </MockProvider>
+      {/* <MockProvider> */}s<ThemeProvider defaultTheme="default">{children}</ThemeProvider>
+      {/* </MockProvider> */}
     </SessionProvider>
   );
 }
