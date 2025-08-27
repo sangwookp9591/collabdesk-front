@@ -23,7 +23,7 @@ export function SocketStatus() {
       style={{
         position: 'fixed',
         top: '10px',
-        right: '10px',
+        right: '150px',
         backgroundColor: isConnected ? '#10B981' : '#EF4444',
         color: 'white',
         padding: '8px 12px',
