@@ -2,7 +2,8 @@ import { Sidebar, SideMenu } from '@/widgets/sidebar';
 import { Header } from '@/widgets/layout';
 import { ReactNode } from 'react';
 import { themeTokens } from '@/shared/styles';
-import { WorkspaceClient } from '@/entities/workspace/WorkspaceClient';
+import { WorkspaceInitializer } from '@/features/workspace-initializer/WorkspaceInitializer';
+import { SocketStatus } from '@/shared/ui/SocketStatus';
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -16,22 +17,23 @@ export default function Layout({ children }: { children: ReactNode }) {
       }}
     >
       <Header />
-      {/* <WorkspaceClient> */}
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-        <SideMenu />
-        <Sidebar />
-        <main
-          style={{
-            flex: 1,
-            overflowY: 'auto',
-            padding: '16px',
-            backgroundColor: themeTokens.colors.background,
-          }}
-        >
-          {children}
-        </main>
-      </div>
-      {/* </WorkspaceClient> */}
+      <WorkspaceInitializer>
+        <SocketStatus />
+        <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+          <SideMenu />
+          <Sidebar />
+          <main
+            style={{
+              flex: 1,
+              overflowY: 'auto',
+              padding: '16px',
+              backgroundColor: themeTokens.colors.background,
+            }}
+          >
+            {children}
+          </main>
+        </div>
+      </WorkspaceInitializer>
     </div>
   );
 }
