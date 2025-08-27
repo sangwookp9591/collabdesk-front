@@ -3,7 +3,6 @@
 import { ChannelIcon, PlusIcon } from '@/shared/ui';
 import * as styles from './sidebar-dropdown.css';
 import SidebarNavigationItem from './SidebarNavigationItem';
-import { Channel } from '@/entities/channel/model/types';
 import SidebarDropdown from './SidebarDropdown';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
