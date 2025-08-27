@@ -8,25 +8,27 @@ import SidebarDropdown from './SidebarDropdown';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import { themeTokens } from '@/shared/styles';
+import { useWorkspaceStore } from '@/shared/stores/workspace-store';
 
 type ChannelSectionProps = {
-  channels: Omit<Channel, 'createdAt'>[];
+  // channels: Omit<Channel, 'createdAt'>[];
   isOpen: boolean;
   onToggle: () => void;
   onAddChannel: () => void;
 };
 
-export default function ChannelSection({
-  channels,
-  isOpen,
-  onToggle,
-  onAddChannel,
-}: ChannelSectionProps) {
+export default function ChannelSection({ isOpen, onToggle, onAddChannel }: ChannelSectionProps) {
   const pathname = usePathname();
 
+  const channels = useWorkspaceStore((state) => state.channels);
+  const currentWorkspace = useWorkspaceStore((state) => state.currentWorkspace);
+
   const currentChannel = useMemo(
-    () => channels.find((channel) => pathname === `/workspace/1/channel/${channel.id}`),
-    [channels, pathname],
+    () =>
+      channels?.find(
+        (channel) => pathname === `/workspace/${currentWorkspace?.slug}/channel/${channel.slug}`,
+      ),
+    [channels, pathname, currentWorkspace],
   );
 
   return (
@@ -34,7 +36,7 @@ export default function ChannelSection({
       {isOpen ? (
         <div className={styles.wrapper}>
           {channels.map((channel) => {
-            const currentPath = `/workspace/${channel?.workspaceId}/channel/${channel.id}`;
+            const currentPath = `/workspace/${currentWorkspace?.slug}/channel/${channel.slug}`;
             const isActiveItem = `${pathname}` === currentPath;
             return (
               <SidebarNavigationItem

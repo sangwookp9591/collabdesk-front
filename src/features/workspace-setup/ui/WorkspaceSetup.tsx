@@ -20,6 +20,7 @@ export default function WorkspaceSetup({ session }: { session: Session }) {
 
   const setWorkspacesStore = useWorkspaceStore((state) => state.setWorkspaces);
   const setCurrentWorkspace = useWorkspaceStore((state) => state.setCurrentWorkspace);
+  const setChannels = useWorkspaceStore((state) => state.setChannels);
 
   useEffect(() => {
     const fn = async () => {
@@ -43,6 +44,7 @@ export default function WorkspaceSetup({ session }: { session: Session }) {
   const onClick = async (workspace: Workspace, slug: string) => {
     await updateLastWorkspace(workspace?.id);
     setCurrentWorkspace(workspace);
+    setChannels(workspace?.channels);
     redirect(`/workspace/${slug}`);
   };
 
