@@ -14,7 +14,8 @@ import { apiFetch } from '@/shared/api';
 const SideMenu = () => {
   const { data: session } = useSession();
   const params = useParams();
-  const { workspaces, setWorkspaces, currentWorkspace, setCurrentWorkspace } = useWorkspaceStore();
+  const { workspaces, setWorkspaces, currentWorkspace, setCurrentWorkspace, setChannels } =
+    useWorkspaceStore();
 
   const pathname = usePathname(); // 현재 URL 가져오기
 
@@ -46,10 +47,11 @@ const SideMenu = () => {
         console.log('result : ', result);
         setWorkspaces(result?.data.workspaces);
         setCurrentWorkspace(result?.data.currentWorkspace);
+        setChannels(result?.data?.currentWorkspace?.channels);
       };
       fn();
     }
-  }, [session?.user, params?.wsSlug, setWorkspaces, setCurrentWorkspace]);
+  }, [session?.user, params?.wsSlug, setWorkspaces, setCurrentWorkspace, setChannels]);
 
   return (
     <div className={styles.sideMenu}>
