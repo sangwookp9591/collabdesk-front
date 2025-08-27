@@ -13,9 +13,7 @@ export default function WorkspaceCreateForm() {
   const router = useRouter();
   const [state, formAction, isPending] = useActionState(createWorkspaceAction, null);
   const [preview, setPreview] = useState<string | null>(null);
-  const { setCurrentWorkspace } = useWorkspaceStore((state) => ({
-    setCurrentWorkspace: state.setCurrentWorkspace,
-  }));
+  const setCurrentWorkspace = useWorkspaceStore((state) => state.setCurrentWorkspace);
 
   // 파일 선택 핸들러
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

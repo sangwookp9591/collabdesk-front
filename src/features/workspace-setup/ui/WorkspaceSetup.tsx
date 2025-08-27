@@ -10,16 +10,16 @@ import { redirect, useRouter } from 'next/navigation';
 import fetchUserWorkspaces from '../api/user-workspaces';
 import { updateLastWorkspace } from '@/shared/api';
 import { useWorkspaceStore } from '@/shared/stores/workspace-store';
+import { Workspace } from '@/shared/types/workspace';
 
 export default function WorkspaceSetup({ session }: { session: Session }) {
   const router = useRouter();
 
   const [workspaces, setWorkspaces] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { setWorkspacesStore, setCurrentWorkspace } = useWorkspaceStore((state) => ({
-    setWorkspacesStore: state.setWorkspaces,
-    setCurrentWorkspace: state.setCurrentWorkspace,
-  }));
+
+  const setWorkspacesStore = useWorkspaceStore((state) => state.setWorkspaces);
+  const setCurrentWorkspace = useWorkspaceStore((state) => state.setCurrentWorkspace);
 
   useEffect(() => {
     const fn = async () => {
@@ -40,9 +40,9 @@ export default function WorkspaceSetup({ session }: { session: Session }) {
     fn();
   }, [session?.user]);
 
-  const onClick = async (workspaceId: string, slug: string) => {
-    await updateLastWorkspace(workspaceId);
-    setCurrentWorkspace(workspaceId);
+  const onClick = async (workspace: Workspace, slug: string) => {
+    await updateLastWorkspace(workspace?.id);
+    setCurrentWorkspace(workspace);
     redirect(`/workspace/${slug}`);
   };
 
