@@ -1,3 +1,4 @@
+import { Channel } from './channel';
 import type { User } from './user';
 
 export type WorkspaceRole = 'OWNER' | 'ADMIN' | 'MEMBER' | 'GUEST';
@@ -13,6 +14,7 @@ export interface Workspace {
   updatedAt: Date;
   members?: WorkspaceMember[];
   owner?: User;
+  channels: Channel[];
 }
 
 export interface WorkspaceMember {
