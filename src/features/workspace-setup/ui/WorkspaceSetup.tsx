@@ -9,7 +9,6 @@ import { Session } from 'next-auth';
 import { redirect, useRouter } from 'next/navigation';
 import fetchUserWorkspaces from '../api/user-workspaces';
 import { updateLastWorkspace } from '@/shared/api';
-import { useWorkspaceStore } from '@/shared/stores/workspace-store';
 import { Workspace } from '@/shared/types/workspace';
 
 export default function WorkspaceSetup({ session }: { session: Session }) {
@@ -17,10 +16,6 @@ export default function WorkspaceSetup({ session }: { session: Session }) {
 
   const [workspaces, setWorkspaces] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const setWorkspacesStore = useWorkspaceStore((state) => state.setWorkspaces);
-  const setCurrentWorkspace = useWorkspaceStore((state) => state.setCurrentWorkspace);
-  const setChannels = useWorkspaceStore((state) => state.setChannels);
 
   useEffect(() => {
     const fn = async () => {
@@ -32,7 +27,6 @@ export default function WorkspaceSetup({ session }: { session: Session }) {
           const result = await res.json();
           console.log('workspaces : ', result);
           setWorkspaces(result?.data?.workspaces);
-          setWorkspacesStore(result?.data?.workspaces);
           setIsLoading(false);
         }
       }
@@ -43,8 +37,6 @@ export default function WorkspaceSetup({ session }: { session: Session }) {
 
   const onClick = async (workspace: Workspace, slug: string) => {
     await updateLastWorkspace(workspace?.id);
-    setCurrentWorkspace(workspace);
-    setChannels(workspace?.channels);
     redirect(`/workspace/${slug}`);
   };
 

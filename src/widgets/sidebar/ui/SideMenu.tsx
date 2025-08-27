@@ -1,21 +1,18 @@
 'use client';
 
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import Link from 'next/link';
-import { useParams, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import * as styles from './sidemenu.css';
 import { DirectMessageIcon, EllipsisIcon, HomeIcon } from '@/shared/ui';
 import { Avatar } from '@/entities/user';
 import { Avatar as WorkspaceAvatar } from '@/entities/workspace';
 import { useSession } from 'next-auth/react';
 import { useWorkspaceStore } from '@/shared/stores/workspace-store';
-import { apiFetch } from '@/shared/api';
 
 const SideMenu = () => {
   const { data: session } = useSession();
-  const params = useParams();
-  const { workspaces, setWorkspaces, currentWorkspace, setCurrentWorkspace, setChannels } =
-    useWorkspaceStore();
+  const { currentWorkspace } = useWorkspaceStore();
 
   const pathname = usePathname(); // 현재 URL 가져오기
 
@@ -28,30 +25,6 @@ const SideMenu = () => {
       return '/page';
     }
   }, [pathname]);
-
-  console.log('pathname : ', pathname);
-  console.log('params: ', params);
-  // 초기 워크스페이스 로드
-  useEffect(() => {
-    if (workspaces.length === 0 && session?.user) {
-      const wsSlug = params?.wsSlug as string;
-
-      const fn = async () => {
-        const res = await apiFetch(`/workspace/${wsSlug}`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${session.user?.accessToken}`,
-          },
-        });
-        const result = await res.json();
-        console.log('result : ', result);
-        setWorkspaces(result?.data.workspaces);
-        setCurrentWorkspace(result?.data.currentWorkspace);
-        setChannels(result?.data?.currentWorkspace?.channels);
-      };
-      fn();
-    }
-  }, [session?.user, params?.wsSlug, setWorkspaces, setCurrentWorkspace, setChannels]);
 
   return (
     <div className={styles.sideMenu}>
