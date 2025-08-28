@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { messageApi } from '../message.api';
+import { messageApi } from '../api/message.api';
 import { messageKeys } from './message-keys';
 
 export const useChannelMessages = (slug: string, page: number = 1, take?: number) => {
