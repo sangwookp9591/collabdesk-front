@@ -18,21 +18,22 @@ export default function Layout({ children }: { children: ReactNode }) {
     >
       <Header />
       <WorkspaceInitializer>
-        <SocketStatus />
-        <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-          <SideMenu />
-          <Sidebar />
-          <main
-            style={{
-              flex: 1,
-              overflowY: 'auto',
-              padding: '16px',
-              backgroundColor: themeTokens.colors.background,
-            }}
-          >
-            {children}
-          </main>
-        </div>
+        <SocketStatus>
+          <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+            <SideMenu />
+            <Sidebar />
+            <main
+              style={{
+                flex: 1,
+                overflowY: 'auto',
+                padding: '16px',
+                backgroundColor: themeTokens.colors.background,
+              }}
+            >
+              {children}
+            </main>
+          </div>
+        </SocketStatus>
       </WorkspaceInitializer>
     </div>
   );
