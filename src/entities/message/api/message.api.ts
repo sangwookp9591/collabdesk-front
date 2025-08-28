@@ -11,7 +11,6 @@ class MessageApi {
     return fetch(url, {
       ...options,
       headers: {
-        'Content-Type': 'application/json',
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...options.headers,
       },
@@ -32,9 +31,15 @@ class MessageApi {
     page?: number,
     take?: number,
   ): Promise<{ messages: Message[]; hasMore: boolean; total: number }> {
-    const params = new URLSearchParams({ page: String(page), take: String(take) });
+    const params = new URLSearchParams({ page: String(page) });
+    if (take) {
+      params.append('take', String(take));
+    }
 
-    const res = await fetch(`${this.baseUrl}/channel/${slug}?${params.toString()}`);
+    const res = await this.fetchWithAuth(`${this.baseUrl}/channel/${slug}?${params.toString()}`, {
+      method: 'GET',
+      credentials: 'include',
+    });
     if (!res.ok) throw new Error('Failed to fetch messages');
     return res.json();
   }

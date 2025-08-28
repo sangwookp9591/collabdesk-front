@@ -2,10 +2,10 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { messageApi } from '../message.api';
 import { messageKeys } from './message-keys';
 
-export const useChannelMessages = (slug: string, page: number = 1) => {
+export const useChannelMessages = (slug: string, page: number = 1, take?: number) => {
   return useQuery({
     queryKey: messageKeys.channelMessages(slug, page),
-    queryFn: () => messageApi.getMessagesByChannel(slug, page),
+    queryFn: () => messageApi.getMessagesByChannel(slug, page, take),
     staleTime: 1000 * 60, // 1분
     enabled: !!slug,
   });
