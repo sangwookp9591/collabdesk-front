@@ -25,7 +25,7 @@ export default function MessageItem({ message, isSameUserWithinMinute }: Message
           />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', width: '100%' }}>
             <div style={{ display: 'flex', gap: '10px' }}>
-              <span style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{msg.user.name}</span>
+              <span style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{message.user.name}</span>
               <span style={{ fontSize: '0.8rem', color: '#ADB5BD' }}>
                 {format(currentDate, 'a h:mm')}
               </span>

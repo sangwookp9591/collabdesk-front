@@ -6,18 +6,32 @@ type MessageInputProps = {
 };
 
 export default function MessageSend({ onSend }: MessageInputProps) {
-  const [input, setInput] = useState('');
+  const [value, setValue] = useState('');
+
+  const handleSend = () => {
+    if (!value.trim()) return;
+    onSend(value.trim());
+    setValue('');
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSend();
+    }
+  };
 
   return (
     <div className={styles.sendMessage}>
       <input
         type="text"
         placeholder="메시지를 입력하세요..."
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={handleKeyDown}
         className={styles.inputBox}
       />
-      <div onClick={() => onSend(input)} className={styles.sendButton}>
+      <div onClick={() => onSend(value)} className={styles.sendButton}>
         전송
       </div>
     </div>
