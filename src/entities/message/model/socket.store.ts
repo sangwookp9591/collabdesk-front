@@ -1,7 +1,11 @@
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 import { io, Socket } from 'socket.io-client';
-
+type SendMessage = {
+  channelId: string;
+  content: string;
+  parentId?: string;
+};
 interface SocketState {
   socket: Socket | null;
   isConnected: boolean;
@@ -17,6 +21,7 @@ interface SocketState {
   joinWorkspace: (workspaceId: string) => void;
   joinChannel: (channelId: string) => void;
   leaveChannel: (channelId: string) => void;
+  sendMessage: (message: SendMessage) => void;
   getConnectionInfo: () => { isConnected: boolean; status: string; error: string | null };
 }
 
@@ -77,6 +82,10 @@ export const useSocketStore = create<SocketState>()(
         console.log('🎉 서버에서 연결 확인:', data);
       });
 
+      socket.on('newMessage', (data) => {
+        console.log('data : ', data);
+      });
+
       set({ socket });
     },
 
@@ -122,7 +131,12 @@ export const useSocketStore = create<SocketState>()(
         set({ currentChannel: null });
       }
     },
-
+    sendMessage: (message) => {
+      const { socket } = get();
+      if (socket) {
+        socket.emit('sendMessage', message);
+      }
+    },
     getConnectionInfo: () => {
       const { isConnected, connectionStatus, error } = get();
       return { isConnected, status: connectionStatus, error };
