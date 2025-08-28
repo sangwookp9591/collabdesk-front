@@ -16,7 +16,6 @@ export interface Message {
     User,
     | 'password'
     | 'profileImagePath'
-    | 'status'
     | 'lastActiveAt'
     | 'lastActiveWorkspaceId'
     | 'createdAt'
