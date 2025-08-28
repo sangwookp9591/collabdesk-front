@@ -1,3 +1,4 @@
+import ChannelInitializer from '@/features/channel-initializer/ChannelInitializer';
 import * as styles from './layout.css';
 import { ChannelIcon, MessageIcon, PageIcon, PlusIcon } from '@/shared/ui';
 import { TabNavigation } from '@/widgets/tab-navigation';
@@ -32,16 +33,18 @@ export default function Layout({ children }: { children: ReactNode }) {
   ];
   return (
     <>
-      <div className={styles.chatPage}>
-        {/* Top Bar */}
-        <div className={styles.topBar}>
-          <ChannelIcon size={20} color="" />
-          <span className={styles.channelName}>채널이름</span>
-        </div>
-        <TabNavigation tabs={tabsWithFeatures} variant="underline" size="sm" />
+      <ChannelInitializer>
+        <div className={styles.chatPage}>
+          {/* Top Bar */}
+          <div className={styles.topBar}>
+            <ChannelIcon size={20} color="" />
+            <span className={styles.channelName}>채널이름</span>
+          </div>
+          <TabNavigation tabs={tabsWithFeatures} variant="underline" size="sm" />
 
-        {children}
-      </div>
+          {children}
+        </div>
+      </ChannelInitializer>
     </>
   );
 }
