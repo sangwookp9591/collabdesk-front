@@ -31,7 +31,7 @@ export default function MessageSend({ onSend }: MessageInputProps) {
         onKeyDown={handleKeyDown}
         className={styles.inputBox}
       />
-      <div onClick={() => onSend(value)} className={styles.sendButton}>
+      <div onClick={handleSend} className={styles.sendButton}>
         전송
       </div>
     </div>
