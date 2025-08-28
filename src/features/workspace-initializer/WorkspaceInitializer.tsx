@@ -35,6 +35,7 @@ export const WorkspaceInitializer: React.FC<{ children: React.ReactNode }> = ({ 
       const fn = async () => {
         const res = await apiFetch(`/workspace/${wsSlug}`, {
           method: 'GET',
+          credentials: 'include',
           headers: {
             Authorization: `Bearer ${session.user?.accessToken}`,
           },
