@@ -1,3 +1,4 @@
+import { Message } from './message';
 import type { User } from './user';
 import type { Workspace } from './workspace';
 
@@ -44,20 +45,4 @@ export interface ChannelTab {
   createdAt: Date;
   updatedAt: Date;
   channel?: Channel;
-}
-
-export interface Message {
-  id: string;
-  content: string;
-  channelId: string;
-  userId: string;
-  parentId?: string;
-  editedAt?: Date;
-  isPinned: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  channel?: Channel;
-  user?: User;
-  parent?: Message;
-  replies?: Message[];
 }
