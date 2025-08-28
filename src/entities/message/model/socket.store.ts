@@ -5,12 +5,18 @@ import { io, Socket } from 'socket.io-client';
 interface SocketState {
   socket: Socket | null;
   isConnected: boolean;
+  currentChannel: string | null;
+  currentWorkspace: string | null;
   connectionStatus: 'disconnected' | 'connecting' | 'connected' | 'error';
   error: string | null;
 
   // Actions
   connect: (token: string) => void;
   disconnect: () => void;
+
+  joinWorkspace: (workspaceId: string) => void;
+  joinChannel: (channelId: string) => void;
+  leaveChannel: (channelId: string) => void;
   getConnectionInfo: () => { isConnected: boolean; status: string; error: string | null };
 }
 
@@ -18,6 +24,8 @@ export const useSocketStore = create<SocketState>()(
   subscribeWithSelector((set, get) => ({
     socket: null,
     isConnected: false,
+    currentChannel: null,
+    currentWorkspace: null,
     connectionStatus: 'disconnected',
     error: null,
 
@@ -84,6 +92,34 @@ export const useSocketStore = create<SocketState>()(
           connectionStatus: 'disconnected',
           error: null,
         });
+      }
+    },
+
+    joinWorkspace: (workspaceId: string) => {
+      const { socket } = get();
+      if (socket) {
+        socket.emit('joinWorkspace', { workspaceId });
+        set({ currentWorkspace: workspaceId });
+      }
+    },
+    joinChannel: (channelId: string) => {
+      const { socket, currentChannel } = get();
+      if (socket) {
+        // 이전 채널에서 나가기
+        if (currentChannel) {
+          socket.emit('leaveChannel', { channelId: currentChannel });
+        }
+
+        // 새 채널 참가
+        socket.emit('joinChannel', { channelId });
+        set({ currentChannel: channelId });
+      }
+    },
+    leaveChannel: (channelId: string) => {
+      const { socket } = get();
+      if (socket) {
+        socket.emit('leaveChannel', { channelId });
+        set({ currentChannel: null });
       }
     },
 
