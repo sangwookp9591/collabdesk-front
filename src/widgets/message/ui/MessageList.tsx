@@ -7,9 +7,10 @@ import { Message } from '@/shared/types/message';
 
 type MessageListProps = {
   messages: Message[];
+  isLoading: boolean;
 };
 
-export default function MessageList({ messages }: MessageListProps) {
+export default function MessageList({ messages, isLoading }: MessageListProps) {
   const endRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
