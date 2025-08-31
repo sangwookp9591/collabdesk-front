@@ -1,26 +1,41 @@
 import { Invite, WorkspaceJoinCard } from '@/features/onboarding-invite';
+import { apiFetch } from '@/shared/api';
+import { getSession } from '@/shared/lib';
+import { error } from 'console';
 
-export default async function Page({ searchParams }: { searchParams: Promise<{ code: string }> }) {
-  const { code } = await searchParams;
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ type: string; code: string }>;
+}) {
+  const { type, code } = await searchParams;
+  const session = await getSession();
 
-  if (code?.length === 6) {
-    //초대 코드 서버에서 워크 스페이스 조회
-    // 조회 실패 or 만료
+  if (code?.length === 6 && type) {
+    const res = await apiFetch(`/${type}/invite?code=${code}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        Authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+    });
 
-    if (true) {
+    console.log('invite res  :', res);
+    if (res?.ok) {
+      const workspace = await res.json();
+      console.log('invite workspace : ', workspace);
       return (
         <div>
           <h1>초대된 워크스페이스</h1>
-          <WorkspaceJoinCard
-            workspace={{
-              id: '10',
-              name: '심플 컴퍼니',
-              image: '/images/workspace1.jpg',
-              memberCount: 25,
-              ownerId: '2',
-            }}
-          />
+          <WorkspaceJoinCard workspace={workspace} code={code} />
         </div>
+      );
+    } else {
+      const errorData = await res.json();
+      return (
+        <>
+          <Invite initialCode={''} error={errorData.message} />
+        </>
       );
     }
   }
