@@ -46,7 +46,7 @@ export default function WorkspaceInviteForm({ workspaceId }: { workspaceId?: str
           Email
         </label>
         <input className={inputStyle} name="email" />
-        <input type="text" name="workspaceId" value={workspaceId} hidden />
+        <input type="text" name="workspaceId" value={workspaceId} hidden readOnly />
         {/* 버튼 */}
         {isPending ? (
           <div style={{ textAlign: 'center', marginBottom: '10px' }}>로딩중...</div>
