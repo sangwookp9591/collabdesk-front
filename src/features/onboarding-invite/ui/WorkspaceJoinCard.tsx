@@ -1,11 +1,11 @@
 'use client';
 
 import { InfoCard } from '@/entities/workspace';
-import { WorkspaceCard } from '@/entities/workspace/model/type';
 import * as styles from './workspace-join-card.css';
 import { useRouter } from 'next/navigation';
+import { Workspace } from '@/shared/types/workspace';
 
-export function WorkspaceJoinCard({ workspace }: { workspace: WorkspaceCard }) {
+export function WorkspaceJoinCard({ workspace }: { workspace: Workspace }) {
   const router = useRouter();
 
   const joinWorkspace = () => {
