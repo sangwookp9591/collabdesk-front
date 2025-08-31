@@ -8,9 +8,10 @@ import { themeTokens } from '@/shared/styles';
 
 interface InviteProps {
   initialCode?: string;
+  error?: string;
 }
 
-export function Invite({ initialCode = '' }: InviteProps) {
+export function Invite({ initialCode = '', error }: InviteProps) {
   const [values, setValues] = useState(Array(6).fill(''));
   const inputsRef = useRef<HTMLInputElement[]>([]);
   const router = useRouter();
@@ -113,6 +114,18 @@ export function Invite({ initialCode = '' }: InviteProps) {
             <ArrowRightIcon size={50} color="black" />
           </div>
         </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          color: 'red',
+          fontSize: '1.1rem',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '10px 0px',
+        }}
+      >
+        {error}
       </div>
     </div>
   );
