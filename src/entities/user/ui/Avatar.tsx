@@ -6,9 +6,16 @@ type AvatarProps = {
   profileImageUrl?: string;
   name: string;
   size: number;
+  isActiveIcon?: boolean;
 };
 
-export function Avatar({ isActive, profileImageUrl, name, size }: AvatarProps) {
+export function Avatar({
+  isActive,
+  profileImageUrl,
+  name,
+  size,
+  isActiveIcon = true,
+}: AvatarProps) {
   return (
     <div
       className={profileImageUrl ? styles.profileIcon : styles.userIcon}
@@ -27,7 +34,9 @@ export function Avatar({ isActive, profileImageUrl, name, size }: AvatarProps) {
       )}
 
       {/* 상태 표시 */}
-      <div className={isActive ? styles.loginLight : styles.userIconInactive}></div>
+      {isActiveIcon && (
+        <div className={isActive ? styles.loginLight : styles.userIconInactive}></div>
+      )}
     </div>
   );
 }
