@@ -1,3 +1,4 @@
+import { themeTokens } from '@/shared/styles';
 import { style } from '@vanilla-extract/css';
 
 export const inviteButton = style({
@@ -11,8 +12,8 @@ export const inviteButton = style({
   borderRadius: '6px',
   cursor: 'pointer',
   transition: 'all 0.2s',
+  color: themeTokens.colors.textSecondary,
   ':hover': {
-    backgroundColor: 'rgba(59, 130, 246, 0.1)',
-    color: '#3B82F6',
+    backgroundColor: themeTokens.colors.backgroundHover,
   },
 });

@@ -102,28 +102,6 @@ export const menuButton = style({
   width: '100%',
 });
 
-// 새 멤버 초대 버튼
-export const inviteButton = style([
-  menuButton,
-  {
-    ':hover': {
-      backgroundColor: 'rgba(59, 130, 246, 0.1)',
-      color: '#3B82F6',
-    },
-  },
-]);
-
-// 멤버 관리 버튼
-export const managementButton = style([
-  menuButton,
-  {
-    ':hover': {
-      backgroundColor: 'rgba(107, 114, 128, 0.1)',
-      color: '#374151',
-    },
-  },
-]);
-
 // 대기중인 초대 알림
 export const pendingInviteNotice = style({
   padding: '8px 12px',

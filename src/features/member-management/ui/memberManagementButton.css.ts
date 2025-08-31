@@ -21,8 +21,7 @@ export const managementButton = style([
   menuButton,
   {
     ':hover': {
-      backgroundColor: 'rgba(107, 114, 128, 0.1)',
-      color: '#374151',
+      backgroundColor: themeTokens.colors.backgroundHover,
     },
   },
 ]);
