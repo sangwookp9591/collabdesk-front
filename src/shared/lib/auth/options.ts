@@ -83,7 +83,6 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async session({ session, token, user }: { session: Session; token: any; user?: User }) {
-      console.log('session, token, user', session, token, user);
       if (session.user) {
         session.user.id = user?.id ?? token.id ?? '';
         session.user.name = user?.name ?? token.name;
@@ -114,14 +113,14 @@ export const authOptions: NextAuthOptions = {
           const now = Math.floor(Date.now() / 1000);
 
           console.log('payload : ', payload, ' now : ', now);
-          const accessTokenExpires = Date.now() + token.expiresIn * 1000;
-          // 토큰이 5분 내에 만료되면 리프레시
 
-          if (Date.now() < (accessTokenExpires as number)) {
+          if (payload.exp > now) {
             return token;
           }
+
           const refreshedTokens = await refreshAccessToken();
 
+          console.log('refreshedTokens : ', refreshedTokens);
           if (refreshedTokens) {
             token.accessToken = refreshedTokens.accessToken;
             token.expiresIn = refreshedTokens.expiresIn;
