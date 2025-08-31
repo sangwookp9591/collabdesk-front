@@ -7,4 +7,7 @@ export class InviteDto {
 
   @IsNotEmpty()
   workspaceId!: string;
+
+  @IsNotEmpty()
+  workspaceRole!: string;
 }

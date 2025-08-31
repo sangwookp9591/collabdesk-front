@@ -1,13 +1,41 @@
 'use client';
 
-import { buttonStyle, inputStyle, labelStyle } from '@/shared/styles/form-basic.css';
-import { useActionState, useEffect, useRef } from 'react';
+import { buttonStyle, inputStyle, labelStyle, selectStyle } from '@/shared/styles/form-basic.css';
+import { useActionState, useEffect, useRef, useState } from 'react';
 import { workspaceInviteAction } from '../model/workspace-invite-action';
+import { WorkspaceRole } from '@/shared/types/workspace';
+import { style } from '@vanilla-extract/css';
+import { error } from 'console';
+
+interface RoleOption {
+  value: WorkspaceRole;
+  label: string;
+  description: string;
+}
+
+const roleOptions: RoleOption[] = [
+  {
+    value: 'MEMBER',
+    label: '멤버',
+    description: '채널 참여, 메시지 작성, 파일 공유 가능',
+  },
+  {
+    value: 'ADMIN',
+    label: '관리자',
+    description: '워크스페이스 설정, 멤버 관리, 채널 생성/삭제 가능',
+  },
+  {
+    value: 'GUEST',
+    label: '게스트',
+    description: '지정된 채널에만 접근 가능',
+  },
+];
 
 export default function WorkspaceInviteForm({ workspaceId }: { workspaceId?: string }) {
   const formRef = useRef<HTMLFormElement>(null);
   const [state, formAction, isPending] = useActionState(workspaceInviteAction, null);
-
+  const [selectedRole, setSelectedRole] = useState<WorkspaceRole>('MEMBER');
+  const [message, setMessage] = useState('');
   // 폼 제출
   const onSubmit = () => {
     if (!formRef.current) {
@@ -18,8 +46,12 @@ export default function WorkspaceInviteForm({ workspaceId }: { workspaceId?: str
 
   useEffect(() => {
     if (state?.status) {
+      setMessage('초대에 성공했습니다.');
     }
   }, [state?.status]);
+
+  // 선택된 역할의 설명 가져오기
+  const selectedRoleOption = roleOptions.find((option) => option.value === selectedRole);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -46,13 +78,50 @@ export default function WorkspaceInviteForm({ workspaceId }: { workspaceId?: str
           Email
         </label>
         <input className={inputStyle} name="email" />
+
+        {/* 역할 선택 */}
+        <label className={labelStyle} htmlFor="workspaceRole">
+          역할
+        </label>
+        <select
+          className={selectStyle}
+          name="workspaceRole"
+          value={selectedRole}
+          onChange={(e) => setSelectedRole(e.target.value as WorkspaceRole)}
+          required
+        >
+          {roleOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
+        {/* 선택된 역할 설명 */}
+        {selectedRoleOption && (
+          <div
+            style={{
+              padding: '12px',
+              backgroundColor: '#f8fafc',
+              border: '1px solid #e2e8f0',
+              borderRadius: '6px',
+              fontSize: '0.875rem',
+              color: '#64748b',
+              marginBottom: '10px',
+            }}
+          >
+            <strong style={{ color: '#334155' }}>{selectedRoleOption.label}:</strong>{' '}
+            {selectedRoleOption.description}
+          </div>
+        )}
+
         <input type="text" name="workspaceId" value={workspaceId} hidden readOnly />
         {/* 버튼 */}
         {isPending ? (
           <div style={{ textAlign: 'center', marginBottom: '10px' }}>로딩중...</div>
         ) : (
           <div className={buttonStyle} onClick={onSubmit}>
-            초대기
+            초대하기
           </div>
         )}
       </form>
