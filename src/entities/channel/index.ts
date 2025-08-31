@@ -1,2 +1,2 @@
-export { type Channel } from './model/types';
 export { channelApi } from './api/channelApi';
+export { default as ChannelTitle } from './ui/ChannelTitle';
