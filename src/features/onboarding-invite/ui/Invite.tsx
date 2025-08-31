@@ -5,6 +5,7 @@ import { ArrowRightIcon, PlusIcon } from '@/shared/ui';
 import * as styles from './invite.css';
 import { useRouter } from 'next/navigation';
 import { themeTokens } from '@/shared/styles';
+import { errorMessageStyle } from '@/shared/styles/form-basic.css';
 
 interface InviteProps {
   initialCode?: string;
@@ -115,18 +116,7 @@ export function Invite({ initialCode = '', error }: InviteProps) {
           </div>
         </div>
       </div>
-      <div
-        style={{
-          display: 'flex',
-          color: 'red',
-          fontSize: '1.1rem',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '10px 0px',
-        }}
-      >
-        {error}
-      </div>
+      <div className={errorMessageStyle}>{error}</div>
     </div>
   );
 }
