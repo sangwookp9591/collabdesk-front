@@ -1,8 +1,9 @@
 import ChannelInitializer from '@/features/channel-initializer/ChannelInitializer';
 import * as styles from './layout.css';
-import { ChannelIcon, MessageIcon, PageIcon, PlusIcon } from '@/shared/ui';
+import { MessageIcon, PageIcon, PlusIcon } from '@/shared/ui';
 import { TabNavigation } from '@/widgets/tab-navigation';
 import { ReactNode } from 'react';
+import { ChannelHeader } from '@/widgets/channel-header';
 
 export default function Layout({ children }: { children: ReactNode }) {
   // 아이콘과 배지가 있는 탭
@@ -36,10 +37,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <ChannelInitializer>
         <div className={styles.chatPage}>
           {/* Top Bar */}
-          <div className={styles.topBar}>
-            <ChannelIcon size={20} color="" />
-            <span className={styles.channelName}>채널이름</span>
-          </div>
+          <ChannelHeader />
           <TabNavigation tabs={tabsWithFeatures} variant="underline" size="sm" />
 
           {children}
