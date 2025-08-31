@@ -4,7 +4,7 @@ import { buttonStyle, inputStyle, labelStyle } from '@/shared/styles/form-basic.
 import { useActionState, useEffect, useRef } from 'react';
 import { workspaceInviteAction } from '../model/workspace-invite-action';
 
-export default function WorkspaceInviteForm() {
+export default function WorkspaceInviteForm({ workspaceId }: { workspaceId?: string }) {
   const formRef = useRef<HTMLFormElement>(null);
   const [state, formAction, isPending] = useActionState(workspaceInviteAction, null);
 
@@ -46,6 +46,7 @@ export default function WorkspaceInviteForm() {
           Email
         </label>
         <input className={inputStyle} name="email" />
+        <input type="text" name="workspaceId" value={workspaceId} hidden />
         {/* 버튼 */}
         {isPending ? (
           <div style={{ textAlign: 'center', marginBottom: '10px' }}>로딩중...</div>

@@ -6,9 +6,11 @@ import { InviteDto } from './invite.dto';
 
 export async function workspaceInviteAction(_: any, formData: FormData) {
   const email = formData.get('email')?.toString();
+  const worksapceId = formData.get('worksapceId')?.toString();
 
   const validation = await validateDto(InviteDto, {
     email,
+    worksapceId,
   });
 
   if (!validation.status) {
