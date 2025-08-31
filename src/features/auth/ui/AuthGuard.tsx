@@ -1,7 +1,7 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { redirect, useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
 interface AuthGuardProps {
@@ -9,27 +9,32 @@ interface AuthGuardProps {
   fallback?: React.ReactNode;
 }
 
-export default function AuthGuard({ children, fallback }: AuthGuardProps) {
+export default function AuthGuard({ children }: AuthGuardProps) {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  console.log('AuthGuard : ', session);
-  //   useEffect(() => {
-  //     if (status === 'loading') {
-  //       return;
-  //     }
-  //     if (!session) {
-  //       router.push('/signin');
-  //     }
-  //   }, [session, status, router]);
-
-  //   if (status === 'loading') {
-  //     return <div>Loading...</div>;
-  //   }
-
-  //   if (!session) {
-  //     return fallback || <div>Redirecting...</div>;
-  //   }
+  useEffect(() => {
+    if (status === 'loading') {
+      return;
+    }
+    if (!session?.user) {
+      if (
+        pathname === '/onboarding/invite' &&
+        searchParams.get('type') &&
+        searchParams.get('code')
+      ) {
+        localStorage.setItem(
+          'invite-path',
+          `${pathname}?type=${searchParams.get('type')}&code=${searchParams.get('code')}`,
+        );
+        redirect('/signin');
+      }
+      console.log('pathname : ', pathname);
+      // router.push('/signin');
+    }
+  }, [session, status, router, pathname, searchParams]);
 
   return <>{children}</>;
 }
