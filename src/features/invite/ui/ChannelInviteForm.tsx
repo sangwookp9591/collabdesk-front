@@ -34,7 +34,7 @@ const roleOptions: RoleOption[] = [
 
 type InviteMode = 'email' | 'members';
 
-export default function ChannelInviteForm() {
+export default function ChannelInviteForm({ onSuccess }: { onSuccess?: () => void }) {
   const { data: session } = useSession();
   const formRef = useRef<HTMLFormElement>(null);
   const [state, formAction, isPending] = useActionState(channelInviteAction, null);
@@ -150,7 +150,39 @@ export default function ChannelInviteForm() {
   const selectedRoleOption = roleOptions.find((option) => option.value === selectedRole);
 
   /**Todo */
-  const inviteSelectedMembers = async () => {};
+  const inviteSelectedMembers = async () => {
+    if (selectedMembers.size === 0 || !currentChannel?.id) {
+      return;
+    }
+
+    // DTO에 맞게 매핑
+    const membersDto = Array.from(selectedMembers).map((memberId) => {
+      const member = members.find((m) => m.id === memberId);
+      return {
+        userId: member?.userId,
+        channelId: currentChannel.id,
+        role: selectedRole, // 선택된 역할
+      };
+    });
+
+    console.log('membersDto : ', membersDto);
+    const res = await apiFetch('/channel/invite/members', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+      body: JSON.stringify({ members: membersDto }),
+    });
+
+    if (res?.ok) {
+      setMessage('초대에 성공했습니다.');
+      onSuccess?.();
+    } else {
+      setMessage('초대에 실패했습니다.');
+    }
+  };
 
   return (
     <>
@@ -200,12 +232,12 @@ export default function ChannelInviteForm() {
               required
             />
 
-            <label className={labelStyle} htmlFor="workspaceRole">
+            <label className={labelStyle} htmlFor="channelRole">
               역할
             </label>
             <select
               className={selectStyle}
-              name="workspaceRole"
+              name="channelRole"
               value={selectedRole}
               onChange={(e) => setSelectedRole(e.target.value as ChannelRole)}
               required
@@ -234,6 +266,7 @@ export default function ChannelInviteForm() {
               </div>
             )}
 
+            <input type="text" name="workspaceId" value={currentWorkspace?.id} hidden readOnly />
             <input type="text" name="channelId" value={currentChannel?.id} hidden readOnly />
 
             {isPending ? (
@@ -335,7 +368,11 @@ export default function ChannelInviteForm() {
             </div>
 
             {selectedMembers.size > 0 && (
-              <div className={buttonStyle} onClick={() => {}} style={{ marginTop: '10px' }}>
+              <div
+                className={buttonStyle}
+                onClick={() => inviteSelectedMembers()}
+                style={{ marginTop: '10px' }}
+              >
                 선택한 멤버 초대하기 ({selectedMembers.size}명)
               </div>
             )}

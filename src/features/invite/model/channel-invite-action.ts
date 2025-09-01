@@ -2,8 +2,8 @@
 
 import { apiFetch } from '@/shared/api';
 import { getSession, validateDto } from '@/shared/lib';
-import { InviteDto } from './invite.dto';
 import { ChannelRole } from '@/shared/types/channel';
+import { ChannelInviteDto } from './channel-invite.dto';
 
 export async function channelInviteAction(_: any, formData: FormData) {
   const session = await getSession();
@@ -12,11 +12,13 @@ export async function channelInviteAction(_: any, formData: FormData) {
     throw new Error('Authentication required');
   }
   const email = formData.get('email')?.toString();
+  const workspaceId = formData.get('workspaceId')?.toString();
   const channelId = formData.get('channelId')?.toString();
   const channelRole = formData.get('channelRole') as ChannelRole;
 
-  const validation = await validateDto(InviteDto, {
+  const validation = await validateDto(ChannelInviteDto, {
     email,
+    workspaceId,
     channelId,
     channelRole,
   });
@@ -34,7 +36,7 @@ export async function channelInviteAction(_: any, formData: FormData) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${session.user?.accessToken}`,
     },
-    body: JSON.stringify({ email, channelId, channelRole }),
+    body: JSON.stringify({ email, workspaceId, channelId, channelRole }),
   });
 
   console.log('res : ', res);
