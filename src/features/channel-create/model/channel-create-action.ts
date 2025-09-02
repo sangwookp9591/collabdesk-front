@@ -13,8 +13,9 @@ export async function channelCreateAction(_: any, formData: FormData) {
   const name = formData.get('name')?.toString();
   const workspaceId = formData.get('workspaceId')?.toString();
   const description = formData.get('description')?.toString();
-  const isPublic = formData.get('isPublic');
+  const isPublic = !!formData.get('isPublic');
 
+  console.log('formData : ', name, workspaceId, description, isPublic);
   const validation = await validateDto(ChannelCreateDto, {
     name,
     workspaceId,
@@ -25,9 +26,13 @@ export async function channelCreateAction(_: any, formData: FormData) {
   if (!validation.status) {
     return validation;
   }
-
   try {
-    const res = await channelApi.create(formData);
+    const res = await channelApi.create({
+      name: name!,
+      workspaceId: workspaceId!,
+      description,
+      isPublic,
+    });
     return { status: true, error: '', data: res };
   } catch (e: any) {
     return { status: false, error: `서버 Error :${e.message}` };

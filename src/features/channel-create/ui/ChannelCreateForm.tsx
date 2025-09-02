@@ -23,7 +23,7 @@ export default function ChannelCreateForm({ onSuccess }: CreateFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
   const [selectedOption, setSelectOption] = useState<OptionType>(() => options[0]);
 
-  const { getCurrentWorkspaceId, getCurrentChannelId } = useWorkspaceStore();
+  const { getCurrentWorkspaceId } = useWorkspaceStore();
   const [state, formAction, isPending] = useActionState(channelCreateAction, null);
 
   const onSubmit = () => {
@@ -78,7 +78,6 @@ export default function ChannelCreateForm({ onSuccess }: CreateFormProps) {
             ))}
           </select>
           <input name="workspaceId" value={getCurrentWorkspaceId() || ''} hidden readOnly />
-          <input name="channelId" value={getCurrentChannelId() || ''} hidden readOnly />
           <div className={styles.buttonStyle} onClick={onSubmit}>
             생성하기
           </div>
