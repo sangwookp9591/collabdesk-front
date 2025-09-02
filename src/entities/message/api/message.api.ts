@@ -3,11 +3,9 @@ import { Message } from '@/shared/types/message';
 
 class MessageApi extends ApiBase {
   async getChannelMessages(slug: string) {
-    const response = await this.fetchWithAuth(`${this.baseUrl}/channel/${slug}`, {
+    return await this.fetchWithAuth(`/channel/${slug}`, {
       method: 'GET',
     });
-    if (!response.ok) throw new Error('Failed to fetch messages');
-    return response.json();
   }
 
   async getMessagesByChannel(
@@ -20,11 +18,9 @@ class MessageApi extends ApiBase {
       params.append('take', String(take));
     }
 
-    const res = await this.fetchWithAuth(`${this.baseUrl}/channel/${slug}?${params.toString()}`, {
+    return await this.fetchWithAuth(`/channel/${slug}?${params.toString()}`, {
       method: 'GET',
     });
-    if (!res.ok) throw new Error('Failed to fetch messages');
-    return res.json();
   }
 }
 
