@@ -20,6 +20,7 @@ interface WorkspaceState {
   setCurrentWorkspace: (workspace: Workspace) => void;
   setChannels: (channels: Channel[]) => void;
   setCurrentChannel: (channel: Channel | null) => void;
+  addChannel: (chaanel: Channel) => void;
 
   // Async Actions
   //   loadWorkspaces: () => Promise<void>;
@@ -57,11 +58,18 @@ export const useWorkspaceStore = create<WorkspaceState>()(
           set((state) => {
             state.channels = channels;
           }),
+
         setCurrentChannel: (channel) =>
           set((state) => {
             state.currentChannel = channel;
           }),
-
+        addChannel: (channel) =>
+          set((state) => {
+            const exists = state.channels.some((ch) => ch.id === channel.id);
+            if (!exists) {
+              state.channels.push(channel);
+            }
+          }),
         getCurrentWorkspaceId() {
           const { currentWorkspace } = get();
           return currentWorkspace?.id ?? null;
