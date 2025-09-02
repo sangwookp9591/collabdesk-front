@@ -4,6 +4,7 @@ import { useSocketStore } from '@/entities/message/model/socket.store';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { useWorkspaceStore } from '../stores/workspace-store';
+import { useRealtimeSubEvents } from '../hooks';
 
 export function SocketStatus({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
@@ -54,6 +55,9 @@ export function SocketStatus({ children }: { children: React.ReactNode }) {
       joinWorkspace(currentWorkspace?.id);
     }
   }, [isConnected, currentWorkspace, joinWorkspace]);
+
+  // 실시간 채널 알림
+  useRealtimeSubEvents();
 
   return process.env.NODE_ENV === 'development' ? (
     <>
