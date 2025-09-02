@@ -125,20 +125,20 @@ export const profileImage = style({
 // 추가 유틸리티 스타일들
 export const errorMessageStyle = style({
   padding: '12px',
-  backgroundColor: '#fef2f2',
-  border: '1px solid #fecaca',
+  backgroundColor: themeTokens.colors.status.error.backgroundColor,
+  border: `1px solid ${themeTokens.colors.status.error.border}`,
   borderRadius: '6px',
-  color: '#dc2626',
+  color: themeTokens.colors.status.error.color,
   fontSize: '0.875rem',
   marginBottom: '10px',
 });
 
 export const successMessageStyle = style({
   padding: '12px',
-  backgroundColor: '#f0fdf4',
-  border: '1px solid #bbf7d0',
+  backgroundColor: themeTokens.colors.status.success.backgroundColor,
+  border: `1px solid ${themeTokens.colors.status.success.border}`,
   borderRadius: '6px',
-  color: '#15803d',
+  color: themeTokens.colors.status.success.color,
   fontSize: '0.875rem',
   textAlign: 'center',
 });
