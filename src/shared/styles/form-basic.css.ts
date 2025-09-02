@@ -35,6 +35,23 @@ export const inputStyle = style({
   },
 });
 
+export const textAreaStyle = style({
+  padding: '10px',
+  marginBottom: '20px',
+  borderRadius: '4px',
+  border: '1px solid #ccc',
+  outline: 'none',
+  fontSize: '1rem',
+  transition: 'border-color 0.2s, box-shadow 0.2s',
+  ':focus': {
+    borderColor: themeTokens.colors.button.background,
+    boxShadow: `0 0 0 3px ${themeTokens.colors.button.background}33`,
+  },
+  ':hover': {
+    borderColor: '#9ca3af',
+  },
+});
+
 // 새로 추가된 select 스타일
 export const selectStyle = style({
   padding: '10px',
@@ -59,6 +76,16 @@ export const selectStyle = style({
   ':hover': {
     borderColor: '#9ca3af',
   },
+});
+
+export const selectOptionDesc = style({
+  padding: '12px',
+  backgroundColor: '#f8fafc',
+  border: '1px solid #e2e8f0',
+  borderRadius: '6px',
+  fontSize: '0.875rem',
+  color: '#64748b',
+  marginBottom: '10px',
 });
 
 export const buttonStyle = style({
