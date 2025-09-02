@@ -1,6 +1,6 @@
 'use client';
 
-import { ChannelIcon, PlusIcon } from '@/shared/ui';
+import { ChannelIcon } from '@/shared/ui';
 import * as styles from './sidebar-dropdown.css';
 import SidebarNavigationItem from './SidebarNavigationItem';
 import SidebarDropdown from './SidebarDropdown';
@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import { themeTokens } from '@/shared/styles';
 import { useWorkspaceStore } from '@/shared/stores/workspace-store';
+import { ChannelCreateButton } from '@/features/channel-create';
 
 type ChannelSectionProps = {
   // channels: Omit<Channel, 'createdAt'>[];
@@ -16,7 +17,7 @@ type ChannelSectionProps = {
   onAddChannel: () => void;
 };
 
-export default function ChannelSection({ isOpen, onToggle, onAddChannel }: ChannelSectionProps) {
+export default function ChannelSection({ isOpen, onToggle }: ChannelSectionProps) {
   const pathname = usePathname();
 
   const channels = useWorkspaceStore((state) => state.channels);
@@ -57,12 +58,7 @@ export default function ChannelSection({ isOpen, onToggle, onAddChannel }: Chann
             );
           })}
 
-          <div className={styles.addRow}>
-            <div className={styles.plusBox} onClick={onAddChannel}>
-              <PlusIcon size={15} />
-            </div>
-            채널 추가
-          </div>
+          <ChannelCreateButton />
         </div>
       ) : (
         <div>
