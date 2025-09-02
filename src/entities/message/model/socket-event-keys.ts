@@ -1,4 +1,4 @@
-export const evKeys = {
+export const EVENT_KEYS = {
   CONNECT: 'connect',
   CONNECTED: 'connected',
   DISCONNECTED: 'disconnected',
