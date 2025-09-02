@@ -8,11 +8,17 @@ class ChannelApi extends ApiBase {
     });
   }
 
-  async create(formData: FormData) {
+  async create(data: {
+    name: string;
+    workspaceId: string;
+    description?: string;
+    isPublic: boolean;
+  }) {
     return this.fetchWithAuth('', {
       method: 'POST',
       credentials: 'include',
-      body: formData,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
     });
   }
 }
