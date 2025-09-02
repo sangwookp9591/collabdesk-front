@@ -1,7 +1,6 @@
 import { Invite, WorkspaceJoinCard } from '@/features/onboarding-invite';
 import { apiFetch } from '@/shared/api';
 import { getSession } from '@/shared/lib';
-import { error } from 'console';
 
 export default async function Page({
   searchParams,
