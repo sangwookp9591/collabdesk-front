@@ -13,7 +13,7 @@ export async function channelCreateAction(_: any, formData: FormData) {
   const name = formData.get('name')?.toString();
   const workspaceId = formData.get('workspaceId')?.toString();
   const description = formData.get('description')?.toString();
-  const isPublic = !!formData.get('isPublic');
+  const isPublic = !!Number(formData.get('isPublic'));
 
   console.log('formData : ', name, workspaceId, description, isPublic);
   const validation = await validateDto(ChannelCreateDto, {
