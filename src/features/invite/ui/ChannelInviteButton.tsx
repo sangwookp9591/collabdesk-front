@@ -12,7 +12,7 @@ export function InviteMemberButton() {
   return (
     <>
       <button className={styles.inviteButton} onClick={() => setIsModalOpen(true)}>
-        <PlusIcon size={14} color={themeTokens.colors.text} />
+        <PlusIcon size={20} color={themeTokens.colors.text} />
         <span>맴버 초대</span>
       </button>
 

@@ -3,11 +3,12 @@ import { style } from '@vanilla-extract/css';
 
 export const inviteButton = style({
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'flex-start',
   alignItems: 'center',
   textAlign: 'center',
-  gap: '8px',
-  padding: '8px 12px 4px 12px',
+  width: '100%',
+  gap: '20px',
+  padding: '8px 0px',
   fontWeight: 'bold',
   fontSize: '1rem',
   backgroundColor: 'transparent',
