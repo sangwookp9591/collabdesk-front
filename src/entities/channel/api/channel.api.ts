@@ -1,17 +1,15 @@
-import { fetchWithAuth } from '@/shared/api';
+import { ApiBase } from '@/shared/api';
 
-class ChannelApi {
-  private baseUrl = `/channel`;
-
-  async getChannels(workspaceId: string) {
-    return fetchWithAuth(`${this.baseUrl}?workspaceId=${workspaceId}`, {
+class ChannelApi extends ApiBase {
+  async findMany(workspaceId: string) {
+    return this.fetchWithAuth(`${this.baseUrl}?workspaceId=${workspaceId}`, {
       method: 'GET',
       credentials: 'include',
     });
   }
 
   async create(formData: FormData) {
-    return fetchWithAuth(`${this.baseUrl}`, {
+    return this.fetchWithAuth(`${this.baseUrl}`, {
       method: 'POST',
       credentials: 'include',
       body: formData,
@@ -19,4 +17,4 @@ class ChannelApi {
   }
 }
 
-export const channelApi = new ChannelApi();
+export const channelApi = new ChannelApi('channel');

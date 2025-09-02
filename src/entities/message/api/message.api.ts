@@ -1,26 +1,10 @@
-import { getSession } from '@/shared/lib';
+import { ApiBase } from '@/shared/api';
 import { Message } from '@/shared/types/message';
 
-class MessageApi {
-  private baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/message`;
-
-  private async fetchWithAuth(url: string, options: RequestInit = {}) {
-    const session = await getSession();
-    const token = session?.user?.accessToken;
-
-    return fetch(url, {
-      ...options,
-      headers: {
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        ...options.headers,
-      },
-    });
-  }
-
+class MessageApi extends ApiBase {
   async getChannelMessages(slug: string) {
     const response = await this.fetchWithAuth(`${this.baseUrl}/channel/${slug}`, {
       method: 'GET',
-      credentials: 'include',
     });
     if (!response.ok) throw new Error('Failed to fetch messages');
     return response.json();
@@ -38,11 +22,10 @@ class MessageApi {
 
     const res = await this.fetchWithAuth(`${this.baseUrl}/channel/${slug}?${params.toString()}`, {
       method: 'GET',
-      credentials: 'include',
     });
     if (!res.ok) throw new Error('Failed to fetch messages');
     return res.json();
   }
 }
 
-export const messageApi = new MessageApi();
+export const messageApi = new MessageApi('message');
