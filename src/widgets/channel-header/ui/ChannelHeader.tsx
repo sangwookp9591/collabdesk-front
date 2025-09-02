@@ -3,12 +3,18 @@
 import { ChannelInviteMemberButton } from '@/features/invite';
 import * as styles from './channelHeader.css';
 import { ChannelTitle } from '@/entities/channel';
+import { ChannelDeleteButton } from '@/features/channel-delete';
+import { useWorkspaceStore } from '@/shared/stores';
 
 export function ChannelHeader() {
+  const { currentChannel } = useWorkspaceStore();
   return (
     <div className={styles.header}>
       <ChannelTitle />
-      <ChannelInviteMemberButton />
+      <div className={styles.buttonArea}>
+        <ChannelInviteMemberButton />
+        <ChannelDeleteButton id={currentChannel?.id || ''} name={currentChannel?.name || ''} />
+      </div>
     </div>
   );
 }

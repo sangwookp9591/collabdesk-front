@@ -1,8 +1,7 @@
 'use client';
 
-import { ChannelIcon, LockIcon } from '@/shared/ui';
+import { ChannelIcon } from '@/shared/ui';
 import * as styles from './sidebar-dropdown.css';
-import SidebarNavigationItem from './SidebarNavigationItem';
 import SidebarDropdown from './SidebarDropdown';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
@@ -10,7 +9,6 @@ import { themeTokens } from '@/shared/styles';
 import { useWorkspaceStore } from '@/shared/stores/workspace-store';
 import { ChannelCreateButton } from '@/features/channel-create';
 import ChannelSectionNav from './ChannelSectionNav';
-import { channel } from 'diagnostics_channel';
 
 type ChannelSectionProps = {
   // channels: Omit<Channel, 'createdAt'>[];
@@ -38,7 +36,6 @@ export default function ChannelSection({ isOpen, onToggle }: ChannelSectionProps
       {isOpen ? (
         <div className={styles.wrapper}>
           {channels.map((channel) => {
-            console.log('channel : ', channel);
             const currentPath = `/workspace/${currentWorkspace?.slug}/channel/${channel.slug}`;
             const isActiveItem = `${pathname}` === currentPath;
             const activeColor = isActiveItem
