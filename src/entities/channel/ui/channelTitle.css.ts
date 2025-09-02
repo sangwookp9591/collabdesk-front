@@ -1,8 +1,9 @@
 import { style } from '@vanilla-extract/css';
 
 export const titleContainer = style({
-  display: 'flex',
+  flex: 3,
   alignItems: 'center',
+  width: '100%',
 });
 
 export const channelName = style({
