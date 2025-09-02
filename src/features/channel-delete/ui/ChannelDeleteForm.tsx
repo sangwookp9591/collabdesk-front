@@ -17,7 +17,7 @@ export default function ChannelDeleteForm({ id, name, onSuccess }: CreateFormPro
 
   const { mutate: deleteChannel, isPending } = useDeleteChannel(id, onSuccess);
   const onSubmit = () => {
-    if (isReady && isPending) {
+    if (isReady) {
       deleteChannel();
     }
   };
