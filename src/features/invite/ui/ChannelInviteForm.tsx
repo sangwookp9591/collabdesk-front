@@ -7,7 +7,6 @@ import { ChannelMember, ChannelRole } from '@/shared/types/channel';
 import { useWorkspaceStore } from '@/shared/stores/workspace-store';
 import { channelInviteAction } from '../model/channel-invite-action';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { apiFetch } from '@/shared/api';
 import { WorkspaceMember } from '@/shared/types/workspace';
@@ -34,7 +33,13 @@ const roleOptions: RoleOption[] = [
 
 type InviteMode = 'email' | 'members';
 
-export default function ChannelInviteForm({ onSuccess }: { onSuccess?: () => void }) {
+export default function ChannelInviteForm({
+  channelId,
+  onSuccess,
+}: {
+  channelId?: string;
+  onSuccess?: () => void;
+}) {
   const { data: session } = useSession();
   const formRef = useRef<HTMLFormElement>(null);
   const [state, formAction, isPending] = useActionState(channelInviteAction, null);
@@ -50,14 +55,10 @@ export default function ChannelInviteForm({ onSuccess }: { onSuccess?: () => voi
 
   const { currentChannel, currentWorkspace } = useWorkspaceStore();
 
-  const params = useParams();
-
-  const wsSlug = params?.wsSlug;
-  const chSlug = params?.chSlug;
   const queryClient = useQueryClient();
 
-  const fetchWorkspaceMember = async () => {
-    const response = await apiFetch(`/workspace/${wsSlug}/members`, {
+  const fetchWorkspaceMember = async (workspaceId?: string) => {
+    const response = await apiFetch(`/workspace/${workspaceId}/members`, {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -67,8 +68,8 @@ export default function ChannelInviteForm({ onSuccess }: { onSuccess?: () => voi
     return await response.json();
   };
 
-  const fetchChannelMember = async () => {
-    const response = await apiFetch(`/channel/${wsSlug}/members`, {
+  const fetchChannelMember = async (channelId?: string) => {
+    const response = await apiFetch(`/channel/${channelId}/members`, {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -78,16 +79,16 @@ export default function ChannelInviteForm({ onSuccess }: { onSuccess?: () => voi
     return await response.json();
   };
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['invitable-members', wsSlug, chSlug],
+    queryKey: ['invitable-members', currentWorkspace?.id, channelId ?? currentChannel?.id],
     queryFn: async () => {
       const [workspaceMembers, channelMembers] = await Promise.all([
         queryClient.fetchQuery({
-          queryKey: ['workspace-members', wsSlug],
-          queryFn: () => fetchWorkspaceMember(),
+          queryKey: ['workspace-members', currentWorkspace?.id],
+          queryFn: () => fetchWorkspaceMember(currentWorkspace?.id),
         }),
         queryClient.fetchQuery({
-          queryKey: ['channel-members', chSlug],
-          queryFn: () => fetchChannelMember(),
+          queryKey: ['channel-members', channelId ?? currentChannel?.id],
+          queryFn: () => fetchChannelMember(channelId ?? currentChannel?.id),
         }),
       ]);
       const channelMemberIds = new Set(channelMembers.map((m: ChannelMember) => m.userId));
@@ -97,7 +98,7 @@ export default function ChannelInviteForm({ onSuccess }: { onSuccess?: () => voi
         (member: WorkspaceMember) => !channelMemberIds.has(member?.userId),
       );
     },
-    enabled: !!(wsSlug && chSlug),
+    enabled: !!(currentWorkspace?.id && (channelId ?? currentChannel?.id)),
     staleTime: 2 * 60 * 1000, //
   });
 
@@ -160,7 +161,7 @@ export default function ChannelInviteForm({ onSuccess }: { onSuccess?: () => voi
       const member = members.find((m) => m.id === memberId);
       return {
         userId: member?.userId,
-        channelId: currentChannel.id,
+        channelId: channelId ?? currentChannel.id,
         role: selectedRole, // 선택된 역할
       };
     });
@@ -267,7 +268,13 @@ export default function ChannelInviteForm({ onSuccess }: { onSuccess?: () => voi
             )}
 
             <input type="text" name="workspaceId" value={currentWorkspace?.id} hidden readOnly />
-            <input type="text" name="channelId" value={currentChannel?.id} hidden readOnly />
+            <input
+              type="text"
+              name="channelId"
+              value={channelId ?? currentChannel?.id}
+              hidden
+              readOnly
+            />
 
             {isPending ? (
               <div style={{ textAlign: 'center', marginBottom: '10px' }}>로딩중...</div>
