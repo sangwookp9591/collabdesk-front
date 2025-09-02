@@ -23,7 +23,6 @@ export const WorkspaceInitializer: React.FC<{ children: React.ReactNode }> = ({ 
     isError: wsError,
   } = useWorkspaceInitBySlug(wsSlug);
 
-  console.log('workspaceData : ', workspaceData);
   // 채널 조회 (wsSlug 기반)
   const {
     data: channelsData,
