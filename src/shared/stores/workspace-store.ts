@@ -24,6 +24,9 @@ interface WorkspaceState {
   // Async Actions
   //   loadWorkspaces: () => Promise<void>;
 
+  // Getters
+  getCurrentWorkspaceId: () => string | null;
+  getCurrentChannelId: () => string | null;
   // Reset
   reset: () => void;
 }
@@ -49,6 +52,7 @@ export const useWorkspaceStore = create<WorkspaceState>()(
           set((state) => {
             state.currentWorkspace = workspace;
           }),
+
         setChannels: (channels) =>
           set((state) => {
             state.channels = channels;
@@ -57,6 +61,15 @@ export const useWorkspaceStore = create<WorkspaceState>()(
           set((state) => {
             state.currentChannel = channel;
           }),
+
+        getCurrentWorkspaceId() {
+          const { currentWorkspace } = get();
+          return currentWorkspace?.id ?? null;
+        },
+        getCurrentChannelId() {
+          const { currentChannel } = get();
+          return currentChannel?.id ?? null;
+        },
         // Reset State
         reset: () =>
           set((state) => {
