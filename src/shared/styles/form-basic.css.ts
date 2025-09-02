@@ -97,7 +97,7 @@ export const buttonStyle = style({
   cursor: 'pointer',
   fontWeight: 'bold',
   border: 'none',
-  transition: 'background-color 0.2s, transform 0.1s',
+  transition: 'background-color 0.5s ease, transform 0.1s ease',
   ':hover': {
     backgroundColor: `${themeTokens.colors.button.background}`,
     transform: 'translateY(-1px)',
@@ -105,6 +105,16 @@ export const buttonStyle = style({
   ':active': {
     transform: 'translateY(0)',
   },
+});
+export const disableButtonStyle = style({
+  padding: '10px',
+  backgroundColor: themeTokens.colors.button.backgroundDisable,
+  color: 'black',
+  textAlign: 'center',
+  borderRadius: '4px',
+  fontWeight: 'bold',
+  border: 'none',
+  transition: 'background-color 0.5s ease, transform 0.1s ease',
 });
 
 export const profileWrapper = style({
@@ -123,6 +133,16 @@ export const profileImage = style({
 });
 
 // 추가 유틸리티 스타일들
+export const deleteMessageStyle = style({
+  padding: '12px',
+  backgroundColor: themeTokens.colors.status.error.backgroundColor,
+  border: `1px solid ${themeTokens.colors.status.error.border}`,
+  borderRadius: '6px',
+  color: themeTokens.colors.text,
+  fontSize: '1rem',
+  marginBottom: '10px',
+});
+
 export const errorMessageStyle = style({
   padding: '12px',
   backgroundColor: themeTokens.colors.status.error.backgroundColor,
