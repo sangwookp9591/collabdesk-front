@@ -4,7 +4,6 @@ import { Avatar } from '@/entities/user';
 import * as styles from './message-item.css';
 import { format } from 'date-fns';
 import { Message } from '@/shared/types/message';
-import { themeTokens } from '@/shared/styles';
 
 type MessageItemProps = {
   message: Message;
