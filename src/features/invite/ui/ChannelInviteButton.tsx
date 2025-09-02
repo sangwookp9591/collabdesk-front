@@ -17,7 +17,7 @@ export function InviteMemberButton() {
       </button>
 
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <ChannelInviteForm />
+        <ChannelInviteForm onSuccess={() => setIsModalOpen(false)} />
       </Modal>
     </>
   );
