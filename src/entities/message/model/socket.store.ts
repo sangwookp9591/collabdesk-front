@@ -39,7 +39,7 @@ export const useSocketStore = create<SocketState>()(
 
       set({ connectionStatus: 'connecting', error: null });
 
-      const socket = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}/messages`, {
+      const socket = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}/wsg`, {
         auth: { token },
         transports: ['websocket'],
         forceNew: true, // 새 연결 강제
