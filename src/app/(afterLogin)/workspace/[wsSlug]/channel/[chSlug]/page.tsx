@@ -16,7 +16,6 @@ export default function Page() {
   const { data, isLoading, error } = useChannelMessages(chSlug, currentChannel?.id);
 
   const { sendMessage } = useSocketStore();
-  // };
 
   const handleSendMessaage = useCallback(
     (content: string) => {
