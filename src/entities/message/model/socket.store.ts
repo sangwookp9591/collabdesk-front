@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 import { io, Socket } from 'socket.io-client';
+import { evKeys } from './socket-event-keys';
 type SendMessage = {
   channelId: string;
   content: string;
@@ -45,7 +46,7 @@ export const useSocketStore = create<SocketState>()(
         forceNew: true, // 새 연결 강제
       });
 
-      socket.on('connect', () => {
+      socket.on(evKeys.CONNECT, () => {
         console.log('✅ 소켓 연결 성공! Socket ID:', socket.id);
         set({
           isConnected: true,
@@ -54,7 +55,12 @@ export const useSocketStore = create<SocketState>()(
         });
       });
 
-      socket.on('disconnect', (reason) => {
+      // 연결 성공 메시지 수신
+      socket.on(evKeys.CONNECTED, (data) => {
+        console.log('🎉 서버에서 연결 확인:', data);
+      });
+
+      socket.on(evKeys.DISCONNECTED, (reason) => {
         console.log('❌ 소켓 연결 끊김:', reason);
         set({
           isConnected: false,
@@ -63,7 +69,7 @@ export const useSocketStore = create<SocketState>()(
         });
       });
 
-      socket.on('connect_error', (error) => {
+      socket.on(evKeys.CONNECT_ERROR, (error) => {
         console.error('🔥 소켓 연결 오류:', error);
         set({
           isConnected: false,
@@ -72,18 +78,9 @@ export const useSocketStore = create<SocketState>()(
         });
       });
 
-      socket.on('error', (error) => {
+      socket.on(evKeys.ERROR, (error) => {
         console.error('🔥 소켓 에러:', error);
         set({ error: `소켓 에러: ${error.message}` });
-      });
-
-      // 연결 성공 메시지 수신
-      socket.on('connected', (data) => {
-        console.log('🎉 서버에서 연결 확인:', data);
-      });
-
-      socket.on('newMessage', (data) => {
-        console.log('data : ', data);
       });
 
       set({ socket });
@@ -91,7 +88,7 @@ export const useSocketStore = create<SocketState>()(
 
     disconnect: () => {
       const { socket } = get();
-      console.log('🔌 소켓 연결 해제');
+      // console.log('🔌 소켓 연결 해제 ');
 
       if (socket) {
         socket.disconnect();
@@ -107,34 +104,34 @@ export const useSocketStore = create<SocketState>()(
     joinWorkspace: (workspaceId: string) => {
       const { socket } = get();
       if (socket) {
-        socket.emit('joinWorkspace', { workspaceId });
+        socket.emit(evKeys.PUB_JOIN_WORKSPACE, { workspaceId });
         set({ currentWorkspace: workspaceId });
       }
     },
     joinChannel: (channelId: string) => {
-      const { socket, currentChannel } = get();
+      const { socket, currentWorkspace } = get();
       if (socket) {
         // 이전 채널에서 나가기
-        if (currentChannel) {
-          socket.emit('leaveChannel', { channelId: currentChannel });
-        }
+        // if (currentChannel) {
+        //   socket.emit('leaveChannel', { channelId: currentChannel });
+        // }
 
         // 새 채널 참가
-        socket.emit('joinChannel', { channelId });
+        socket.emit(evKeys.PUB_JOIN_CHANNEL, { channelId, workspaceId: currentWorkspace });
         set({ currentChannel: channelId });
       }
     },
     leaveChannel: (channelId: string) => {
       const { socket } = get();
       if (socket) {
-        socket.emit('leaveChannel', { channelId });
+        socket.emit(evKeys.PUB_LEAVE_CHANNEL, { channelId });
         set({ currentChannel: null });
       }
     },
     sendMessage: (message) => {
       const { socket } = get();
       if (socket) {
-        socket.emit('sendMessage', message);
+        socket.emit(evKeys.PUB_SEND_MESSAGE, message);
       }
     },
     getConnectionInfo: () => {
