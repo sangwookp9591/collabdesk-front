@@ -85,6 +85,18 @@ export const themeTokens = createThemeContract({
       background: null,
       backgroundDisable: null,
     },
+    status: {
+      success: {
+        border: null,
+        backgroundColor: null,
+        color: null,
+      },
+      error: {
+        border: null,
+        backgroundColor: null,
+        color: null,
+      },
+    },
   },
 
   // 그림자
@@ -180,6 +192,18 @@ export const darkTheme = createTheme(themeTokens, {
       background: '#1a8cff',
       backgroundDisable: '#616061',
     },
+    status: {
+      success: {
+        border: '#bbf7d0',
+        backgroundColor: '#f0fdf4',
+        color: '#15803d',
+      },
+      error: {
+        border: '#fecaca',
+        backgroundColor: '#fef2f2',
+        color: '#dc2626',
+      },
+    },
   },
 
   shadows: {
@@ -271,6 +295,18 @@ export const purpleTheme = createTheme(themeTokens, {
     button: {
       background: '#8b5cf6',
       backgroundDisable: '#9ca3af',
+    },
+    status: {
+      success: {
+        border: '#bbf7d0',
+        backgroundColor: '#f0fdf4',
+        color: '#15803d',
+      },
+      error: {
+        border: '#fecaca',
+        backgroundColor: '#fef2f2',
+        color: '#dc2626',
+      },
     },
   },
 
@@ -364,6 +400,18 @@ export const lightTheme = createTheme(themeTokens, {
       background: '#2563eb',
       backgroundDisable: '#94a3b8',
     },
+    status: {
+      success: {
+        border: '#bbf7d0',
+        backgroundColor: '#f0fdf4',
+        color: '#15803d',
+      },
+      error: {
+        border: '#fecaca',
+        backgroundColor: '#fef2f2',
+        color: '#dc2626',
+      },
+    },
   },
 
   shadows: {
@@ -456,6 +504,18 @@ export const aubergineTheme = createTheme(themeTokens, {
       background: '#4a154b',
       backgroundDisable: '#9ca3af',
     },
+    status: {
+      success: {
+        border: '#bbf7d0',
+        backgroundColor: '#f0fdf4',
+        color: '#15803d',
+      },
+      error: {
+        border: '#fecaca',
+        backgroundColor: '#fef2f2',
+        color: '#dc2626',
+      },
+    },
   },
 
   shadows: {
@@ -547,6 +607,18 @@ export const greenTheme = createTheme(themeTokens, {
     button: {
       background: '#15803d',
       backgroundDisable: '#9ca3af',
+    },
+    status: {
+      success: {
+        border: '#bbf7d0',
+        backgroundColor: '#f0fdf4',
+        color: '#15803d',
+      },
+      error: {
+        border: '#fecaca',
+        backgroundColor: '#fef2f2',
+        color: '#dc2626',
+      },
     },
   },
 
