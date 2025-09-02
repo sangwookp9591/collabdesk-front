@@ -1,11 +1,11 @@
 import { Channel } from './channel';
 import { User } from './user';
-type messageType = 'USER' | 'SYSTEM' | 'BOT';
+export type messageType = 'USER' | 'SYSTEM' | 'BOT';
 export interface Message {
   id: string;
   content: string;
   channelId: string;
-  userId: string;
+  userId?: string;
   parentId?: string;
   editedAt?: Date;
   isPinned: boolean;
