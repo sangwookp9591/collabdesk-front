@@ -27,11 +27,15 @@ export default function ChannelSectionNav({
   const [menuPos, setMenuPos] = useState({ top: 0, left: 0 });
 
   const openMenu = () => {
-    if (buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-      setMenuPos({ top: rect.top + window.scrollY - 30, left: rect.right + 5 - 100 }); // 버튼 오른쪽에 위치
+    if (menuOpen) {
+      setMenuOpen(false);
+    } else {
+      if (buttonRef.current) {
+        const rect = buttonRef.current.getBoundingClientRect();
+        setMenuPos({ top: rect.top + window.scrollY - 10, left: rect.right + 5 - 100 }); // 버튼 오른쪽에 위치
+      }
+      setMenuOpen(true);
     }
-    setMenuOpen(true);
   };
   return (
     <>
