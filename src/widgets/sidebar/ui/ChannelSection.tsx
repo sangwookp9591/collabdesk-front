@@ -1,6 +1,6 @@
 'use client';
 
-import { ChannelIcon } from '@/shared/ui';
+import { ChannelIcon, LockIcon } from '@/shared/ui';
 import * as styles from './sidebar-dropdown.css';
 import SidebarNavigationItem from './SidebarNavigationItem';
 import SidebarDropdown from './SidebarDropdown';
@@ -9,6 +9,8 @@ import { useMemo } from 'react';
 import { themeTokens } from '@/shared/styles';
 import { useWorkspaceStore } from '@/shared/stores/workspace-store';
 import { ChannelCreateButton } from '@/features/channel-create';
+import ChannelSectionNav from './ChannelSectionNav';
+import { channel } from 'diagnostics_channel';
 
 type ChannelSectionProps = {
   // channels: Omit<Channel, 'createdAt'>[];
@@ -36,25 +38,22 @@ export default function ChannelSection({ isOpen, onToggle }: ChannelSectionProps
       {isOpen ? (
         <div className={styles.wrapper}>
           {channels.map((channel) => {
+            console.log('channel : ', channel);
             const currentPath = `/workspace/${currentWorkspace?.slug}/channel/${channel.slug}`;
             const isActiveItem = `${pathname}` === currentPath;
+            const activeColor = isActiveItem
+              ? `${themeTokens.colors.primary}`
+              : `${themeTokens.colors.textSecondary}`;
             return (
-              <SidebarNavigationItem
-                key={channel.id}
-                href={currentPath}
-                label={channel?.name}
-                icon={
-                  <ChannelIcon
-                    size={20}
-                    color={
-                      isActiveItem
-                        ? `${themeTokens.colors.primary}`
-                        : `${themeTokens.colors.textSecondary}`
-                    }
-                  />
-                }
-                isActive={isActiveItem}
-              />
+              <>
+                <ChannelSectionNav
+                  key={channel?.id}
+                  channel={channel}
+                  path={currentPath}
+                  isActive={isActiveItem}
+                  activeColor={activeColor}
+                />
+              </>
             );
           })}
 
