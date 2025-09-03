@@ -29,11 +29,6 @@ const SideMenu = () => {
   return (
     <div className={styles.sideMenu}>
       <div className={styles.topSection}>
-        {/* <div className={styles.wsAvatar}>BLInk</div> */}
-        {/* <div>
-          <WorkspaceSwitcherModal />
-        </div> */}
-
         <div>
           <WorkspaceSwitcherModal />
         </div>
