@@ -30,11 +30,7 @@ export async function createWorkspaceAction(_: any, formData: FormData) {
       submitFormData.append('image', image);
     }
 
-    console.log('formData :', formData);
-    const result = await createWorkspace(submitFormData);
-
-    console.log('workspace : ', result);
-    const workspace = result?.data?.workspace;
+    const workspace = await createWorkspace(submitFormData);
     await updateLastWorkspace(workspace?.id);
 
     return { status: true, workspace };
