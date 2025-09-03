@@ -9,6 +9,12 @@ export class WorkspaceApi extends ApiBase {
     });
   }
 
+  async membersBySlug(wsSlug: string) {
+    return await this.fetchWithAuth(`/workspaces/${wsSlug}/members`, {
+      method: 'GET',
+    });
+  }
+
   async myMemberShip(wsSlug: string) {
     return await this.fetchWithAuth(`/workspaces/${wsSlug}/members/me`, {
       method: 'GET',
