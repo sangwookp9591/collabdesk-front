@@ -2,14 +2,15 @@ import { ApiBase } from '@/shared/api';
 import { Message } from '@/shared/types/message';
 
 class MessageApi extends ApiBase {
-  async getChannelMessages(slug: string) {
-    return await this.fetchWithAuth(`/channel/${slug}`, {
+  async getRecentMessages(wsSlug: string) {
+    return await this.fetchWithAuth(`/workspaces/${wsSlug}/messages/recent`, {
       method: 'GET',
     });
   }
 
   async getMessagesByChannel(
-    slug: string,
+    wsSlug: string,
+    chSlug: string,
     page?: number,
     take?: number,
   ): Promise<{ messages: Message[]; hasMore: boolean; total: number }> {
@@ -18,10 +19,13 @@ class MessageApi extends ApiBase {
       params.append('take', String(take));
     }
 
-    return await this.fetchWithAuth(`/channel/${slug}?${params.toString()}`, {
-      method: 'GET',
-    });
+    return await this.fetchWithAuth(
+      `/workspaces/${wsSlug}/channel/${chSlug}/messages?${params.toString()}`,
+      {
+        method: 'GET',
+      },
+    );
   }
 }
 
-export const messageApi = new MessageApi('message');
+export const messageApi = new MessageApi();
