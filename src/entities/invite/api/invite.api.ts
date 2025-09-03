@@ -21,6 +21,17 @@ class InviteApi extends ApiBase {
     });
   }
 
+  // 워크스페이스 참가
+  async workspaceInviteJoin(dto: { code: string }) {
+    return await this.fetchWithAuth(`/workspace/join`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dto),
+    });
+  }
+
   // 채널 초대
   async channelInvite(dto: {
     email: string;
