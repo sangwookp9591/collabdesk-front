@@ -7,6 +7,7 @@ type AvatarProps = {
   name: string;
   size: number;
   isActiveIcon?: boolean;
+  borderRadius?: string;
 };
 
 export function Avatar({
@@ -15,6 +16,7 @@ export function Avatar({
   name,
   size,
   isActiveIcon = true,
+  borderRadius = '20px',
 }: AvatarProps) {
   return (
     <div
@@ -27,7 +29,7 @@ export function Avatar({
           width={size}
           height={size}
           alt="user-profile"
-          style={{ borderRadius: '20px' }}
+          style={{ borderRadius: borderRadius }}
         />
       ) : (
         <div className={styles.userIcon}>{name && name[0].toUpperCase()}</div>
