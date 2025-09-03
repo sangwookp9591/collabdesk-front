@@ -1,5 +1,6 @@
-import { apiClient } from '../../../shared/api/base';
-import type { User, SignInData, UpsertUserData } from '../model/types';
+import { ApiBase } from '@/shared/api';
+import { apiClient } from '../../../../shared/api/base';
+import type { User, SignInData, UpsertUserData } from '../../model/types';
 
 export const userApi = {
   // 로그인 (Credentials용)
@@ -31,3 +32,5 @@ export const userApi = {
     return response.data;
   },
 };
+
+class UserApi extends ApiBase {}

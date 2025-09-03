@@ -6,9 +6,9 @@ import { usePathname } from 'next/navigation';
 import * as styles from './sidemenu.css';
 import { DirectMessageIcon, EllipsisIcon, HomeIcon } from '@/shared/ui';
 import { Avatar } from '@/entities/user';
-import { Avatar as WorkspaceAvatar } from '@/entities/workspace';
 import { useSession } from 'next-auth/react';
 import { useWorkspaceStore } from '@/shared/stores/workspace-store';
+import { WorkspaceSwitcherModal } from '@/features/workspace-switcher';
 
 const SideMenu = () => {
   const { data: session } = useSession();
@@ -29,12 +29,9 @@ const SideMenu = () => {
   return (
     <div className={styles.sideMenu}>
       <div className={styles.topSection}>
-        {/* <div className={styles.wsAvatar}>BLInk</div> */}
-        <WorkspaceAvatar
-          url={currentWorkspace?.imageUrl}
-          name={currentWorkspace?.name || ''}
-          size={48}
-        />
+        <div>
+          <WorkspaceSwitcherModal />
+        </div>
         <div className={styles.wsWrapper}>
           <Link
             href={`/workspace/${currentWorkspace?.slug}`}

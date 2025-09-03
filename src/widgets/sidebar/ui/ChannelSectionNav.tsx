@@ -69,10 +69,10 @@ export default function ChannelSectionNav({
             }}
           >
             <div className={styles.menuItem}>
-              <ChannelDeleteButton id={channel?.id} name={channel?.name} />
+              <ChannelDeleteButton slug={channel?.slug} name={channel?.name} />
             </div>
             <div className={styles.menuItem}>
-              <ChannelInviteMemberButton />
+              <ChannelInviteMemberButton slug={channel?.slug} />
             </div>
           </div>
         )}
