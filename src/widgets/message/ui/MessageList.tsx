@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 import * as styles from './message-list.css';
-import MessageItem from '@/entities/message/ui/MessageItem';
 import { Message } from '@/shared/types/message';
+import { MessageItem } from '@/entities/message';
 
 type MessageListProps = {
   messages: Message[];
