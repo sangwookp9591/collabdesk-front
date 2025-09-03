@@ -10,7 +10,7 @@ type MessageItemProps = {
   isSameUserWithinMinute: boolean;
 };
 
-export default function MessageItem({ message, isSameUserWithinMinute }: MessageItemProps) {
+export function MessageItem({ message, isSameUserWithinMinute }: MessageItemProps) {
   const currentDate = new Date(message.createdAt);
 
   return message?.messageType === 'USER' ? (
