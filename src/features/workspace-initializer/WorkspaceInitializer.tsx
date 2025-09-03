@@ -35,7 +35,7 @@ export const WorkspaceInitializer: React.FC<{ children: React.ReactNode }> = ({ 
     data: channelsData,
     isLoading: chLoading,
     isError: chError,
-  } = queries.useChannels(workspaceData?.currentWorkspace?.id);
+  } = queries.useChannels(workspaceData?.currentWorkspace?.slug);
 
   const {
     data: memberData,

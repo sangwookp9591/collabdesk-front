@@ -19,4 +19,23 @@ export const colorUtils = {
     const yiq = (r * 299 + g * 587 + b * 114) / 1000;
     return yiq >= 128 ? 'black' : 'white';
   },
+
+  stringToGradient(str: string) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    const hue1 = hash % 360;
+    const hue2 = (hue1 + 30) % 360; // +30도 차이
+
+    const color1 = `hsl(${hue1}, 60%, 70%)`;
+    const color2 = `hsl(${hue2}, 60%, 70%)`;
+
+    return {
+      color1,
+      color2,
+      gradient: `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`,
+    };
+  },
 };

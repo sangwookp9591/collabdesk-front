@@ -7,8 +7,7 @@ interface ChannelsPageProps {
 }
 
 async function ChannelsContent({ workspaceSlug }: { workspaceSlug: string }) {
-  console.log('channelContent!!!!');
-  const channels = await channelApi.getMyChannels(workspaceSlug);
+  const channels = await channelApi.setWorkspaceSlug(workspaceSlug).getMyChannels();
 
   return <MyChannels channels={channels} workspaceSlug={workspaceSlug} />;
 }

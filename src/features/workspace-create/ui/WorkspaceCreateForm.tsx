@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useActionState, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createWorkspaceAction } from '../model/createWorkspaceAction';
-import { useWorkspaceStore } from '@/shared/stores/workspace-store';
 
 export default function WorkspaceCreateForm() {
   const formRef = useRef<HTMLFormElement>(null);

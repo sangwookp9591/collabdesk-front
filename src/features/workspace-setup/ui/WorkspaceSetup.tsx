@@ -1,43 +1,29 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { InfoCard, InfoCardSkeleton } from '@/entities/workspace';
+import { InfoCard, InfoCardSkeleton, useUserWorkspaces } from '@/entities/workspace';
 import * as styles from './workspace-setup.css';
 import { PlusIcon } from '@/shared/ui';
 import { themeTokens } from '@/shared/styles';
-import { Session } from 'next-auth';
-import { redirect, useRouter } from 'next/navigation';
-import fetchUserWorkspaces from '../api/user-workspaces';
-import { updateLastWorkspace } from '@/shared/api';
+import { useRouter } from 'next/navigation';
 import { Workspace } from '@/shared/types/workspace';
+import { useUpdateLastWorkspace } from '@/entities/user';
 
-export default function WorkspaceSetup({ session }: { session: Session }) {
+export default function WorkspaceSetup() {
   const router = useRouter();
 
-  const [workspaces, setWorkspaces] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: workspaces, isLoading, error } = useUserWorkspaces();
 
-  useEffect(() => {
-    const fn = async () => {
-      if (session?.user) {
-        const res = await fetchUserWorkspaces(session?.user?.accessToken);
+  const { mutate: updateLastWorkspace, isPending } = useUpdateLastWorkspace(() => {
+    // 성공 후 처리 (예: 리다이렉트)
+    console.log('워크스페이스 업데이트 성공');
+  });
 
-        console.log('res : ', res);
-        if (res?.ok) {
-          const result = await res.json();
-          console.log('workspaces : ', result);
-          setWorkspaces(result?.data?.workspaces);
-          setIsLoading(false);
-        }
-      }
-    };
-
-    fn();
-  }, [session?.user]);
-
-  const onClick = async (workspace: Workspace, slug: string) => {
-    await updateLastWorkspace(workspace?.id);
-    redirect(`/workspace/${slug}`);
+  const onClick = (workspace: Workspace, slug: string) => {
+    updateLastWorkspace(workspace.id, {
+      onSuccess: () => {
+        router.replace(`/workspace/${slug}`);
+      },
+    });
   };
 
   return (

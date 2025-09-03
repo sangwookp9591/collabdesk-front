@@ -13,7 +13,7 @@ export function ChannelHeader() {
       <ChannelTitle />
       <div className={styles.buttonArea}>
         <ChannelInviteMemberButton />
-        <ChannelDeleteButton id={currentChannel?.id || ''} name={currentChannel?.name || ''} />
+        <ChannelDeleteButton slug={currentChannel?.slug || ''} name={currentChannel?.name || ''} />
       </div>
     </div>
   );

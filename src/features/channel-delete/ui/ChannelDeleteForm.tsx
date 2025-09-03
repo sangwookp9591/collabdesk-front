@@ -4,20 +4,23 @@ import { ChangeEvent, useState } from 'react';
 import * as styles from '@/shared/styles/form-basic.css';
 import { themeTokens } from '@/shared/styles';
 import { useDeleteChannel } from '@/entities/channel/model/channel.queries';
+import { useParams } from 'next/navigation';
 
 interface CreateFormProps {
-  id: string;
+  slug: string;
   name: string;
   onSuccess?: () => void;
 }
 
-export default function ChannelDeleteForm({ id, name, onSuccess }: CreateFormProps) {
+export default function ChannelDeleteForm({ slug, name, onSuccess }: CreateFormProps) {
   const [value, setValue] = useState('');
   const [isReady, setIsReady] = useState(false);
+  const params = useParams();
+  const wsSlug = params?.wsSlug as string;
 
-  const { mutate: deleteChannel, isPending } = useDeleteChannel(id, onSuccess);
+  const { mutate: deleteChannel, isPending } = useDeleteChannel(wsSlug, slug, onSuccess);
   const onSubmit = () => {
-    if (isReady) {
+    if (isReady && wsSlug) {
       deleteChannel();
     }
   };
@@ -56,7 +59,7 @@ export default function ChannelDeleteForm({ id, name, onSuccess }: CreateFormPro
             </strong>
             {` 을(를) 입력하세요`}
           </div>
-          <input name="channelId" value={id} hidden readOnly />
+          <input name="channelSlug" value={slug} hidden readOnly />
           <div
             className={isReady ? styles.buttonStyle : styles.disableButtonStyle}
             onClick={onSubmit}
