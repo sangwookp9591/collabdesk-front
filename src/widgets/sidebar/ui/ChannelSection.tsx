@@ -42,15 +42,13 @@ export default function ChannelSection({ isOpen, onToggle }: ChannelSectionProps
               ? `${themeTokens.colors.primary}`
               : `${themeTokens.colors.textSecondary}`;
             return (
-              <>
-                <ChannelSectionNav
-                  key={channel?.id}
-                  channel={channel}
-                  path={currentPath}
-                  isActive={isActiveItem}
-                  activeColor={activeColor}
-                />
-              </>
+              <ChannelSectionNav
+                key={channel?.id}
+                channel={channel}
+                path={currentPath}
+                isActive={isActiveItem}
+                activeColor={activeColor}
+              />
             );
           })}
 
