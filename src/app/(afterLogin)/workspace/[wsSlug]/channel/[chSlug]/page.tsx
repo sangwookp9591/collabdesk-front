@@ -11,9 +11,10 @@ import { useCallback } from 'react';
 export default function Page() {
   const params = useParams();
 
+  const wsSlug = params?.chSlug as string;
   const chSlug = params?.chSlug as string;
   const { currentChannel } = useWorkspaceStore();
-  const { data, isLoading, error } = useChannelMessages(chSlug, currentChannel?.id);
+  const { data, isLoading, error } = useChannelMessages(wsSlug, chSlug, currentChannel?.id);
 
   const { sendMessage } = useSocketStore();
 
