@@ -20,7 +20,7 @@ class MessageApi extends ApiBase {
     }
 
     return await this.fetchWithAuth(
-      `/workspaces/${wsSlug}/channel/${chSlug}/messages?${params.toString()}`,
+      `/workspaces/${wsSlug}/channels/${chSlug}/messages?${params.toString()}`,
       {
         method: 'GET',
       },
