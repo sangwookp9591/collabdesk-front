@@ -2,7 +2,7 @@ import { ApiBase } from '@/shared/api';
 
 class ChannelApi extends ApiBase {
   async findMany(workspaceId: string) {
-    return this.fetchWithAuth(`?workspaceId=${workspaceId}`, {
+    return await this.fetchWithAuth(`?workspaceId=${workspaceId}`, {
       method: 'GET',
       credentials: 'include',
     });
@@ -14,7 +14,7 @@ class ChannelApi extends ApiBase {
     description?: string;
     isPublic: boolean;
   }) {
-    return this.fetchWithAuth('', {
+    return await this.fetchWithAuth('', {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -23,7 +23,7 @@ class ChannelApi extends ApiBase {
   }
 
   async update(data: { name?: string; description?: string; isPublic?: boolean }) {
-    return this.fetchWithAuth('', {
+    return await this.fetchWithAuth('', {
       method: 'PATCH',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -32,9 +32,16 @@ class ChannelApi extends ApiBase {
   }
 
   async delete(id: string) {
-    return this.fetchWithAuth(`/${id}`, {
+    return await this.fetchWithAuth(`/${id}`, {
       method: 'DELETE',
       credentials: 'include',
+    });
+  }
+
+  async getMyChannels(workspaceSlug: string) {
+    console.log('url : ', `/my?workspaceSlug=${workspaceSlug}`);
+    return await this.fetchWithAuth(`/my?workspaceSlug=${workspaceSlug}`, {
+      method: 'GET',
     });
   }
 }
