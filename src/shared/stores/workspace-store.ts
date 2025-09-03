@@ -3,7 +3,7 @@
 import { create } from 'zustand';
 import { devtools, subscribeWithSelector } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
-import { Workspace } from '../types/workspace';
+import { Workspace, WorkspaceMember } from '../types/workspace';
 import { Channel } from '../types/channel';
 
 interface WorkspaceState {
@@ -11,6 +11,7 @@ interface WorkspaceState {
   isInitialized: boolean;
   workspaces: Workspace[];
   currentWorkspace: Workspace | null;
+  workspaceMembers: WorkspaceMember[];
   channels: Channel[];
   currentChannel: Channel | null;
 
@@ -18,6 +19,7 @@ interface WorkspaceState {
   setInitialized: (flag: boolean) => void;
   setWorkspaces: (workspaces: Workspace[]) => void;
   setCurrentWorkspace: (workspace: Workspace) => void;
+  setWorkspaceMembers: (workspaceMembers: WorkspaceMember[]) => void;
   setChannels: (channels: Channel[]) => void;
   setCurrentChannel: (channel: Channel | null) => void;
   addChannel: (chaanel: Channel) => void;
@@ -39,6 +41,7 @@ export const useWorkspaceStore = create<WorkspaceState>()(
       immer((set, get) => ({
         isInitialized: false,
         workspaces: [],
+        workspaceMembers: [],
         currentWorkspace: null,
         channels: [],
         currentChannel: null,
@@ -53,6 +56,10 @@ export const useWorkspaceStore = create<WorkspaceState>()(
         setCurrentWorkspace: (workspace) =>
           set((state) => {
             state.currentWorkspace = workspace;
+          }),
+        setWorkspaceMembers: (workspaceMembers) =>
+          set((state) => {
+            state.workspaceMembers = workspaceMembers;
           }),
 
         setChannels: (channels) =>
@@ -84,17 +91,25 @@ export const useWorkspaceStore = create<WorkspaceState>()(
           const { currentChannel } = get();
           return currentChannel?.id ?? null;
         },
+        getWorkspaceMember(userId: string) {
+          const { workspaceMembers } = get();
+          workspaceMembers.find((member) => member.userId === userId);
+          return workspaceMembers.find((member) => member.userId === userId);
+        },
         // Reset State
         reset: () =>
           set((state) => {
             state.isInitialized = false;
             state.workspaces = [];
             state.currentWorkspace = null;
+            state.workspaceMembers = [];
             state.channels = [];
             state.currentChannel = null;
           }),
       })),
     ),
-    { name: 'workspace-store' },
+    {
+      name: 'workspace-store',
+    },
   ),
 );
