@@ -1,9 +1,9 @@
 'use server';
 
-import { apiFetch } from '@/shared/api';
 import { getSession, validateDto } from '@/shared/lib';
 import { ChannelRole } from '@/shared/types/channel';
 import { ChannelInviteDto } from './channel-invite.dto';
+import { inviteApi } from '@/entities/invite';
 
 export async function channelInviteAction(_: any, formData: FormData) {
   const session = await getSession();
@@ -23,34 +23,26 @@ export async function channelInviteAction(_: any, formData: FormData) {
     channelRole,
   });
 
-  console.log('validation : ', validation);
   if (!validation.status) {
     return validation;
   }
 
-  console.log('요청');
-  const res = await apiFetch(`/channel/invite`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${session.user?.accessToken}`,
-    },
-    body: JSON.stringify({ email, workspaceId, channelId, channelRole }),
-  });
-
-  console.log('res : ', res);
-  if (!res?.ok) {
+  try {
+    const result = await inviteApi.channelInvite({
+      email: email!,
+      workspaceId: workspaceId!,
+      channelId: channelId!,
+      channelRole,
+    });
+    return {
+      status: true,
+      error: '',
+      data: result,
+    };
+  } catch (error: any) {
     return {
       status: false,
-      error: `${res.statusText}`,
+      error: error.message,
     };
   }
-
-  const result = await res.json();
-  return {
-    status: true,
-    error: '',
-    data: result,
-  };
 }
