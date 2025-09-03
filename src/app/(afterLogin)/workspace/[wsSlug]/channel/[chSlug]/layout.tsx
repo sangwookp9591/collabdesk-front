@@ -1,0 +1,59 @@
+'use client';
+
+import ChannelInitializer from '@/features/channel-initializer/ChannelInitializer';
+import * as styles from './layout.css';
+import { MessageIcon, PageIcon, PlusIcon } from '@/shared/ui';
+import { TabNavigation } from '@/widgets/tab-navigation';
+import { ReactNode } from 'react';
+import { ChannelHeader } from '@/widgets/channel-header';
+import { usePathname } from 'next/navigation';
+
+export default function Layout({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  const isChannelDetail = /\/channel\/[^/]+$/.test(pathname);
+
+  if (!isChannelDetail) {
+    // 채널 상세라면 그냥 children만 노출
+    return null;
+  }
+  // 아이콘과 배지가 있는 탭
+  const tabsWithFeatures = [
+    {
+      label: '메세지',
+      href: '/workspace/1/channel/1',
+      icon: <MessageIcon size={16} color="" />,
+      exact: true,
+    },
+    {
+      label: '캔버스 추가',
+      href: '/workspace/1/channel/2',
+      icon: <PageIcon size={16} color="" />,
+      badge: 5,
+    },
+    {
+      label: '',
+      href: '/workspace/1/channel/3',
+      icon: <PlusIcon size={16} color="" />,
+    },
+    {
+      label: '설정',
+      href: '/workspace/1/channel/4',
+      icon: <PlusIcon size={16} color="" />,
+      disabled: true,
+    },
+  ];
+
+  return (
+    <>
+      <ChannelInitializer>
+        <div className={styles.chatPage}>
+          {/* Top Bar */}
+          <ChannelHeader />
+          <TabNavigation tabs={tabsWithFeatures} variant="underline" size="sm" />
+
+          {children}
+        </div>
+      </ChannelInitializer>
+    </>
+  );
+}

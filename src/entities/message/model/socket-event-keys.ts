@@ -1,0 +1,16 @@
+export const EVENT_KEYS = {
+  CONNECT: 'connect',
+  CONNECTED: 'connected',
+  DISCONNECTED: 'disconnected',
+  ERROR: 'error',
+  CONNECT_ERROR: 'connect_error',
+  PUB_JOIN_WORKSPACE: 'joinWorkspace',
+  PUB_JOIN_CHANNEL: 'joinWorkspace',
+  PUB_LEAVE_CHANNEL: 'leaveChannel',
+  PUB_SEND_MESSAGE: 'sendMessage',
+  SUB_CHANNEL_CREATED: 'channelCreated',
+  SUB_CHANNEL_UPDATED: 'channelUpdated',
+  SUB_CHANNEL_DELETED: 'channelDeleted',
+  SUB_CHANNEL_LEAVED: 'channelLeaved',
+  SUB_NEW_MESSAGE: 'newMessage',
+};

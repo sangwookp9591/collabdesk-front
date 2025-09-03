@@ -6,6 +6,7 @@ interface SidebarNavigationItemProps {
   icon: React.ReactNode;
   label: string;
   isActive?: boolean;
+  children?: React.ReactNode;
 }
 
 export default function SidebarNavigationItem({
@@ -13,11 +14,17 @@ export default function SidebarNavigationItem({
   icon,
   label,
   isActive,
+  children,
 }: SidebarNavigationItemProps) {
   return (
-    <Link href={href} className={isActive ? styles.activeItem : styles.item}>
-      {icon}
-      {label}
-    </Link>
+    <>
+      <div className={isActive ? styles.activeItem : styles.item}>
+        <Link href={href} className={isActive ? styles.activeLinkStyle : styles.linkStyle}>
+          {icon}
+          {label}
+        </Link>
+        {children}
+      </div>
+    </>
   );
 }

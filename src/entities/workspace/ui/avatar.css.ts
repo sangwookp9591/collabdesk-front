@@ -19,7 +19,7 @@ export const avatarSize = style({
 export const workspaceIcon = style([
   avatarSize,
   {
-    border: '1px solid #e0e0e0',
+    // border: '1px solid #e0e0e0',
 
     fontSize: '1rem',
   },

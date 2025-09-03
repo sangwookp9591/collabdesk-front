@@ -1,6 +1,5 @@
 'use client';
 
-import { userApi } from '@/entities/user/api/userApi';
 import { useEffect, useState } from 'react';
 import { InfoCard, InfoCardSkeleton } from '@/entities/workspace';
 import * as styles from './workspace-setup.css';
@@ -8,6 +7,9 @@ import { PlusIcon } from '@/shared/ui';
 import { themeTokens } from '@/shared/styles';
 import { Session } from 'next-auth';
 import { redirect, useRouter } from 'next/navigation';
+import fetchUserWorkspaces from '../api/user-workspaces';
+import { updateLastWorkspace } from '@/shared/api';
+import { Workspace } from '@/shared/types/workspace';
 
 export default function WorkspaceSetup({ session }: { session: Session }) {
   const router = useRouter();
@@ -17,16 +19,25 @@ export default function WorkspaceSetup({ session }: { session: Session }) {
 
   useEffect(() => {
     const fn = async () => {
-      const workspaces = await userApi.getUserWorkspaces(session.user.id);
-      console.log('workspaces : ', workspaces);
-      setWorkspaces(workspaces?.workspaces);
-      setIsLoading(false);
+      if (session?.user) {
+        const res = await fetchUserWorkspaces(session?.user?.accessToken);
+
+        console.log('res : ', res);
+        if (res?.ok) {
+          const result = await res.json();
+          console.log('workspaces : ', result);
+          setWorkspaces(result?.data?.workspaces);
+          setIsLoading(false);
+        }
+      }
     };
+
     fn();
   }, [session?.user]);
 
-  const onClick = (workspaceId: string) => {
-    redirect(`/workspace/${workspaceId}`);
+  const onClick = async (workspace: Workspace, slug: string) => {
+    await updateLastWorkspace(workspace?.id);
+    redirect(`/workspace/${slug}`);
   };
 
   return (
@@ -45,12 +56,13 @@ export default function WorkspaceSetup({ session }: { session: Session }) {
             ))}
           </>
         ) : (
+          workspaces?.length > 0 &&
           workspaces?.map((item: any) => (
             <InfoCard
-              key={item?.id}
+              key={item?.workspace?.id}
               className={styles.workspaceContainer}
-              workspace={item}
-              onClick={() => onClick(item?.id)}
+              workspace={item?.workspace}
+              onClick={onClick}
             />
           ))
         )}

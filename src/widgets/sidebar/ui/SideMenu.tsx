@@ -6,12 +6,16 @@ import { usePathname } from 'next/navigation';
 import * as styles from './sidemenu.css';
 import { DirectMessageIcon, EllipsisIcon, HomeIcon } from '@/shared/ui';
 import { Avatar } from '@/entities/user';
+import { Avatar as WorkspaceAvatar } from '@/entities/workspace';
+import { useSession } from 'next-auth/react';
+import { useWorkspaceStore } from '@/shared/stores/workspace-store';
 
 const SideMenu = () => {
-  const pathname = usePathname(); // 현재 URL 가져오기
-  const isActive = true;
+  const { data: session } = useSession();
+  const { currentWorkspace } = useWorkspaceStore();
 
-  console.log('pathname : ', pathname);
+  const pathname = usePathname(); // 현재 URL 가져오기
+
   const path = useMemo(() => {
     if (!pathname.includes('dm') && !pathname.includes('page')) {
       return '/';
@@ -25,14 +29,19 @@ const SideMenu = () => {
   return (
     <div className={styles.sideMenu}>
       <div className={styles.topSection}>
-        <div className={styles.wsAvatar}>BLInk</div>
+        {/* <div className={styles.wsAvatar}>BLInk</div> */}
+        <WorkspaceAvatar
+          url={currentWorkspace?.imageUrl}
+          name={currentWorkspace?.name || ''}
+          size={48}
+        />
         <div className={styles.wsWrapper}>
           <Link
-            href="/workspace/1/channel/1"
+            href={`/workspace/${currentWorkspace?.slug}`}
             className={styles.workspace({ active: path === '/' })}
           >
             <HomeIcon size={20} />
-            SW
+            Home
           </Link>
 
           <Link href="/workspace/1/dm/1" className={styles.workspace({ active: path === '/dm' })}>
@@ -51,9 +60,9 @@ const SideMenu = () => {
 
       <div className={styles.BottomSection}>
         <Avatar
-          isActive={isActive}
-          profileImageUrl={'/images/default_profile.png'}
-          name={'상욱'}
+          isActive={session?.user?.status === 'ONLINE'}
+          profileImageUrl={session?.user?.profileImageUrl}
+          name={session?.user?.name || ''}
           size={48}
         />
       </div>

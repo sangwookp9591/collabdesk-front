@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { getSession } from '@/shared/lib';
+import { apiFetch } from '@/shared/api';
 
 export default async function HomePage() {
   const session = await getSession();
@@ -9,13 +10,21 @@ export default async function HomePage() {
     redirect('/signin');
   }
 
-  // 사용자의 마지막 워크스페이스나 기본 워크스페이스로 리다이렉트
-  // const lastWorkspace = await getUserLastWorkspace(user.id);
-  // const lastWorkspace = { id: 1 };
-  const lastWorkspace = null;
+  const res = await apiFetch('/user/lastworkspace', {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      Authorization: `Bearer ${session.user?.accessToken}`,
+    },
+  });
+  if (!res.ok) {
+    redirect('/signin');
+  }
+  const result = await res.json();
+  console.log('lastWorkspace : ', result);
 
-  if (lastWorkspace) {
-    redirect(`/workspace/${lastWorkspace.id}`);
+  if (result.data?.lastActiveWorkspaceId) {
+    redirect(`/workspace/${result?.data?.workspaceSlug}`);
   }
 
   // 워크스페이스가 없으면 온보딩으로

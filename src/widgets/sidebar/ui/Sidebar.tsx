@@ -10,28 +10,8 @@ import {
   SettingsIcon,
 } from '@/shared/ui';
 import ChannelSection from './ChannelSection';
-import { Channel } from '@/entities/channel/model/types';
 import { themeTokens } from '@/shared/styles/theme.css';
-
-type ChannelWithoutCreateAt = Omit<Channel, 'createdAt'>;
-
-const TestChannels: ChannelWithoutCreateAt[] = [
-  {
-    id: 1,
-    name: '채널',
-    workspaceId: 1,
-  },
-  {
-    id: 2,
-    name: '새 채널',
-    workspaceId: 1,
-  },
-  {
-    id: 3,
-    name: '뉴 채널',
-    workspaceId: 1,
-  },
-];
+import { MemberSection } from './MemberSection';
 
 type DropDown = {
   channel: boolean;
@@ -167,13 +147,12 @@ export default function Sidebar() {
         }}
       >
         <ChannelSection
-          channels={TestChannels}
           isOpen={activeDropDowns?.channel}
           onToggle={() => toggleDropdown('channel')}
           onAddChannel={() => {}}
         />
       </section>
-      {/* 드래그용 Resizer */}
+      <MemberSection />
       <div className={styles.resizerStyle} onMouseDown={onMouseDown} />
     </div>
   );

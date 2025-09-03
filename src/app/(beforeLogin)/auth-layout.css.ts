@@ -5,6 +5,12 @@ export const container = style({
   minHeight: '100vh',
   fontFamily: 'sans-serif',
   backgroundColor: '#f8f8f8',
+
+  '@media': {
+    'screen and (max-width: 768px)': {
+      flexDirection: 'column',
+    },
+  },
 });
 
 export const leftSection = style({
@@ -16,6 +22,12 @@ export const leftSection = style({
   alignItems: 'center',
   fontSize: '2rem',
   fontWeight: 'bold',
+
+  '@media': {
+    'screen and (max-width: 768px)': {
+      flex: 0.5,
+    },
+  },
 });
 
 export const rightSection = style({

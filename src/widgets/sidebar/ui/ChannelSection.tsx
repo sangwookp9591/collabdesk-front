@@ -1,32 +1,34 @@
 'use client';
 
-import { ChannelIcon, PlusIcon } from '@/shared/ui';
+import { ChannelIcon } from '@/shared/ui';
 import * as styles from './sidebar-dropdown.css';
-import SidebarNavigationItem from './SidebarNavigationItem';
-import { Channel } from '@/entities/channel/model/types';
 import SidebarDropdown from './SidebarDropdown';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import { themeTokens } from '@/shared/styles';
+import { useWorkspaceStore } from '@/shared/stores/workspace-store';
+import { ChannelCreateButton } from '@/features/channel-create';
+import ChannelSectionNav from './ChannelSectionNav';
 
 type ChannelSectionProps = {
-  channels: Omit<Channel, 'createdAt'>[];
+  // channels: Omit<Channel, 'createdAt'>[];
   isOpen: boolean;
   onToggle: () => void;
   onAddChannel: () => void;
 };
 
-export default function ChannelSection({
-  channels,
-  isOpen,
-  onToggle,
-  onAddChannel,
-}: ChannelSectionProps) {
+export default function ChannelSection({ isOpen, onToggle }: ChannelSectionProps) {
   const pathname = usePathname();
 
+  const channels = useWorkspaceStore((state) => state.channels);
+  const currentWorkspace = useWorkspaceStore((state) => state.currentWorkspace);
+
   const currentChannel = useMemo(
-    () => channels.find((channel) => pathname === `/workspace/1/channel/${channel.id}`),
-    [channels, pathname],
+    () =>
+      channels?.find(
+        (channel) => pathname === `/workspace/${currentWorkspace?.slug}/channel/${channel.slug}`,
+      ),
+    [channels, pathname, currentWorkspace],
   );
 
   return (
@@ -34,34 +36,23 @@ export default function ChannelSection({
       {isOpen ? (
         <div className={styles.wrapper}>
           {channels.map((channel) => {
-            const currentPath = `/workspace/${channel?.workspaceId}/channel/${channel.id}`;
+            const currentPath = `/workspace/${currentWorkspace?.slug}/channel/${channel.slug}`;
             const isActiveItem = `${pathname}` === currentPath;
+            const activeColor = isActiveItem
+              ? `${themeTokens.colors.primary}`
+              : `${themeTokens.colors.textSecondary}`;
             return (
-              <SidebarNavigationItem
-                key={channel.id}
-                href={currentPath}
-                label={channel?.name}
-                icon={
-                  <ChannelIcon
-                    size={20}
-                    color={
-                      isActiveItem
-                        ? `${themeTokens.colors.primary}`
-                        : `${themeTokens.colors.textSecondary}`
-                    }
-                  />
-                }
+              <ChannelSectionNav
+                key={channel?.id}
+                channel={channel}
+                path={currentPath}
                 isActive={isActiveItem}
+                activeColor={activeColor}
               />
             );
           })}
 
-          <div className={styles.addRow}>
-            <div className={styles.plusBox} onClick={onAddChannel}>
-              <PlusIcon size={15} />
-            </div>
-            채널 추가
-          </div>
+          <ChannelCreateButton />
         </div>
       ) : (
         <div>

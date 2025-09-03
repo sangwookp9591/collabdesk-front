@@ -9,7 +9,7 @@ type AvatarProps = {
 };
 
 export function Avatar({ url, name, size }: AvatarProps) {
-  const bgColor = colorUtils.stringToColor(name);
+  const bgColor = colorUtils.stringToColor(name || '');
   return (
     <div
       className={url ? styles.imageIcon : styles.workspaceIcon}
@@ -34,7 +34,7 @@ export function Avatar({ url, name, size }: AvatarProps) {
             color: colorUtils.getContrastColor(bgColor),
           }}
         >
-          {name[0].toUpperCase()}
+          {name && name[0].toUpperCase()}
         </div>
       )}
     </div>

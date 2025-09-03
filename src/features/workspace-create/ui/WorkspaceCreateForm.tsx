@@ -3,8 +3,9 @@
 import { buttonStyle, inputStyle, labelStyle } from '@/shared/styles/form-basic.css';
 import Image from 'next/image';
 import { useActionState, useEffect, useRef, useState } from 'react';
-import { createWorkspaceAction } from '../createWorkspace';
 import { useRouter } from 'next/navigation';
+import { createWorkspaceAction } from '../model/createWorkspaceAction';
+import { useWorkspaceStore } from '@/shared/stores/workspace-store';
 
 export default function WorkspaceCreateForm() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -32,7 +33,7 @@ export default function WorkspaceCreateForm() {
 
   useEffect(() => {
     if (state?.status) {
-      router.replace(`/workspace/${state.workspace?.id}`);
+      router.replace(`/workspace/${state.workspace?.slug}`);
     }
   }, [state?.status]);
 
@@ -104,12 +105,6 @@ export default function WorkspaceCreateForm() {
           Name
         </label>
         <input className={inputStyle} name="name" />
-
-        <label className={labelStyle} htmlFor="slug">
-          Slug
-        </label>
-        <input className={inputStyle} name="slug" />
-
         {/* 버튼 */}
         {isPending ? (
           <div style={{ textAlign: 'center', marginBottom: '10px' }}>로딩중...</div>

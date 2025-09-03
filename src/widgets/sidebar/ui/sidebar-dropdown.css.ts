@@ -1,12 +1,24 @@
 import { themeTokens } from '@/shared/styles/theme.css';
-import { style } from '@vanilla-extract/css';
+import { keyframes, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
+
+const slideDown = keyframes({
+  from: {
+    opacity: 0,
+    transform: 'translateY(-10px)',
+  },
+  to: {
+    opacity: 1,
+    transform: 'translateY(0)',
+  },
+});
 
 export const wrapper = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '10px',
   color: themeTokens.colors.textSecondary,
+  animation: `${slideDown} 0.2s ease-out`,
 });
 
 export const title = style({

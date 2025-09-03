@@ -85,6 +85,18 @@ export const themeTokens = createThemeContract({
       background: null,
       backgroundDisable: null,
     },
+    status: {
+      success: {
+        border: null,
+        backgroundColor: null,
+        color: null,
+      },
+      error: {
+        border: null,
+        backgroundColor: null,
+        color: null,
+      },
+    },
   },
 
   // 그림자
@@ -180,6 +192,18 @@ export const darkTheme = createTheme(themeTokens, {
       background: '#1a8cff',
       backgroundDisable: '#616061',
     },
+    status: {
+      success: {
+        border: '#bbf7d0',
+        backgroundColor: '#f0fdf4',
+        color: '#15803d',
+      },
+      error: {
+        border: '#fecaca',
+        backgroundColor: '#fef2f2',
+        color: '#dc2626',
+      },
+    },
   },
 
   shadows: {
@@ -271,6 +295,18 @@ export const purpleTheme = createTheme(themeTokens, {
     button: {
       background: '#8b5cf6',
       backgroundDisable: '#9ca3af',
+    },
+    status: {
+      success: {
+        border: '#bbf7d0',
+        backgroundColor: '#f0fdf4',
+        color: '#15803d',
+      },
+      error: {
+        border: '#fecaca',
+        backgroundColor: '#fef2f2',
+        color: '#dc2626',
+      },
     },
   },
 
@@ -364,6 +400,18 @@ export const lightTheme = createTheme(themeTokens, {
       background: '#2563eb',
       backgroundDisable: '#94a3b8',
     },
+    status: {
+      success: {
+        border: '#bbf7d0',
+        backgroundColor: '#f0fdf4',
+        color: '#15803d',
+      },
+      error: {
+        border: '#fecaca',
+        backgroundColor: '#fef2f2',
+        color: '#dc2626',
+      },
+    },
   },
 
   shadows: {
@@ -391,7 +439,7 @@ export const aubergineTheme = createTheme(themeTokens, {
     background: '#ffffff',
     backgroundSecondary: '#4a154b',
     backgroundTertiary: '#611f69',
-    backgroundHover: '#fce7f3',
+    backgroundHover: 'rgba(240, 240, 240, 0.5)',
     backgroundActive: 'rgba(74, 21, 75, 0.08)',
 
     text: '#1f2937',
@@ -455,6 +503,18 @@ export const aubergineTheme = createTheme(themeTokens, {
     button: {
       background: '#4a154b',
       backgroundDisable: '#9ca3af',
+    },
+    status: {
+      success: {
+        border: '#bbf7d0',
+        backgroundColor: '#f0fdf4',
+        color: '#15803d',
+      },
+      error: {
+        border: '#fecaca',
+        backgroundColor: '#fef2f2',
+        color: '#dc2626',
+      },
     },
   },
 
@@ -547,6 +607,18 @@ export const greenTheme = createTheme(themeTokens, {
     button: {
       background: '#15803d',
       backgroundDisable: '#9ca3af',
+    },
+    status: {
+      success: {
+        border: '#bbf7d0',
+        backgroundColor: '#f0fdf4',
+        color: '#15803d',
+      },
+      error: {
+        border: '#fecaca',
+        backgroundColor: '#fef2f2',
+        color: '#dc2626',
+      },
     },
   },
 

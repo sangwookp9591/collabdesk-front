@@ -20,7 +20,13 @@ export default function LoginForm() {
     });
 
     if (res?.ok) {
-      redirect('/');
+      const invitePath = localStorage.getItem('invite-path');
+      if (!invitePath) {
+        redirect('/');
+      } else {
+        localStorage.removeItem('invite-path');
+        redirect(invitePath);
+      }
     } else {
       setError(res?.error || '로그인 실패');
     }

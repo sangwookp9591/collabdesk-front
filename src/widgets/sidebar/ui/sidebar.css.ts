@@ -9,6 +9,7 @@ export const sidebarStyle = style({
   position: 'relative',
   padding: '15px 10px',
   gap: '10px',
+  width: '100%',
 });
 
 export const resizerStyle = style({

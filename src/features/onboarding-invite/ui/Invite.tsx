@@ -5,12 +5,14 @@ import { ArrowRightIcon, PlusIcon } from '@/shared/ui';
 import * as styles from './invite.css';
 import { useRouter } from 'next/navigation';
 import { themeTokens } from '@/shared/styles';
+import { errorMessageStyle } from '@/shared/styles/form-basic.css';
 
 interface InviteProps {
   initialCode?: string;
+  error?: string;
 }
 
-export function Invite({ initialCode = '' }: InviteProps) {
+export function Invite({ initialCode = '', error }: InviteProps) {
   const [values, setValues] = useState(Array(6).fill(''));
   const inputsRef = useRef<HTMLInputElement[]>([]);
   const router = useRouter();
@@ -114,6 +116,7 @@ export function Invite({ initialCode = '' }: InviteProps) {
           </div>
         </div>
       </div>
+      <div className={errorMessageStyle}>{error}</div>
     </div>
   );
 }
