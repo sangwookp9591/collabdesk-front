@@ -31,19 +31,27 @@ class ChannelApi extends ApiBase {
     });
   }
 
-  async delete(id: string) {
-    return await this.fetchWithAuth(`/${id}`, {
+  async delete(slug: string) {
+    return await this.fetchWithAuth(`/${slug}`, {
       method: 'DELETE',
       credentials: 'include',
     });
   }
 
   async getMyChannels(workspaceSlug: string) {
-    console.log('url : ', `/my?workspaceSlug=${workspaceSlug}`);
-    return await this.fetchWithAuth(`/my?workspaceSlug=${workspaceSlug}`, {
+    return await this.fetchWithAuth(`/workspaces/${workspaceSlug}/channels/my`, {
       method: 'GET',
     });
   }
+
+  async membersBySlug(workspaceSlug: string, channelSlug: string) {
+    return await this.fetchWithAuth(
+      `/workspaces/${workspaceSlug}/channels/${channelSlug}/members`,
+      {
+        method: 'GET',
+      },
+    );
+  }
 }
 
-export const channelApi = new ChannelApi('channel');
+export const channelApi = new ChannelApi('');

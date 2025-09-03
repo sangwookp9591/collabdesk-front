@@ -6,10 +6,10 @@ export class ChannelInviteDto {
   email!: string;
 
   @IsNotEmpty()
-  workspaceId!: string;
+  workspaceSlug!: string;
 
   @IsNotEmpty()
-  channelId!: string;
+  channelSlug!: string;
 
   @IsNotEmpty()
   channelRole!: string;

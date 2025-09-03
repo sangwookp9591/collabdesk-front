@@ -3,14 +3,15 @@
 import { useActionState, useEffect, useRef, useState } from 'react';
 import { buttonStyle, inputStyle, labelStyle, selectStyle } from '@/shared/styles/form-basic.css';
 import * as styles from './channelInviteForm.css';
-import { ChannelMember, ChannelRole } from '@/shared/types/channel';
+import { ChannelRole } from '@/shared/types/channel';
 import { useWorkspaceStore } from '@/shared/stores/workspace-store';
 import { channelInviteAction } from '../model/channel-invite-action';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import { apiFetch } from '@/shared/api';
 import { WorkspaceMember } from '@/shared/types/workspace';
 import { Avatar } from '@/entities/user';
+import { useInvitableMembers } from '../model/invitable-member.queries';
+import { inviteApi } from '@/entities/invite';
 
 interface RoleOption {
   value: ChannelRole;
@@ -34,10 +35,10 @@ const roleOptions: RoleOption[] = [
 type InviteMode = 'email' | 'members';
 
 export default function ChannelInviteForm({
-  channelId,
+  channelSlug,
   onSuccess,
 }: {
-  channelId?: string;
+  channelSlug?: string;
   onSuccess?: () => void;
 }) {
   const { data: session } = useSession();
@@ -55,52 +56,10 @@ export default function ChannelInviteForm({
 
   const { currentChannel, currentWorkspace } = useWorkspaceStore();
 
-  const queryClient = useQueryClient();
-
-  const fetchWorkspaceMember = async (workspaceId?: string) => {
-    const response = await apiFetch(`/workspace/${workspaceId}/members`, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        Authorization: `Bearer ${session?.user?.accessToken}`,
-      },
-    });
-    return await response.json();
-  };
-
-  const fetchChannelMember = async (channelId?: string) => {
-    const response = await apiFetch(`/channel/${channelId}/members`, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        Authorization: `Bearer ${session?.user?.accessToken}`,
-      },
-    });
-    return await response.json();
-  };
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['invitable-members', currentWorkspace?.id, channelId ?? currentChannel?.id],
-    queryFn: async () => {
-      const [workspaceMembers, channelMembers] = await Promise.all([
-        queryClient.fetchQuery({
-          queryKey: ['workspace-members', currentWorkspace?.id],
-          queryFn: () => fetchWorkspaceMember(currentWorkspace?.id),
-        }),
-        queryClient.fetchQuery({
-          queryKey: ['channel-members', channelId ?? currentChannel?.id],
-          queryFn: () => fetchChannelMember(channelId ?? currentChannel?.id),
-        }),
-      ]);
-      const channelMemberIds = new Set(channelMembers.map((m: ChannelMember) => m.userId));
-
-      console.log('channelMemberIds: ', channelMemberIds);
-      return workspaceMembers.filter(
-        (member: WorkspaceMember) => !channelMemberIds.has(member?.userId),
-      );
-    },
-    enabled: !!(currentWorkspace?.id && (channelId ?? currentChannel?.id)),
-    staleTime: 2 * 60 * 1000, //
-  });
+  const { data, isLoading, isError } = useInvitableMembers(
+    currentWorkspace?.slug,
+    channelSlug ?? currentChannel?.slug,
+  );
 
   console.log('data : ', data);
   // 폼 제출
@@ -161,26 +120,19 @@ export default function ChannelInviteForm({
       const member = members.find((m) => m.id === memberId);
       return {
         userId: member?.userId,
-        channelId: channelId ?? currentChannel.id,
         role: selectedRole, // 선택된 역할
       };
     });
 
-    console.log('membersDto : ', membersDto);
-    const res = await apiFetch('/channel/invite/members', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session?.user?.accessToken}`,
-      },
-      body: JSON.stringify({ members: membersDto }),
-    });
+    try {
+      const res = await inviteApi.exisitingMembersInvite({
+        members: membersDto,
+        channelSlug: channelSlug ?? currentChannel.slug,
+      });
 
-    if (res?.ok) {
       setMessage('초대에 성공했습니다.');
       onSuccess?.();
-    } else {
+    } catch (error: any) {
       setMessage('초대에 실패했습니다.');
     }
   };
@@ -267,11 +219,17 @@ export default function ChannelInviteForm({
               </div>
             )}
 
-            <input type="text" name="workspaceId" value={currentWorkspace?.id} hidden readOnly />
             <input
               type="text"
-              name="channelId"
-              value={channelId ?? currentChannel?.id}
+              name="workspaceSlug"
+              value={currentWorkspace?.slug}
+              hidden
+              readOnly
+            />
+            <input
+              type="text"
+              name="channelSlug"
+              value={channelSlug ?? currentChannel?.slug}
               hidden
               readOnly
             />

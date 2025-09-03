@@ -24,11 +24,27 @@ class InviteApi extends ApiBase {
   // 채널 초대
   async channelInvite(dto: {
     email: string;
-    workspaceId: string;
-    channelId: string;
+    workspaceSlug: string;
+    channelSlug: string;
     channelRole: ChannelRole;
   }) {
     return await this.fetchWithAuth(`/channel`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dto),
+    });
+  }
+
+  async exisitingMembersInvite(dto: {
+    members: {
+      userId: string | undefined;
+      role: ChannelRole;
+    }[];
+    channelSlug: string;
+  }) {
+    return await this.fetchWithAuth(`/channel/members`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

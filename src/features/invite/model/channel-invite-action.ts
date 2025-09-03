@@ -12,14 +12,14 @@ export async function channelInviteAction(_: any, formData: FormData) {
     throw new Error('Authentication required');
   }
   const email = formData.get('email')?.toString();
-  const workspaceId = formData.get('workspaceId')?.toString();
-  const channelId = formData.get('channelId')?.toString();
+  const workspaceSlug = formData.get('workspaceSlug')?.toString();
+  const channelSlug = formData.get('channelSlug')?.toString();
   const channelRole = formData.get('channelRole') as ChannelRole;
 
   const validation = await validateDto(ChannelInviteDto, {
     email,
-    workspaceId,
-    channelId,
+    workspaceSlug,
+    channelSlug,
     channelRole,
   });
 
@@ -30,8 +30,8 @@ export async function channelInviteAction(_: any, formData: FormData) {
   try {
     const result = await inviteApi.channelInvite({
       email: email!,
-      workspaceId: workspaceId!,
-      channelId: channelId!,
+      workspaceSlug: workspaceSlug!,
+      channelSlug: channelSlug!,
       channelRole,
     });
     return {
