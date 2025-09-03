@@ -6,7 +6,7 @@ import { useState } from 'react';
 import ChannelInviteForm from './ChannelInviteForm';
 import { themeTokens } from '@/shared/styles';
 
-export function InviteMemberButton() {
+export function InviteMemberButton({ slug }: { slug?: string }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -17,7 +17,7 @@ export function InviteMemberButton() {
       </button>
 
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <ChannelInviteForm onSuccess={() => setIsModalOpen(false)} />
+        <ChannelInviteForm channelSlug={slug} onSuccess={() => setIsModalOpen(false)} />
       </Modal>
     </>
   );

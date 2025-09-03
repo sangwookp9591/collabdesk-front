@@ -1,8 +1,15 @@
 import { ApiBase } from '@/shared/api';
 
 class ChannelApi extends ApiBase {
-  async findMany(workspaceId: string) {
-    return await this.fetchWithAuth(`?workspaceId=${workspaceId}`, {
+  private workspaceSlug: string | null = null;
+
+  // 워크스페이스 slug 설정
+  setWorkspaceSlug(slug: string) {
+    this.workspaceSlug = slug;
+    return this;
+  }
+  async findMany() {
+    return await this.fetchWithAuth(`/workspaces/${this.workspaceSlug}/channels`, {
       method: 'GET',
       credentials: 'include',
     });
@@ -14,7 +21,7 @@ class ChannelApi extends ApiBase {
     description?: string;
     isPublic: boolean;
   }) {
-    return await this.fetchWithAuth('', {
+    return await this.fetchWithAuth(`/workspaces/${this.workspaceSlug}/channels`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -23,7 +30,7 @@ class ChannelApi extends ApiBase {
   }
 
   async update(data: { name?: string; description?: string; isPublic?: boolean }) {
-    return await this.fetchWithAuth('', {
+    return await this.fetchWithAuth(`/workspaces/${this.workspaceSlug}/channels`, {
       method: 'PATCH',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -32,21 +39,21 @@ class ChannelApi extends ApiBase {
   }
 
   async delete(slug: string) {
-    return await this.fetchWithAuth(`/${slug}`, {
+    return await this.fetchWithAuth(`/workspaces/${this.workspaceSlug}/channels/${slug}`, {
       method: 'DELETE',
       credentials: 'include',
     });
   }
 
-  async getMyChannels(workspaceSlug: string) {
-    return await this.fetchWithAuth(`/workspaces/${workspaceSlug}/channels/my`, {
+  async getMyChannels() {
+    return await this.fetchWithAuth(`/workspaces/${this.workspaceSlug}/channels/my`, {
       method: 'GET',
     });
   }
 
-  async membersBySlug(workspaceSlug: string, channelSlug: string) {
+  async membersBySlug(channelSlug: string) {
     return await this.fetchWithAuth(
-      `/workspaces/${workspaceSlug}/channels/${channelSlug}/members`,
+      `/workspaces/${this.workspaceSlug}/channels/${channelSlug}/members`,
       {
         method: 'GET',
       },

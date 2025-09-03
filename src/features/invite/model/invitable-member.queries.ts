@@ -17,7 +17,7 @@ export const useInvitableMembers = (wsSlug?: string, chSlug?: string) => {
         }),
         queryClient.fetchQuery({
           queryKey: [CHANNEL_QUERY_KEYS.membersBySlug(wsSlug!, chSlug!)],
-          queryFn: () => channelApi.membersBySlug(wsSlug!, chSlug!),
+          queryFn: () => channelApi.setWorkspaceSlug(wsSlug!).membersBySlug(chSlug!),
         }),
       ]);
       const channelMemberIds = new Set(channelMembers.map((m: ChannelMember) => m.userId));

@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { themeTokens } from '@/shared/styles';
 import ChannelDeleteForm from './ChannelDeleteForm';
 
-export function ChannelDeleteButton({ id, name }: { id: string; name: string }) {
+export function ChannelDeleteButton({ slug, name }: { slug: string; name: string }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -17,7 +17,7 @@ export function ChannelDeleteButton({ id, name }: { id: string; name: string }) 
       </button>
 
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <ChannelDeleteForm id={id} name={name} onSuccess={() => setIsModalOpen(false)} />
+        <ChannelDeleteForm slug={slug} name={name} onSuccess={() => setIsModalOpen(false)} />
       </Modal>
     </>
   );
