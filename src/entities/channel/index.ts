@@ -1,4 +1,5 @@
 export { ChannelCard } from './ui/ChannelCard';
+export { ChannelCardSkeleton } from './ui/ChannelCardSkeleton';
 export { channelApi } from './api/channel.api';
 export * as queries from './model/channel.queries';
 export { CHANNEL_QUERY_KEYS } from './model/channel-keys';
