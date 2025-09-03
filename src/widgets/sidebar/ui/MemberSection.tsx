@@ -1,14 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { ArrowRightIcon, MessageIcon } from '@/shared/ui';
+import { ArrowRightIcon, MessageIcon, UserIcon } from '@/shared/ui';
 import * as styles from './memberSection.css';
 import { InviteMemberButton } from '@/features/invite';
 import { MemberManagementButton } from '@/features/member-management/indext';
 import { useWorkspaceStore } from '@/shared/stores/workspace-store';
+import { themeTokens } from '@/shared/styles';
 
 export function MemberSection() {
-  const { currentWorkspace } = useWorkspaceStore();
+  const { currentWorkspace, workspaceMembers } = useWorkspaceStore();
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -39,9 +40,9 @@ export function MemberSection() {
           {/* 멤버 현황 카드 */}
           <div className={styles.memberStatusCard}>
             <div className={styles.statusRow}>
-              <MessageIcon size={12} />
+              <UserIcon size={15} color={themeTokens.colors.text} />
               <span className={styles.statusLabel}>전체 멤버:</span>
-              <span className={styles.statusValue}>{0}명</span>
+              <span className={styles.statusValue}>{`${workspaceMembers?.length}` || '0'}명</span>
             </div>
           </div>
         </div>
