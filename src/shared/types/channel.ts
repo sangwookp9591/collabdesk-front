@@ -24,6 +24,10 @@ export interface Channel {
   tabs?: ChannelTab[];
 }
 
+export interface ChannelWithMemberCount extends Channel {
+  memberCount: number;
+}
+
 export interface ChannelMember {
   id: string;
   userId: string;
