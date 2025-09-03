@@ -37,11 +37,11 @@ const SideMenu = () => {
         />
         <div className={styles.wsWrapper}>
           <Link
-            href="/workspace/1/channel/1"
+            href={`/workspace/${currentWorkspace?.slug}`}
             className={styles.workspace({ active: path === '/' })}
           >
             <HomeIcon size={20} />
-            SW
+            Home
           </Link>
 
           <Link href="/workspace/1/dm/1" className={styles.workspace({ active: path === '/dm' })}>
