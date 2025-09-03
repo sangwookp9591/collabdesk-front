@@ -66,19 +66,22 @@ export const WorkspaceSwitcherModal: React.FC = () => {
             <div className={styles.workspaceList}>
               {workspaces
                 ?.filter((ws) => ws.id !== currentWorkspace?.id)
-                .map((workspace) => (
-                  <button
-                    key={workspace.id}
-                    onClick={() => handleWorkspaceSelect(workspace)}
-                    className={styles.workspaceItem}
-                  >
-                    <Avatar url={workspace.imageUrl} name={workspace.name} size={32} />
-                    <div className={styles.workspaceItemInfo}>
-                      <div className={styles.workspaceItemName}>{workspace.name}</div>
-                      <div className={styles.workspaceItemSlug}>/{workspace.slug}</div>
-                    </div>
-                  </button>
-                ))}
+                .map(
+                  (workspace) =>
+                    workspace?.id && (
+                      <button
+                        key={workspace.id}
+                        onClick={() => handleWorkspaceSelect(workspace)}
+                        className={styles.workspaceItem}
+                      >
+                        <Avatar url={workspace.imageUrl} name={workspace.name} size={32} />
+                        <div className={styles.workspaceItemInfo}>
+                          <div className={styles.workspaceItemName}>{workspace.name}</div>
+                          <div className={styles.workspaceItemSlug}>/{workspace.slug}</div>
+                        </div>
+                      </button>
+                    ),
+                )}
             </div>
 
             {/* Footer */}
