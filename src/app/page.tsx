@@ -10,15 +10,11 @@ export default async function HomePage() {
     redirect('/signin');
   }
 
-  try {
-    const result = await userApi.lastworkspace();
-    if (result.data?.lastActiveWorkspaceId) {
-      redirect(`/workspace/${result?.data?.workspaceSlug}`);
-    } else {
-      // 워크스페이스가 없으면 온보딩으로
-      redirect('/onboarding/workspace-setup');
-    }
-  } catch (error) {
-    redirect('/signin');
+  const result = await userApi.lastworkspace();
+  if (result.data?.lastActiveWorkspaceId) {
+    redirect(`/workspace/${result?.data?.workspaceSlug}`);
+  } else {
+    // 워크스페이스가 없으면 온보딩으로
+    redirect('/onboarding/workspace-setup');
   }
 }

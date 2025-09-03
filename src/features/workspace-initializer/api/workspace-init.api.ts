@@ -3,7 +3,7 @@ import { Workspace } from '@/shared/types/workspace';
 
 export class WorkspaceInit extends ApiBase {
   async BySlug(slug: string): Promise<{ workspaces: Workspace[]; currentWorkspace: Workspace }> {
-    return await this.fetchWithAuth(`/init/${slug}`, {
+    return await this.fetchWithAuth(`/${slug}/init`, {
       method: 'GET',
     });
   }
