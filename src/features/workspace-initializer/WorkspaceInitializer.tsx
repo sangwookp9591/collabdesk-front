@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter, useParams } from 'next/navigation';
 import { useWorkspaceStore } from '@/shared/stores/workspace-store';
 import { queries } from '@/entities/channel';
-import { useWorkspaceInitBySlug } from './model/workspace-init.queries';
+import { useWorkspaceInitBySlug, useWorkspaceMembersBySlug } from './model/workspace-init.queries';
 
 export const WorkspaceInitializer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { data: session, status } = useSession();
@@ -13,8 +13,15 @@ export const WorkspaceInitializer: React.FC<{ children: React.ReactNode }> = ({ 
   const params = useParams();
   const wsSlug = params?.wsSlug as string;
 
-  const { isInitialized, setInitialized, reset, setWorkspaces, setCurrentWorkspace, setChannels } =
-    useWorkspaceStore();
+  const {
+    isInitialized,
+    setInitialized,
+    reset,
+    setWorkspaces,
+    setCurrentWorkspace,
+    setChannels,
+    setWorkspaceMembers,
+  } = useWorkspaceStore();
 
   // 워크스페이스 조회
   const {
@@ -30,30 +37,43 @@ export const WorkspaceInitializer: React.FC<{ children: React.ReactNode }> = ({ 
     isError: chError,
   } = queries.useChannels(workspaceData?.currentWorkspace?.id);
 
+  const {
+    data: memberData,
+    isLoading: mbLoading,
+    isError: mbError,
+  } = useWorkspaceMembersBySlug(wsSlug);
+
   // 둘 다 로딩 완료되면 zustand 업데이트
   useEffect(() => {
     if (
       workspaceData &&
       channelsData &&
+      memberData &&
       !isInitialized &&
       !wsLoading &&
       !chLoading &&
+      !mbLoading &&
       !wsError &&
-      !chError
+      !chError &&
+      !mbError
     ) {
       setWorkspaces(workspaceData.workspaces);
       setCurrentWorkspace(workspaceData.currentWorkspace);
       setChannels(channelsData);
+      setWorkspaceMembers(memberData);
       setInitialized(true);
     }
   }, [
     workspaceData,
     channelsData,
+    memberData,
     isInitialized,
     wsLoading,
     chLoading,
+    mbLoading,
     wsError,
     chError,
+    mbError,
     setWorkspaces,
     setCurrentWorkspace,
     setChannels,
@@ -64,9 +84,18 @@ export const WorkspaceInitializer: React.FC<{ children: React.ReactNode }> = ({ 
   useEffect(() => {
     if (status === 'unauthenticated') {
       reset();
-      router.push('/signin');
+      console.log('사인인으로 이동');
+      router.replace('/signin');
     }
   }, [status, reset, router]);
+
+  if (status === 'loading') {
+    return null; // 로딩 화면 표시 가능
+  }
+
+  if (status === 'unauthenticated') {
+    return null; // 페이지 렌더링 차단 후 useEffect에서 이동 처리
+  }
 
   return <>{children}</>;
 };
