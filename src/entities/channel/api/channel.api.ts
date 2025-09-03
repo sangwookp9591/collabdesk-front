@@ -11,7 +11,6 @@ class ChannelApi extends ApiBase {
   async findMany() {
     return await this.fetchWithAuth(`/workspaces/${this.workspaceSlug}/channels`, {
       method: 'GET',
-      credentials: 'include',
     });
   }
 
@@ -23,7 +22,6 @@ class ChannelApi extends ApiBase {
   }) {
     return await this.fetchWithAuth(`/workspaces/${this.workspaceSlug}/channels`, {
       method: 'POST',
-      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
@@ -32,7 +30,6 @@ class ChannelApi extends ApiBase {
   async update(data: { name?: string; description?: string; isPublic?: boolean }) {
     return await this.fetchWithAuth(`/workspaces/${this.workspaceSlug}/channels`, {
       method: 'PATCH',
-      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
@@ -41,7 +38,6 @@ class ChannelApi extends ApiBase {
   async delete(slug: string) {
     return await this.fetchWithAuth(`/workspaces/${this.workspaceSlug}/channels/${slug}`, {
       method: 'DELETE',
-      credentials: 'include',
     });
   }
 
