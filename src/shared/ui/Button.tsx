@@ -12,7 +12,7 @@ type buttonProps = {
   onDoubleClick?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
-  isLoading: boolean;
+  isLoading?: boolean;
   role?: string; // 기본은 button
   tabIndex?: number; // 기본은 0
 };

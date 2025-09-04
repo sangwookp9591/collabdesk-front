@@ -18,7 +18,7 @@ export function InfoCard({ workspace, onClick, className }: InfoCardProps) {
       className={clsx(styles.workspaceContainer, className)}
       onClick={onClick ? () => onClick(workspace, workspace?.slug) : () => {}}
     >
-      <Avatar url={workspace?.imageUrl} name={workspace?.name} size={50} />
+      <Avatar url={workspace?.imageUrl} name={workspace?.name} size={48} />
       <div className={styles.workspaceInfo}>
         <div className={styles.workspaceName}>{workspace?.name}</div>
         <div className={styles.workspaceMemberCount}>
