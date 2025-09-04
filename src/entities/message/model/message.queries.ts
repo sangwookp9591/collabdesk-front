@@ -9,7 +9,6 @@ import { useEffect } from 'react';
 export const useChannelMessages = (
   wsSlug: string,
   chSlug: string,
-  channelId?: string,
   page: number = 1,
   take?: number,
 ) => {
@@ -20,6 +19,16 @@ export const useChannelMessages = (
     queryFn: () => messageApi.getMessagesByChannel(wsSlug, chSlug, page, take),
     staleTime: 1000 * 60, // 1분
     enabled: !!(wsSlug && chSlug),
+    gcTime: 5 * 60 * 1000, // 5분
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: 'always',
+    retry: (failureCount, error: any) => {
+      if (error.status === 404) return false;
+      return failureCount < 3;
+    },
+    // 백그라운드 업데이트로 UX 개선
+    refetchInterval: 30000, // 30초마다 백그라운드 업데이트
+    refetchIntervalInBackground: false,
   });
 
   useEffect(() => {
@@ -27,7 +36,7 @@ export const useChannelMessages = (
 
     const handler = (message: any) => {
       // React Query cache 업데이트
-      if (channelId && message.channelId) {
+      if (chSlug && message?.channel?.slug) {
         queryClient.setQueryData(messageKeys.channelMessages(wsSlug, chSlug, page), (old: any) => {
           console.log('old: ', old);
           // old가 배열인지 확인
@@ -42,7 +51,7 @@ export const useChannelMessages = (
     return () => {
       socket.off('newMessage', handler);
     };
-  }, [socket, channelId, wsSlug, chSlug, page, queryClient]);
+  }, [socket, wsSlug, chSlug, page, queryClient]);
 
   return query;
 };
@@ -56,5 +65,6 @@ export const useInfiniteChannelMessages = (wsSlug: string, chSlug: string) => {
       return lastPage.hasMore ? allPages.length + 1 : undefined;
     },
     enabled: !!(wsSlug && chSlug),
+    staleTime: 60000,
   });
 };
