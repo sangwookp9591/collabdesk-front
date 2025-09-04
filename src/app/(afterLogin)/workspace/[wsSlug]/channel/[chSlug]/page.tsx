@@ -1,33 +1,17 @@
-'use client';
+import { messageApi } from '@/entities/message';
+import { ChannelMessage, ChannelMessageSkeleton } from '@/widgets/channel-message';
+import { Suspense } from 'react';
 
-import { useChannelMessages } from '@/entities/message/model/message.queries';
-import { useSocketStore } from '@/entities/message/model/socket.store';
-import MessageSend from '@/features/message-send/ui/MessageSend';
-import { useWorkspaceStore } from '@/shared/stores';
-import MessageList from '@/widgets/message/ui/MessageList';
-import { useParams } from 'next/navigation';
-import { useCallback } from 'react';
+interface PageProps {
+  params: Promise<{ wsSlug: string; chSlug: string }>;
+}
 
-export default function Page() {
-  const params = useParams();
-
-  const wsSlug = params?.chSlug as string;
-  const chSlug = params?.chSlug as string;
-  const { currentChannel } = useWorkspaceStore();
-  const { data, isLoading, error } = useChannelMessages(wsSlug, chSlug, currentChannel?.id);
-
-  const { sendMessage } = useSocketStore();
-
-  const handleSendMessaage = useCallback(
-    (content: string) => {
-      if (currentChannel?.id) sendMessage({ channelId: currentChannel?.id, content: content });
-    },
-    [currentChannel?.id],
-  );
+export default async function Page({ params }: PageProps) {
+  const { wsSlug, chSlug } = await params;
+  const result = await messageApi.getMessagesByChannel(wsSlug, chSlug, 1);
   return (
-    <>
-      <MessageList messages={data?.messages || []} isLoading={isLoading} />
-      <MessageSend onSend={handleSendMessaage} />
-    </>
+    <Suspense fallback={<ChannelMessageSkeleton />}>
+      <ChannelMessage wsSlug={wsSlug} chSlug={chSlug} initData={result} />
+    </Suspense>
   );
 }
