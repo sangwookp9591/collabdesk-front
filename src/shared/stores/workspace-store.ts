@@ -20,6 +20,7 @@ interface WorkspaceState {
   setWorkspaces: (workspaces: Workspace[]) => void;
   setCurrentWorkspace: (workspace: Workspace) => void;
   setWorkspaceMembers: (workspaceMembers: WorkspaceMember[]) => void;
+  addWorkspace: (workspace: Workspace) => void;
   setChannels: (channels: Channel[]) => void;
   setCurrentChannel: (channel: Channel | null) => void;
   addChannel: (chaanel: Channel) => void;
@@ -61,7 +62,13 @@ export const useWorkspaceStore = create<WorkspaceState>()(
           set((state) => {
             state.workspaceMembers = workspaceMembers;
           }),
-
+        addWorkspace: (workspace) =>
+          set((state) => {
+            const exists = state.workspaces.some((ws) => ws.id === workspace.id);
+            if (!exists) {
+              state.workspaces.push(workspace);
+            }
+          }),
         setChannels: (channels) =>
           set((state) => {
             state.channels = channels;
@@ -78,6 +85,7 @@ export const useWorkspaceStore = create<WorkspaceState>()(
               state.channels.push(channel);
             }
           }),
+
         deleteChannel: (channelId: string) =>
           set((state) => {
             const fitlerChannels = state.channels.filter((ch) => ch.id !== channelId);
