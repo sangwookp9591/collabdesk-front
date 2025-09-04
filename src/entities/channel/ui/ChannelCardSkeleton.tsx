@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import * as styles from './channelCard.css';
 import { Skeleton } from 'sw-skeleton';
