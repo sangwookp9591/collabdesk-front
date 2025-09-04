@@ -10,7 +10,7 @@ type MessageListProps = {
   isLoading: boolean;
 };
 
-export default function MessageList({ messages, isLoading }: MessageListProps) {
+export function MessageList({ messages, isLoading }: MessageListProps) {
   const endRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
