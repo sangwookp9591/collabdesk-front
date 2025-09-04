@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import * as styles from './message-send.css';
 
@@ -5,7 +7,7 @@ type MessageInputProps = {
   onSend: (content: string) => void;
 };
 
-export default function MessageSend({ onSend }: MessageInputProps) {
+export function MessageSend({ onSend }: MessageInputProps) {
   const [value, setValue] = useState('');
 
   const handleSend = () => {
