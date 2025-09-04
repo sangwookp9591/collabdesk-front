@@ -29,7 +29,10 @@ export function Avatar({
           width={size}
           height={size}
           alt="user-profile"
+          loading="lazy"
+          quality={75}
           style={{ borderRadius: borderRadius }}
+          sizes="(max-width: 768px) 100vw, 50vw"
         />
       ) : (
         <div className={styles.userIcon}>{name && name[0].toUpperCase()}</div>
