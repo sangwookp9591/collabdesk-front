@@ -95,7 +95,6 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async jwt({ token, user }: { token: any; user?: User }) {
-      console.log(' token, user', token, user);
       if (user) {
         token.id = user.id;
         token.name = user.name;
@@ -111,8 +110,6 @@ export const authOptions: NextAuthOptions = {
         try {
           const payload = JSON.parse(atob((token.accessToken as string).split('.')[1]));
           const now = Math.floor(Date.now() / 1000);
-
-          console.log('payload : ', payload, ' now : ', now);
 
           if (payload.exp > now) {
             return token;
