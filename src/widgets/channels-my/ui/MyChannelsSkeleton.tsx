@@ -12,7 +12,7 @@ export default function MyChannelsSkeleton() {
       </div>
       <div className={styles.channelsList}>
         <>
-          {Array(3).map((_, i) => (
+          {Array.from({ length: 3 }).map((_, i) => (
             <ChannelCardSkeleton key={i} />
           ))}
         </>
