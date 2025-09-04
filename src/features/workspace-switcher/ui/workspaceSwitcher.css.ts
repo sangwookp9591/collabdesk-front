@@ -1,5 +1,6 @@
 // workspaceSwitcher.css.ts
-import { style, keyframes } from '@vanilla-extract/css';
+import { themeTokens } from '@/shared/styles';
+import { style, keyframes, styleVariants } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
 // Animations
@@ -24,6 +25,34 @@ const slideDown = keyframes({
     opacity: 1,
     maxHeight: '320px',
     transform: 'translateY(0)',
+  },
+});
+
+const backbuttonKeyFrame = keyframes({
+  '0%': { transform: 'translateX(0)' },
+  '50%': { transform: 'translateX(-3px)' },
+  '100%': { transform: 'translateX(0)' },
+});
+
+const slideLeft = keyframes({
+  from: {
+    opacity: 0,
+    transform: 'translateX(100%) scale(0.95)',
+  },
+  to: {
+    opacity: 1,
+    transform: 'translateX(0%) scale(1)',
+  },
+});
+
+const slideRight = keyframes({
+  from: {
+    opacity: 0,
+    transform: 'translateX(-100%) scale(0.95)',
+  },
+  to: {
+    opacity: 1,
+    transform: 'translateX(0%) scale(1)',
   },
 });
 
@@ -83,7 +112,7 @@ export const modalContainer = style({
   position: 'absolute',
   left: '64px',
   top: '16px',
-  width: '320px',
+  minWidth: '320px',
   backgroundColor: 'white',
   borderRadius: '12px',
   boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
@@ -105,7 +134,7 @@ export const modalTitle = style({
 
 export const currentWorkspaceSection = style({
   padding: '12px 16px',
-  backgroundColor: '#eff6ff',
+  backgroundColor: themeTokens.colors.backgroundActive,
   borderBottom: '1px solid #f3f4f6',
   display: 'flex',
   alignItems: 'center',
@@ -123,13 +152,13 @@ export const currentWorkspaceName = style({
 
 export const currentWorkspaceLabel = style({
   fontSize: '12px',
-  color: '#2563eb',
+  color: themeTokens.colors.backgroundTertiary,
 });
 
 export const currentWorkspaceIndicator = style({
   width: '8px',
   height: '8px',
-  backgroundColor: '#3b82f6',
+  backgroundColor: themeTokens.colors.backgroundTertiary,
   borderRadius: '50%',
 });
 
@@ -171,22 +200,25 @@ export const workspaceItemSlug = style({
 export const modalFooter = style({
   padding: '12px 16px',
   borderTop: '1px solid #f3f4f6',
-  backgroundColor: '#f9fafb',
+  backgroundColor: themeTokens.colors.background,
 });
 
-export const createWorkspaceButton = style({
-  width: '100%',
+export const buttonStyle = style({
   padding: '8px 12px',
-  fontSize: '14px',
+  fontSize: '1rem',
   fontWeight: '500',
-  color: '#374151',
-  backgroundColor: 'white',
+  textAlign: 'center',
+  color: themeTokens.colors.text,
+  backgroundColor: themeTokens.colors.background,
   border: '1px solid #d1d5db',
   borderRadius: '8px',
   cursor: 'pointer',
-  transition: 'background-color 0.15s ease',
+  transition: 'background-color 0.15s ease, color 0.15s ease, transform 0.2s ease',
   ':hover': {
-    backgroundColor: '#f9fafb',
+    backgroundColor: themeTokens.colors.backgroundSecondary,
+    color: themeTokens.colors.textSecondary,
+    border: `1px solid ${themeTokens.colors.border}`,
+    transform: 'translateX(1px)',
   },
 });
 
@@ -258,6 +290,55 @@ export const dropdownContent = recipe({
       },
     },
   },
+});
+export const backButton = style({
+  border: 'none',
+  padding: '4px 5px',
+  backgroundColor: 'transparent',
+  borderRadius: '20px',
+  color: themeTokens.colors.text,
+  cursor: 'pointer',
+  transition: `background-color 0.2s ease`,
+  selectors: {
+    '&:hover': {
+      backgroundColor: themeTokens.colors.backgroundHover,
+      animation: `${backbuttonKeyFrame} 1s ease-in-out infinite both`,
+    },
+  },
+});
+
+export const slideContainer = style({
+  position: 'relative',
+  overflow: 'hidden',
+  height: '100%',
+});
+
+export const baseConent = style({
+  width: '100%',
+  height: '100%',
+});
+
+export const slideContent = styleVariants({
+  slideLeft: [baseConent, { animation: `${slideLeft} 0.2s cubic-bezier(0.4, 0, 0.2, 1)` }],
+  slideRight: [baseConent, { animation: `${slideRight} 0.2s cubic-bezier(0.4, 0, 0.2, 1)` }],
+  init: [baseConent],
+});
+
+export const slideWrapper = style({
+  display: 'flex',
+  width: '100%%',
+  height: '100%',
+  transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+});
+
+export const createContainer = style({
+  padding: '16px 20px',
+  borderBottom: '1px solid #f3f4f6',
+  display: 'flex',
+  gap: '12px',
+  width: '100%',
+  color: themeTokens.colors.text,
+  flexDirection: 'column',
 });
 
 export const dropdownList = style({
