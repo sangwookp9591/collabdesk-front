@@ -3,9 +3,9 @@
 import { useChannelMessages } from '@/entities/message/model/message.queries';
 import { useSocketStore } from '@/entities/message/model/socket.store';
 import MessageSend from '@/features/message-send/ui/MessageSend';
+import { useWorkspaceStore } from '@/shared/stores';
 import MessageList from '@/widgets/message/ui/MessageList';
 import { useParams } from 'next/navigation';
-import { useWorkspaceStore } from '../../../../../../shared/stores/workspace-store';
 import { useCallback } from 'react';
 
 export default function Page() {
