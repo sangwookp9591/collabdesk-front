@@ -76,9 +76,16 @@ export const WorkspaceInitializer: React.FC<{ children: React.ReactNode }> = ({ 
     mbError,
     setWorkspaces,
     setCurrentWorkspace,
+    setWorkspaceMembers,
     setChannels,
     setInitialized,
   ]);
+
+  //워크스페이스 슬러그 변경시 데이터 패칭 초기화
+  useEffect(() => {
+    reset();
+    setInitialized(false);
+  }, [wsSlug, reset, setInitialized]);
 
   // 세션 미인증 처리
   useEffect(() => {
