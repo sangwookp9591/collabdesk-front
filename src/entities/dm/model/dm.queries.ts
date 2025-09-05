@@ -4,11 +4,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useSocketStore } from '@/entities/message';
 import { dmApi } from '../api/dm.api';
-import { dmKeys } from './dm-keys';
+import { DM_QUERY_KEYS } from './dm-keys';
 
 export const useDMConversations = (wsSlug: string) => {
   return useQuery({
-    queryKey: dmKeys.dms(wsSlug),
+    queryKey: DM_QUERY_KEYS.dms(wsSlug),
     queryFn: () => dmApi.getUserDmConvensions(wsSlug),
     staleTime: 1000 * 60, // 1분
     enabled: !!wsSlug,
@@ -27,7 +27,7 @@ export const useDMConversations = (wsSlug: string) => {
 
 export const useDMConversationsRecent = (wsSlug: string) => {
   return useQuery({
-    queryKey: dmKeys.dmsRecent(wsSlug),
+    queryKey: DM_QUERY_KEYS.dmsRecent(wsSlug),
     queryFn: () => dmApi.getUserDmConvensionsRecent(wsSlug),
     staleTime: 1000 * 60, // 1분
     enabled: !!wsSlug,
@@ -46,7 +46,7 @@ export const useDMConversationsRecent = (wsSlug: string) => {
 
 export const useDMConversation = (wsSlug: string, conversationId: string) => {
   return useQuery({
-    queryKey: dmKeys.dm(wsSlug, conversationId),
+    queryKey: DM_QUERY_KEYS.dm(wsSlug, conversationId),
     queryFn: () => dmApi.getDmConversation(wsSlug, conversationId),
     staleTime: 1000 * 60, // 1분
     enabled: !!wsSlug,
@@ -72,7 +72,7 @@ export const useDmMessages = (
   const socket = useSocketStore((state) => state.socket);
   const queryClient = useQueryClient();
   const query = useQuery({
-    queryKey: dmKeys.dmMessages(wsSlug, conversationId, page),
+    queryKey: DM_QUERY_KEYS.dmMessages(wsSlug, conversationId, page),
     queryFn: () => dmApi.getDmMessages(wsSlug, conversationId, page, take),
     staleTime: 1000 * 60, // 1분
     enabled: !!(wsSlug && conversationId),
@@ -94,12 +94,15 @@ export const useDmMessages = (
     const handler = (message: any) => {
       // React Query cache 업데이트
       if (conversationId && message?.channel?.slug) {
-        queryClient.setQueryData(dmKeys.dmMessages(wsSlug, conversationId, page), (old: any) => {
-          console.log('old: ', old);
-          // old가 배열인지 확인
+        queryClient.setQueryData(
+          DM_QUERY_KEYS.dmMessages(wsSlug, conversationId, page),
+          (old: any) => {
+            console.log('old: ', old);
+            // old가 배열인지 확인
 
-          return { ...old, messages: [...old.messages, message], total: Number(old.total) + 1 };
-        });
+            return { ...old, messages: [...old.messages, message], total: Number(old.total) + 1 };
+          },
+        );
       }
     };
 
@@ -128,16 +131,19 @@ export function useSendMessage(
       parentId?: string;
     }) => dmApi.createDmMessage(data),
     onSuccess: (newMessage) => {
-      queryClient.setQueryData(dmKeys.dmMessages(wsSlug, conversationId, page), (old: any) => {
-        if (!old) {
-          return { messages: [newMessage], total: 1 };
-        }
-        return {
-          ...old,
-          messages: [...old.messages, newMessage],
-          total: Number(old.total) + 1,
-        };
-      });
+      queryClient.setQueryData(
+        DM_QUERY_KEYS.dmMessages(wsSlug, conversationId, page),
+        (old: any) => {
+          if (!old) {
+            return { messages: [newMessage], total: 1 };
+          }
+          return {
+            ...old,
+            messages: [...old.messages, newMessage],
+            total: Number(old.total) + 1,
+          };
+        },
+      );
     },
   });
 }

@@ -1,5 +1,5 @@
 export { dmApi } from './api/dm.api';
-export { dmKeys } from './model/dm-keys';
+export { DM_QUERY_KEYS } from './model/dm-keys';
 export {
   useDmMessages,
   useDMConversationsRecent,
