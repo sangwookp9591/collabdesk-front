@@ -1,10 +1,12 @@
+import { DMConversation } from '@/entities/dm';
 import { Channel } from './channel';
 import { User } from './user';
 export type messageType = 'USER' | 'SYSTEM' | 'BOT';
 export interface Message {
   id: string;
   content: string;
-  channelId: string;
+  channelId?: string;
+  dmConversationId?: string;
   userId?: string;
   parentId?: string;
   editedAt?: Date;
@@ -12,6 +14,7 @@ export interface Message {
   createdAt: Date;
   updatedAt: Date;
   channel?: Channel;
+  dmConversation?: DMConversation;
   messageType: messageType;
   systemData?: any;
   user: Omit<
