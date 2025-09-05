@@ -8,6 +8,7 @@ interface SocketState {
   isConnected: boolean;
   currentChannel: string | null;
   currentWorkspace: string | null;
+  currentDm: string | null;
   connectionStatus: 'disconnected' | 'connecting' | 'connected' | 'error';
   error: string | null;
 
@@ -16,6 +17,7 @@ interface SocketState {
   disconnect: () => void;
 
   joinWorkspace: (workspaceId: string) => void;
+  joinRoom: (roomId: string, roomType: 'channel' | 'dm') => void;
   joinChannel: (channelId: string) => void;
   leaveChannel: (channelId: string) => void;
   getConnectionInfo: () => { isConnected: boolean; status: string; error: string | null };
@@ -27,6 +29,7 @@ export const useSocketStore = create<SocketState>()(
     isConnected: false,
     currentChannel: null,
     currentWorkspace: null,
+    currentDm: null,
     connectionStatus: 'disconnected',
     error: null,
 
@@ -77,6 +80,9 @@ export const useSocketStore = create<SocketState>()(
         console.error('🔥 소켓 에러:', error);
         set({ error: `소켓 에러: ${error.message}` });
       });
+      socket.on('roomJoined', (message) => {
+        console.log('roomJoined success:', message);
+      });
 
       set({ socket });
     },
@@ -101,6 +107,17 @@ export const useSocketStore = create<SocketState>()(
       if (socket) {
         socket.emit(EVENT_KEYS.PUB_JOIN_WORKSPACE, { workspaceId });
         set({ currentWorkspace: workspaceId });
+      }
+    },
+    joinRoom: (roomId: string, roomType: 'channel' | 'dm') => {
+      const { socket } = get();
+      if (socket) {
+        socket.emit(EVENT_KEYS.PUB_JOIN_CHANNEL, { roomId, roomType });
+        if (roomType === 'channel') {
+          set({ currentChannel: roomId, currentDm: null });
+        } else {
+          set({ currentChannel: null, currentDm: roomId });
+        }
       }
     },
     joinChannel: (channelId: string) => {
