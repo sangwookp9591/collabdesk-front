@@ -41,11 +41,11 @@ export const customButton = styleVariants({
   primary: [
     baseButton,
     {
-      backgroundColor: '#007acc',
+      backgroundColor: themeTokens.colors.backgroundTertiary,
       color: '#ffffff',
 
       ':hover': {
-        backgroundColor: '#005a9e',
+        backgroundColor: themeTokens.colors.backgroundSecondary,
       },
     },
   ],
