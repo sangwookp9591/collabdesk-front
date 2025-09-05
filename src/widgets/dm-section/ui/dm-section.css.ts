@@ -164,3 +164,21 @@ export const emptyIcon = style({
   marginBottom: '8px',
   opacity: 0.5,
 });
+
+export const addDMButton = style({
+  padding: '4px',
+  borderRadius: '4px',
+  border: 'none',
+  backgroundColor: 'transparent',
+  color: themeTokens.colors.textSecondary,
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  transition: 'all 0.15s ease',
+
+  ':hover': {
+    backgroundColor: themeTokens.colors.backgroundHover,
+    color: themeTokens.colors.textSecondary,
+  },
+});
