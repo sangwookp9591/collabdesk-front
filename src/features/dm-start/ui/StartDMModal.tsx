@@ -52,6 +52,7 @@ export function StartDMModal({ isOpen, onClose }: StartDMModalProps) {
 
   const handleStartDM = () => {
     if (selectedUsers.length === 1) {
+      console.log('selectedUsers : ', selectedUsers);
       createDMConversation(selectedUsers[0].id);
     }
   };
@@ -69,8 +70,13 @@ export function StartDMModal({ isOpen, onClose }: StartDMModalProps) {
     }
   }, [isOpen]);
 
+  if (!isOpen) {
+    return <div></div>;
+  }
+
   const displayUsers = debouncedSearchQuery.length >= 2 ? searchResults : recentUsers;
 
+  console.log('searchResults : ', searchResults);
   return (
     <Modal open={isOpen} onClose={handleClose}>
       <div className={styles.modalBody}>
