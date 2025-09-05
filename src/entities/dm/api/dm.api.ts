@@ -50,6 +50,11 @@ class DirectMessageApi extends ApiBase {
       method: 'GET',
     });
   }
+  async getUserDmConvensionsRecent(wsSlug: string) {
+    return await this.fetchWithAuth(`/workspaces/${wsSlug}/dm/conversations/recent`, {
+      method: 'GET',
+    });
+  }
   async getDmConversation(wsSlug: string, conversationId: string) {
     return await this.fetchWithAuth(`/workspaces/${wsSlug}/dm/conversations/${conversationId}`, {
       method: 'GET',
