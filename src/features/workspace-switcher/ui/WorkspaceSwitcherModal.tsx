@@ -9,6 +9,7 @@ import { WorkspaceCreateForm } from '@/features/workspace-create';
 import { themeTokens } from '@/shared/styles';
 import { ArrowLeftIcon, StatusView } from '@/shared/ui';
 import { useRouter } from 'next/navigation';
+import { updateLastWorkspace } from '@/shared/api';
 
 export const WorkspaceSwitcherModal: React.FC = () => {
   const router = useRouter();
@@ -33,7 +34,8 @@ export const WorkspaceSwitcherModal: React.FC = () => {
     }
   }, [isOpen]);
 
-  const handleWorkspaceSelect = (workspace: Workspace) => {
+  const handleWorkspaceSelect = async (workspace: Workspace) => {
+    await updateLastWorkspace(workspace?.id);
     setIsOpen(false);
     router.push(`/workspace/${workspace.slug}`);
   };
