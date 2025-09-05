@@ -5,6 +5,8 @@ import { useEffect } from 'react';
 import { useSocketStore } from '@/entities/message';
 import { dmApi } from '../api/dm.api';
 import { DM_QUERY_KEYS } from './dm-keys';
+import { User } from '../../../shared/types/user';
+import { Message } from '../../../shared/types/message';
 
 export const useDMConversations = (wsSlug: string) => {
   return useQuery({
@@ -148,11 +150,27 @@ export function useSendMessage(
   });
 }
 
+type Response = {
+  id: string;
+  otherUser: User;
+  lastMessage: Message;
+  updatedAt: Date;
+};
 // DM 대화방 생성
 export const useCreateDMConversation = (wsSlug: string, onSuccess?: (result: any) => void) => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (otherUserId: string) =>
       dmApi.setWorkspaceSlug(wsSlug).createDmConversation(otherUserId),
-    onSuccess: (result) => onSuccess?.(result),
+    onSuccess: (result: Response) => {
+      console.log('쿼리 클라이언트에 새로운 DM CONVERSATION추가 : ', result);
+      queryClient.setQueryData(DM_QUERY_KEYS.dms(wsSlug), (old: any) => {
+        if (!old) {
+          return old;
+        }
+        return [...old, result];
+      });
+      onSuccess?.(result);
+    },
   });
 };
