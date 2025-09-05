@@ -6,6 +6,8 @@ import { ArrowBottomIcon, ArrowRightIcon, MessageIcon, PlusIcon } from '@/shared
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { useDMConversations } from '@/entities/dm/model/dm.queries';
+import { useState } from 'react';
+import { StartDMModal } from '@/features/dm-start';
 
 interface DMUser {
   id: string;
@@ -43,12 +45,16 @@ export function DMSection({ isOpen, onToggle, onStartDM }: DMSectionProps) {
   const router = useRouter();
   const wsSlug = params.wsSlug as string;
   const currentDMId = params.dmId as string;
-
+  const [showStartDMModal, setShowStartDMModal] = useState(false);
   const { data: dmConversations = [], isLoading } = useDMConversations(wsSlug);
   const totalUnreadCount = 0;
 
   const handleDMClick = (conversationId: string) => {
     router.push(`/workspace/${wsSlug}/dm/${conversationId}`);
+  };
+
+  const handleAddDM = () => {
+    setShowStartDMModal(true);
   };
 
   const getStatusStyle = (status: DMUser['status']) => {
@@ -81,7 +87,16 @@ export function DMSection({ isOpen, onToggle, onStartDM }: DMSectionProps) {
             </span>
           )}
         </div>
-        <PlusIcon size={16} />
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleAddDM();
+          }}
+          className={styles.addDMButton}
+          title="새 메시지 시작"
+        >
+          <PlusIcon size={16} />
+        </button>
       </div>
 
       {isOpen && (
@@ -141,6 +156,8 @@ export function DMSection({ isOpen, onToggle, onStartDM }: DMSectionProps) {
           )}
         </div>
       )}
+
+      <StartDMModal isOpen={showStartDMModal} onClose={() => setShowStartDMModal(false)} />
     </div>
   );
 }
