@@ -2,11 +2,7 @@ import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 import { io, Socket } from 'socket.io-client';
 import { EVENT_KEYS } from './socket-event-keys';
-type SendMessage = {
-  channelId: string;
-  content: string;
-  parentId?: string;
-};
+
 interface SocketState {
   socket: Socket | null;
   isConnected: boolean;
@@ -22,7 +18,6 @@ interface SocketState {
   joinWorkspace: (workspaceId: string) => void;
   joinChannel: (channelId: string) => void;
   leaveChannel: (channelId: string) => void;
-  sendMessage: (message: SendMessage) => void;
   getConnectionInfo: () => { isConnected: boolean; status: string; error: string | null };
 }
 
@@ -128,12 +123,7 @@ export const useSocketStore = create<SocketState>()(
         set({ currentChannel: null });
       }
     },
-    sendMessage: (message) => {
-      const { socket } = get();
-      if (socket) {
-        socket.emit(EVENT_KEYS.PUB_SEND_MESSAGE, message);
-      }
-    },
+
     getConnectionInfo: () => {
       const { isConnected, connectionStatus, error } = get();
       return { isConnected, status: connectionStatus, error };

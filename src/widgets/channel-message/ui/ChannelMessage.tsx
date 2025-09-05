@@ -1,9 +1,7 @@
 'use client';
 
-import { useChannelMessages } from '@/entities/message/model/message.queries';
-import { useSocketStore } from '@/entities/message/model/socket.store';
+import { useChannelMessages, useSendMessage } from '@/entities/message/model/message.queries';
 import { MessageSend } from '@/features/message-send';
-import { useWorkspaceStore } from '@/shared/stores';
 import { Message } from '@/shared/types/message';
 import { MessageList } from '@/widgets/message';
 import { useCallback } from 'react';
@@ -17,16 +15,15 @@ export function ChannelMessage({
   chSlug: string;
   initData: { messages: Message[]; hasMore: boolean; total: number };
 }) {
-  const { currentChannel } = useWorkspaceStore();
   const { data = initData, isLoading, error } = useChannelMessages(wsSlug, chSlug);
 
-  const { sendMessage } = useSocketStore();
+  const { mutate: sendMessage, isPending } = useSendMessage(wsSlug, chSlug);
 
   const handleSendMessaage = useCallback(
     (content: string) => {
-      if (currentChannel?.id) sendMessage({ channelId: currentChannel?.id, content: content });
+      sendMessage({ wsSlug, chSlug, content });
     },
-    [currentChannel?.id],
+    [wsSlug, chSlug, sendMessage],
   );
   return (
     <>
