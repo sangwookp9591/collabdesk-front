@@ -3,5 +3,7 @@ export const WORKSPACE_QUERY_KEYS = {
   initBySlug: (slug: string) => [...WORKSPACE_QUERY_KEYS.all, 'init', slug] as const,
   bySlug: (slug: string) => [...WORKSPACE_QUERY_KEYS.all, slug] as const,
   membersBySlug: (slug: string) => [...WORKSPACE_QUERY_KEYS.bySlug(slug), 'members'] as const,
+  membersSearch: (slug: string, q: string) =>
+    [...WORKSPACE_QUERY_KEYS.bySlug(slug), q, 'search', 'members'] as const,
   byId: (id: string) => [...WORKSPACE_QUERY_KEYS.all, id] as const,
 } as const;

@@ -9,3 +9,12 @@ export const useUserWorkspaces = () => {
     staleTime: 5 * 60 * 1000,
   });
 };
+
+export const useWorkspaceMembers = (slug: string, q: string) => {
+  return useQuery({
+    queryKey: WORKSPACE_QUERY_KEYS.membersSearch(slug, q),
+    queryFn: () => workspaceApi.membersBySlug(slug),
+    enabled: !!slug && q.length >= 2,
+    staleTime: 5 * 60 * 1000,
+  });
+};
