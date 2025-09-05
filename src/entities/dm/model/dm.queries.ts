@@ -25,6 +25,25 @@ export const useDMConversations = (wsSlug: string) => {
   });
 };
 
+export const useDMConversationsRecent = (wsSlug: string) => {
+  return useQuery({
+    queryKey: dmKeys.dmsRecent(wsSlug),
+    queryFn: () => dmApi.getUserDmConvensionsRecent(wsSlug),
+    staleTime: 1000 * 60, // 1분
+    enabled: !!wsSlug,
+    gcTime: 5 * 60 * 1000, // 5분
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: 'always',
+    retry: (failureCount, error: any) => {
+      if (error.status === 404) return false;
+      return failureCount < 3;
+    },
+    // 백그라운드 업데이트로 UX 개선
+    refetchInterval: 30000, // 30초마다 백그라운드 업데이트
+    refetchIntervalInBackground: false,
+  });
+};
+
 export const useDMConversation = (wsSlug: string, conversationId: string) => {
   return useQuery({
     queryKey: dmKeys.dm(wsSlug, conversationId),
@@ -122,3 +141,12 @@ export function useSendMessage(
     },
   });
 }
+
+// DM 대화방 생성
+export const useCreateDMConversation = (wsSlug: string, onSuccess?: (result: any) => void) => {
+  return useMutation({
+    mutationFn: (otherUserId: string) =>
+      dmApi.setWorkspaceSlug(wsSlug).createDmConversation(otherUserId),
+    onSuccess: (result) => onSuccess?.(result),
+  });
+};

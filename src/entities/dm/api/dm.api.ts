@@ -3,8 +3,16 @@ import { Message } from '@/shared/types/message';
 
 class DirectMessageApi extends ApiBase {
   //대화방생성
-  async createDmConversation(wsSlug: string, otherUserId: string) {
-    return await this.fetchWithAuth(`/workspaces/${wsSlug}/dm/conversations`, {
+  private workspaceSlug: string | null = null;
+
+  // 워크스페이스 slug 설정
+  setWorkspaceSlug(slug: string) {
+    this.workspaceSlug = slug;
+    return this;
+  }
+
+  async createDmConversation(otherUserId: string) {
+    return await this.fetchWithAuth(`/workspaces/${this.workspaceSlug}/dm/conversations`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
