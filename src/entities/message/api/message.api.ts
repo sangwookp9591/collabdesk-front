@@ -2,6 +2,27 @@ import { ApiBase } from '@/shared/api';
 import { Message } from '@/shared/types/message';
 
 class MessageApi extends ApiBase {
+  async createChannelMessage(data: {
+    wsSlug: string;
+    chSlug: string;
+    content: string;
+    parentId?: string;
+  }) {
+    const { wsSlug, chSlug, content, parentId } = data;
+
+    console.log('wsSlug, chSlug, content, parentId  : ', wsSlug, chSlug, content, parentId);
+    return await this.fetchWithAuth(`/workspaces/${wsSlug}/channels/${chSlug}/messages`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        content,
+        parentId,
+      }),
+    });
+  }
+
   async getRecentMessages(wsSlug: string) {
     return await this.fetchWithAuth(`/workspaces/${wsSlug}/messages/recent`, {
       method: 'GET',

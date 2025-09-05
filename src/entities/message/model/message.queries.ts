@@ -1,6 +1,6 @@
 'use client';
 
-import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { messageApi } from '../api/message.api';
 import { messageKeys } from './message-keys';
 import { useSocketStore } from './socket.store';
@@ -68,3 +68,24 @@ export const useInfiniteChannelMessages = (wsSlug: string, chSlug: string) => {
     staleTime: 60000,
   });
 };
+
+export function useSendMessage(wsSlug: string, chSlug: string, page: number = 1, take?: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { wsSlug: string; chSlug: string; content: string; parentId?: string }) =>
+      messageApi.createChannelMessage(data),
+    onSuccess: (newMessage) => {
+      console.log('newMessage : ', newMessage);
+      queryClient.setQueryData(messageKeys.channelMessages(wsSlug, chSlug, page), (old: any) => {
+        if (!old) {
+          return { messages: [newMessage], total: 1 };
+        }
+        return {
+          ...old,
+          messages: [...old.messages, newMessage],
+          total: Number(old.total) + 1,
+        };
+      });
+    },
+  });
+}
