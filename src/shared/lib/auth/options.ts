@@ -2,6 +2,8 @@ import type { NextAuthOptions, Session, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import { apiFetch } from '@/shared/api';
+import { cookies } from 'next/headers';
+
 interface AuthResponse {
   user: {
     id: string;
@@ -11,6 +13,7 @@ interface AuthResponse {
     status: string;
   };
   accessToken: string;
+  refreshToken: string;
   expiresIn: number;
 }
 
@@ -36,11 +39,10 @@ export const authOptions: NextAuthOptions = {
 
         console.log('credentials : ', credentials);
         try {
-          // MSW가 활성화되면 mock API 호출, 아니면 실제 API 호출
-
           const res = await apiFetch(`/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify({
               email: credentials.email,
               password: credentials.password,
@@ -50,7 +52,10 @@ export const authOptions: NextAuthOptions = {
           const result = await res.json();
 
           const data = result?.data;
+
           if (data) {
+            (await cookies()).set('refreshToken', data?.refreshToken);
+
             return {
               id: data?.user?.id,
               email: data?.user?.email,
@@ -58,7 +63,8 @@ export const authOptions: NextAuthOptions = {
               profileImageUrl: data?.user?.profileImageUrl,
               status: data?.user?.status,
               accessToken: data?.accessToken,
-              expiresIn: data?.expiresIn,
+              // expiresIn: data?.expiresIn,
+              expiresIn: Date.now() + 15 * 60 * 1000,
             };
           }
           return null;
@@ -78,7 +84,8 @@ export const authOptions: NextAuthOptions = {
 
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30일
+    // maxAge: 30 * 24 * 60 * 60, // 30일
+    maxAge: 60 * 24 * 60 * 60, // 30일
   },
 
   callbacks: {
@@ -111,8 +118,8 @@ export const authOptions: NextAuthOptions = {
           const payload = JSON.parse(atob((token.accessToken as string).split('.')[1]));
           const now = Math.floor(Date.now() / 1000);
 
-          if (payload.exp > now) {
-            return token;
+          if (Date.now() < (token.expiresIn as number)) {
+            return token; // 토큰 만료시 null 반환
           }
 
           const refreshedTokens = await refreshAccessToken();
@@ -120,7 +127,8 @@ export const authOptions: NextAuthOptions = {
           console.log('refreshedTokens : ', refreshedTokens);
           if (refreshedTokens) {
             token.accessToken = refreshedTokens.accessToken;
-            token.expiresIn = refreshedTokens.expiresIn;
+            token.expiresIn = Date.now() + 15 * 60 * 1000;
+            (await cookies()).set('refreshToken', refreshedTokens.refreshToken!);
           } else {
             // 리프레시 실패시 로그아웃
             await logout();
@@ -160,6 +168,7 @@ async function refreshAccessToken() {
 
     return {
       accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
       expiresIn: data.expiresIn,
     };
   } catch (error) {
