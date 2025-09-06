@@ -139,14 +139,7 @@ export default function Sidebar() {
         <ArrowRightIcon size={20} />
       </section>
 
-      <section
-        style={{
-          display: 'flex',
-          width: '100%',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        }}
-      >
+      <section className={styles.section}>
         <ChannelSection
           isOpen={activeDropDowns?.channel}
           onToggle={() => toggleDropdown('channel')}
@@ -156,14 +149,7 @@ export default function Sidebar() {
 
       {/* DM Section */}
       {/* DM Section */}
-      <section
-        style={{
-          display: 'flex',
-          width: '100%',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        }}
-      >
+      <section className={styles.section}>
         <DMSection
           isOpen={activeDropDowns.dm}
           onToggle={() => toggleDropdown('dm')}
