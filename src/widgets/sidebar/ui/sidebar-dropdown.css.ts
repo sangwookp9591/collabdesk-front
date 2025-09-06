@@ -24,15 +24,23 @@ export const wrapper = style({
 export const title = style({
   display: 'flex',
   fontWeight: 'bold',
+  justifyContent: 'space-between',
   alignItems: 'center',
   gap: '10px',
   cursor: 'pointer',
 });
 
+export const titleWrapper = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '10px',
+});
+
 export const dropdownIcon = recipe({
   base: {
     transform: 'rotate(0deg)',
-    transition: 'transform 1s ease',
+    transition: 'transform 0.5s ease',
   },
   variants: {
     active: {
@@ -82,4 +90,22 @@ export const plusBox = style({
   backgroundColor: themeTokens.colors.primaryHover,
   color: themeTokens.colors.textSecondary,
   cursor: 'pointer',
+});
+
+export const addDMButton = style({
+  padding: '4px',
+  borderRadius: '4px',
+  border: 'none',
+  backgroundColor: 'transparent',
+  color: themeTokens.colors.textSecondary,
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  transition: 'all 0.15s ease',
+
+  ':hover': {
+    backgroundColor: themeTokens.colors.backgroundHover,
+    color: themeTokens.colors.textSecondary,
+  },
 });
