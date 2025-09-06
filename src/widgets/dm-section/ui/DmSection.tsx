@@ -2,12 +2,14 @@
 
 import * as styles from './dm-section.css';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowBottomIcon, ArrowRightIcon, MessageIcon, PlusIcon } from '@/shared/ui';
+import { MessageIcon } from '@/shared/ui';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { useDMConversations } from '@/entities/dm/model/dm.queries';
 import { useState } from 'react';
 import { StartDMModal } from '@/features/dm-start';
+import { Avatar } from '@/entities/user';
+import SidebarDropdown from '@/widgets/sidebar/ui/SidebarDropdown';
 
 interface DMUser {
   id: string;
@@ -76,29 +78,13 @@ export function DMSection({ isOpen, onToggle, onStartDM }: DMSectionProps) {
   };
 
   return (
-    <div className={styles.dmSectionContainer}>
-      <div className={styles.dmSectionHeader} onClick={onToggle}>
-        <div className={styles.dmSectionTitle}>
-          {isOpen ? <ArrowBottomIcon size={16} /> : <ArrowRightIcon size={16} />}
-          <span>다이렉트 메시지</span>
-          {totalUnreadCount > 0 && (
-            <span className={styles.dmCounter}>
-              {totalUnreadCount > 99 ? '99+' : totalUnreadCount}
-            </span>
-          )}
-        </div>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            handleAddDM();
-          }}
-          className={styles.addDMButton}
-          title="새 메시지 시작"
-        >
-          <PlusIcon size={16} />
-        </button>
-      </div>
-
+    <SidebarDropdown
+      title={'다이렉트 메세지'}
+      isOpen={isOpen}
+      onToggle={onToggle}
+      handleAdd={handleAddDM}
+      hasButton={true}
+    >
       {isOpen && (
         <div className={styles.dmListContainer}>
           {isLoading ? (
@@ -120,16 +106,17 @@ export function DMSection({ isOpen, onToggle, onStartDM }: DMSectionProps) {
                 }`}
                 onClick={() => handleDMClick(dm.id)}
               >
-                <div className={styles.userAvatar}>
-                  <img
-                    src={dm.otherUser.profileImageUrl || '/default-avatar.png'}
-                    alt={dm.otherUser.name}
-                    style={{ width: '100%', height: '100%', borderRadius: '4px' }}
-                  />
-                  <div
+                <Avatar
+                  profileImageUrl={dm.otherUser.profileImageUrl}
+                  size={30}
+                  name={dm.otherUser.name}
+                  isActiveIcon={true}
+                  isActive={true}
+                  borderRadius={'10px'}
+                ></Avatar>
+                {/* <div
                     className={`${styles.statusIndicator} ${getStatusStyle(dm.otherUser.status)}`}
-                  />
-                </div>
+                  /> */}
 
                 <div className={styles.dmUserInfo}>
                   <div className={styles.dmUserName}>
@@ -158,6 +145,6 @@ export function DMSection({ isOpen, onToggle, onStartDM }: DMSectionProps) {
       )}
 
       <StartDMModal isOpen={showStartDMModal} onClose={() => setShowStartDMModal(false)} />
-    </div>
+    </SidebarDropdown>
   );
 }
