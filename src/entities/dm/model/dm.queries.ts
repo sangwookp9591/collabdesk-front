@@ -93,11 +93,12 @@ export const useDmMessages = (
   useEffect(() => {
     if (!socket) return;
 
-    const handler = (message: any) => {
+    const handler = (payload: any) => {
+      const { message, isNew } = payload;
       // React Query cache 업데이트
-      if (conversationId && message?.channel?.slug) {
+      if (conversationId && message?.dmConversationId) {
         queryClient.setQueryData(
-          DM_QUERY_KEYS.dmMessages(wsSlug, conversationId, page),
+          DM_QUERY_KEYS.dmMessages(wsSlug, message?.dmConversationId, page),
           (old: any) => {
             console.log('old: ', old);
             // old가 배열인지 확인
@@ -132,7 +133,7 @@ export function useSendMessage(
       content: string;
       parentId?: string;
     }) => dmApi.createDmMessage(data),
-    onSuccess: (newMessage) => {
+    onSuccess: (newMessage: any) => {
       queryClient.setQueryData(
         DM_QUERY_KEYS.dmMessages(wsSlug, conversationId, page),
         (old: any) => {
