@@ -34,14 +34,15 @@ export const useChannelMessages = (
   useEffect(() => {
     if (!socket) return;
 
-    const handler = (message: any) => {
+    const handler = (payload: any) => {
+      const { message: newMessage } = payload;
       // React Query cache 업데이트
-      if (chSlug && message?.channel?.slug) {
+      if (chSlug && newMessage?.channel?.slug) {
         queryClient.setQueryData(messageKeys.channelMessages(wsSlug, chSlug, page), (old: any) => {
           console.log('old: ', old);
           // old가 배열인지 확인
 
-          return { ...old, messages: [...old.messages, message], total: Number(old.total) + 1 };
+          return { ...old, messages: [...old.messages, newMessage], total: Number(old.total) + 1 };
         });
       }
     };
