@@ -21,3 +21,12 @@ export const resizerStyle = style({
   bottom: 0,
   backgroundColor: 'transparent',
 });
+
+export const section = style({
+  display: 'flex',
+  width: '100%',
+  flexDirection: 'column',
+  padding: '8px 0',
+  borderTop: '1px solid rgba(220, 214, 223, 0.3)',
+  marginTop: '16px',
+});
