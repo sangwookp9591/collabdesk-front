@@ -66,18 +66,18 @@ export const dmItem = style({
 });
 
 export const dmItemActive = style({
-  backgroundColor: themeTokens.colors.background,
-  color: themeTokens.colors.text,
-  fontWeight: '600',
+  backgroundColor: 'rgba(231, 224, 234, 0.25)',
+  color: themeTokens.colors.textSecondary,
 
   ':hover': {
-    backgroundColor: themeTokens.colors.background,
+    backgroundColor: themeTokens.colors.backgroundHover,
+    color: themeTokens.colors.textSecondary,
   },
 });
 
 export const dmItemUnread = style({
   fontWeight: '600',
-  color: themeTokens.colors.text,
+  color: themeTokens.colors.textSecondary,
 });
 
 export const userAvatar = style({
@@ -125,7 +125,6 @@ export const dmUserName = style({
 
 export const dmLastMessage = style({
   fontSize: '12px',
-  color: themeTokens.colors.textSecondary,
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
@@ -134,7 +133,6 @@ export const dmLastMessage = style({
 
 export const dmTimestamp = style({
   fontSize: '11px',
-  color: themeTokens.colors.textSecondary,
   flexShrink: 0,
 });
 
