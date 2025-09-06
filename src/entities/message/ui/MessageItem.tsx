@@ -13,7 +13,7 @@ type MessageItemProps = {
 export function MessageItem({ message, isSameUserWithinMinute }: MessageItemProps) {
   const currentDate = new Date(message.createdAt);
 
-  return message?.messageType === 'USER' ? (
+  return message?.messageType === 'USER' || message?.messageType === 'DM' ? (
     <div key={message.id} className={styles.messageItem}>
       {!isSameUserWithinMinute ? (
         <div style={{ display: 'flex', gap: '10px' }}>

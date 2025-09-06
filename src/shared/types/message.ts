@@ -1,7 +1,7 @@
 import { DMConversation } from '@/entities/dm';
 import { Channel } from './channel';
 import { User } from './user';
-export type messageType = 'USER' | 'SYSTEM' | 'BOT';
+export type messageType = 'USER' | 'DM' | 'SYSTEM' | 'BOT';
 export interface Message {
   id: string;
   content: string;
