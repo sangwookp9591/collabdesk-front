@@ -12,5 +12,6 @@ export const EVENT_KEYS = {
   SUB_CHANNEL_UPDATED: 'channelUpdated',
   SUB_CHANNEL_DELETED: 'channelDeleted',
   SUB_CHANNEL_LEAVED: 'channelLeaved',
+  SUB_DM_ROOM_CREATED: 'dmRoomCreated',
   SUB_NEW_MESSAGE: 'newMessage',
 };
