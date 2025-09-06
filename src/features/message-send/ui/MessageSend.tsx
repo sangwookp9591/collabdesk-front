@@ -16,10 +16,12 @@ export function MessageSend({ onSend }: MessageInputProps) {
     setValue('');
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      handleSend();
+      if (!value.trim()) return;
+      onSend(value.trim());
+      setValue('');
     }
   };
 
@@ -30,7 +32,7 @@ export function MessageSend({ onSend }: MessageInputProps) {
         placeholder="메시지를 입력하세요..."
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyUp}
         className={styles.inputBox}
       />
       <div onClick={handleSend} className={styles.sendButton}>
