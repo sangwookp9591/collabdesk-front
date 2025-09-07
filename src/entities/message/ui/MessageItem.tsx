@@ -2,13 +2,32 @@
 
 import { Avatar } from '@/entities/user';
 import * as styles from './message-item.css';
-import { format } from 'date-fns';
+import { format, differenceInCalendarDays } from 'date-fns';
 import { Message } from '@/shared/types/message';
 
 type MessageItemProps = {
   message: Message;
   isSameUserWithinMinute: boolean;
 };
+
+function formatMessageDate(date: Date) {
+  const today = new Date();
+  const diff = differenceInCalendarDays(today, date);
+
+  if (diff === 0) {
+    // 오늘
+    return format(date, 'a h:mm');
+  } else if (diff === 1) {
+    // 어제
+    return `1일 전 ${format(date, 'a h:mm')}`;
+  } else if (diff < 7) {
+    // 2~6일 전
+    return `${diff}일 전 ${format(date, 'a h:mm')}`;
+  } else {
+    // 일주일 이상 → 날짜 표시
+    return format(date, 'yyyy.MM.dd a h:mm');
+  }
+}
 
 export function MessageItem({ message, isSameUserWithinMinute }: MessageItemProps) {
   const currentDate = new Date(message.createdAt);
@@ -28,7 +47,7 @@ export function MessageItem({ message, isSameUserWithinMinute }: MessageItemProp
             <div style={{ display: 'flex', gap: '10px' }}>
               <span style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{message.user.name}</span>
               <span style={{ fontSize: '0.8rem', color: '#ADB5BD' }}>
-                {format(currentDate, 'a h:mm')}
+                {formatMessageDate(currentDate)}
               </span>
             </div>
             {message.content}
@@ -57,7 +76,7 @@ export function MessageItem({ message, isSameUserWithinMinute }: MessageItemProp
               {message?.messageType === 'BOT' ? '알림 봇' : '시스템'}
             </span>
             <span style={{ fontSize: '0.8rem', color: '#ADB5BD' }}>
-              {format(currentDate, 'a h:mm')}
+              {formatMessageDate(currentDate)}
             </span>
             <strong>- {message.content}</strong>
           </div>
