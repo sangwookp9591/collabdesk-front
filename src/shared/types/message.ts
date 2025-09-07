@@ -33,3 +33,18 @@ export interface Message {
   parent?: Message;
   replies?: Message[];
 }
+
+export interface MessageResponse {
+  messages: Message[];
+  total: number;
+  hasMore: boolean;
+  prevCursor?: string;
+  nextCursor?: string;
+  direction: 'next' | 'prev';
+}
+
+export interface GetMessagesQueryDto {
+  cursor?: string;
+  direction?: 'next' | 'prev';
+  take?: number;
+}

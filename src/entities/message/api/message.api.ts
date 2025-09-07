@@ -1,5 +1,6 @@
 import { ApiBase } from '@/shared/api';
-import { Message } from '@/shared/types/message';
+import { GetMessagesQueryDto } from '@/shared/types/message';
+import { MessageResponse } from '../../../shared/types/message';
 
 class MessageApi extends ApiBase {
   async createChannelMessage(data: {
@@ -32,12 +33,15 @@ class MessageApi extends ApiBase {
   async getMessagesByChannel(
     wsSlug: string,
     chSlug: string,
-    page?: number,
-    take?: number,
-  ): Promise<{ messages: Message[]; hasMore: boolean; total: number }> {
-    const params = new URLSearchParams({ page: String(page) });
+    { cursor, take, direction }: GetMessagesQueryDto,
+  ): Promise<MessageResponse> {
+    const params = new URLSearchParams();
+    params.append('cursor', cursor ?? '');
     if (take) {
       params.append('take', String(take));
+    }
+    if (direction) {
+      params.append('direction', String(direction));
     }
 
     return await this.fetchWithAuth(
