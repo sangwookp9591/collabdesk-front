@@ -9,17 +9,17 @@ import { MessageListSkeleton } from './MessageListSkeleton';
 type MessageListProps = {
   messages: Message[];
   isLoading: boolean;
-  hasNextPage: boolean;
-  fetchNextPage: () => Promise<any>;
-  isFetchingNextPage: boolean;
+  hasPreviousPage: boolean;
+  fetchPreviousPage: () => Promise<any>;
+  isFetchingPreviousPage: boolean;
 };
 
 export function MessageList({
   messages,
   isLoading,
-  hasNextPage,
-  fetchNextPage,
-  isFetchingNextPage,
+  hasPreviousPage,
+  fetchPreviousPage,
+  isFetchingPreviousPage,
 }: MessageListProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -29,20 +29,23 @@ export function MessageList({
   }, [messages]);
 
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
+
   useEffect(() => {
-    if (!hasNextPage || isFetchingNextPage) return;
+    if (!hasPreviousPage || isFetchingPreviousPage) return;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
           const container = containerRef.current;
           const prevScrollHeight = container?.scrollHeight || 0;
 
-          fetchNextPage().then(() => {
+          fetchPreviousPage().then(() => {
             // 스크롤 위치 유지 (새로운 메시지가 위에 추가되므로)
-            if (container) {
-              const newScrollHeight = container.scrollHeight;
-              container.scrollTop = newScrollHeight - prevScrollHeight;
-            }
+            requestAnimationFrame(() => {
+              if (container) {
+                const newScrollHeight = container.scrollHeight;
+                container.scrollTop = newScrollHeight - prevScrollHeight;
+              }
+            });
           });
         }
       },
@@ -54,7 +57,7 @@ export function MessageList({
     }
 
     return () => observer.disconnect();
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [hasPreviousPage, isFetchingPreviousPage, fetchPreviousPage]);
 
   // 최초 제일아래로
   useEffect(() => {
@@ -76,9 +79,9 @@ export function MessageList({
   return (
     <div ref={containerRef} className={styles.messageList}>
       <div ref={loadMoreRef} className="h-10 flex justify-center items-center">
-        {isFetchingNextPage && <div className="text-gray-500">이전 메세지 가져오는 중...</div>}
-        {hasNextPage && <div className={styles.hasPrevButton}>이전 메세지 조회</div>}
-        {!hasNextPage && messages.length > 0 && (
+        {isFetchingPreviousPage && <div className="text-gray-500">이전 메세지 가져오는 중...</div>}
+        {hasPreviousPage && <div className={styles.hasPrevButton}>이전 메세지 조회</div>}
+        {!hasPreviousPage && messages.length > 0 && (
           <div className="text-gray-500">모든 메시지를 불러왔습니다.</div>
         )}
       </div>

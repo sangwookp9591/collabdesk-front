@@ -18,8 +18,8 @@ export function ChannelMessage({
   chSlug: string;
   initData: MessageResponse;
 }) {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, error } =
-    useInfiniteChannelMessages({ wsSlug, chSlug, take: 10, direction: 'next', initData });
+  const { data, hasPreviousPage, fetchPreviousPage, isFetchingPreviousPage, isLoading, error } =
+    useInfiniteChannelMessages({ wsSlug, chSlug, take: 10, direction: 'prev', initData });
 
   const { mutate: sendMessage, isPending } = useSendMessage(wsSlug, chSlug);
 
@@ -35,9 +35,9 @@ export function ChannelMessage({
       <MessageList
         messages={data.pages?.flatMap((page) => page.messages)}
         isLoading={isLoading}
-        hasNextPage={hasNextPage}
-        fetchNextPage={fetchNextPage}
-        isFetchingNextPage={isFetchingNextPage}
+        hasPreviousPage={hasPreviousPage}
+        fetchPreviousPage={fetchPreviousPage}
+        isFetchingPreviousPage={isFetchingPreviousPage}
       />
       <MessageSend onSend={handleSendMessaage} />
     </>
