@@ -93,6 +93,7 @@ export const useSocketStore = create<SocketState>()(
 
       if (socket) {
         socket.disconnect();
+        socket.removeAllListeners();
         set({
           socket: null,
           isConnected: false,
@@ -105,14 +106,14 @@ export const useSocketStore = create<SocketState>()(
     joinWorkspace: (workspaceId: string) => {
       const { socket } = get();
       if (socket) {
-        socket.emit(EVENT_KEYS.PUB_JOIN_WORKSPACE, { workspaceId });
+        socket.emit(EVENT_KEYS.PUB_JOIN_WORKSPACE, { workspaceId: workspaceId });
         set({ currentWorkspace: workspaceId });
       }
     },
     joinRoom: (roomId: string, roomType: 'channel' | 'dm') => {
       const { socket } = get();
       if (socket) {
-        socket.emit(EVENT_KEYS.PUB_JOIN_CHANNEL, { roomId, roomType });
+        socket.emit(EVENT_KEYS.PUB_JOIN_ROOM, { roomId, roomType });
         if (roomType === 'channel') {
           set({ currentChannel: roomId, currentDm: null });
         } else {

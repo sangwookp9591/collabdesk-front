@@ -5,7 +5,7 @@ import { messageApi } from '../api/message.api';
 import { messageKeys } from './message-keys';
 import { useSocketStore } from './socket.store';
 import { useEffect } from 'react';
-import { MessageResponse } from '@/shared/types/message';
+import { Message, MessageResponse } from '@/shared/types/message';
 
 export const useChannelMessages = (
   wsSlug: string,
@@ -82,23 +82,20 @@ export const useInfiniteChannelMessages = ({
   initData,
 }: InfiniteMessageType) => {
   const socket = useSocketStore((state) => state.socket);
+
   const queryClient = useQueryClient();
 
   const query = useInfiniteQuery({
     queryKey: messageKeys.channelInfiniteMessages(wsSlug, chSlug),
-    queryFn: async ({
-      pageParam = { cursor: undefined, direction: 'next' as const },
-    }: {
-      pageParam: { cursor?: string; direction: 'prev' | 'next' };
-    }) => {
+    queryFn: async ({ pageParam }) => {
       return await messageApi.getMessagesByChannel(wsSlug, chSlug, {
-        cursor: pageParam.cursor,
+        cursor: pageParam?.cursor,
         take,
-        direction: pageParam.direction,
+        direction: pageParam?.direction,
       });
     },
     enabled: !!(wsSlug && chSlug),
-    initialPageParam: { cursor: undefined, direction: direction },
+    initialPageParam: null,
     initialData: initData
       ? {
           pages: [initData],
@@ -120,6 +117,7 @@ export const useInfiniteChannelMessages = ({
         ? { cursor: firstPage.prevCursor, direction: 'prev' as const }
         : undefined;
     },
+
     staleTime: 5 * 60 * 1000, // 5분
     gcTime: 10 * 60 * 1000, // 10분
   });
@@ -133,14 +131,29 @@ export const useInfiniteChannelMessages = ({
       if (chSlug && newMessage?.channel?.slug) {
         queryClient.setQueryData(
           messageKeys.channelInfiniteMessages(wsSlug, chSlug),
-          (old: any) => {
-            console.log('old: ', old);
-            // old가 배열인지 확인
+          (oldData: any) => {
+            if (!oldData) return oldData;
+
+            // 이미 존재하는 메시지인지 확인
+            const existsInCache = oldData.messages.some((m: Message) => m.id === newMessage.id);
+            if (existsInCache) return oldData;
+            const newPageData = oldData.pages.map((page: any, index: number) => {
+              // 마지막 페이지에 새 메시지 추가
+              if (index === oldData.pages.length - 1) {
+                return {
+                  ...page,
+                  messages: [...page.messages, newMessage],
+                  total: page.total + 1,
+                };
+              }
+              return {
+                ...page,
+              };
+            });
 
             return {
-              ...old,
-              messages: [...old.messages, newMessage],
-              total: Number(old.total) + 1,
+              ...oldData,
+              pages: newPageData,
             };
           },
         );
@@ -168,16 +181,33 @@ export function useSendMessage(wsSlug: string, chSlug: string) {
     }) => await messageApi.createChannelMessage(data),
     onSuccess: (newMessage) => {
       console.log('newMessage : ', newMessage);
-      queryClient.setQueryData(messageKeys.channelInfiniteMessages(wsSlug, chSlug), (old: any) => {
-        if (!old) {
-          return { messages: [newMessage], total: 1 };
-        }
-        return {
-          ...old,
-          messages: [...old.messages, newMessage],
-          total: Number(old.total) + 1,
-        };
-      });
+      queryClient.setQueryData(
+        messageKeys.channelInfiniteMessages(wsSlug, chSlug),
+        (oldData: any) => {
+          if (!oldData) return oldData;
+          const existsInCache = oldData.messages.some((m: Message) => m.id === newMessage.id);
+          if (existsInCache) return oldData;
+          const newPageData = oldData.pages.map((page: any, index: number) => {
+            // 마지막 페이지에 새 메시지 추가
+            if (index === oldData.pages.length - 1) {
+              return {
+                ...page,
+                messages: [...page.messages, newMessage],
+                total: page.total + 1,
+              };
+            }
+            return {
+              ...page,
+            };
+          });
+
+          console.log('newPageData : ', newPageData);
+          return {
+            ...oldData,
+            pages: newPageData,
+          };
+        },
+      );
     },
   });
 }

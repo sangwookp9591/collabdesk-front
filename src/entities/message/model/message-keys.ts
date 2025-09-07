@@ -5,5 +5,5 @@ export const messageKeys = {
   channelMessages: (wsSlug: string, chSlug: string, cursor?: string) =>
     [...messageKeys.channel(wsSlug, chSlug), cursor, 'messages'] as const,
   channelInfiniteMessages: (wsSlug: string, chSlug: string) =>
-    [...messageKeys.channel(wsSlug, chSlug), 'messages', 'infinite'] as const,
+    [...messageKeys.channel(wsSlug, chSlug), 'infinite'] as const,
 };
