@@ -1,12 +1,12 @@
 'use client';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useSocketStore } from '@/entities/message';
 import { dmApi } from '../api/dm.api';
 import { DM_QUERY_KEYS } from './dm-keys';
-import { User } from '../../../shared/types/user';
-import { Message } from '../../../shared/types/message';
+import { User } from '@/shared/types/user';
+import { Message, MessageResponse } from '@/shared/types/message';
 
 export const useDMConversations = (wsSlug: string) => {
   return useQuery({
@@ -68,14 +68,20 @@ export const useDMConversation = (wsSlug: string, conversationId: string) => {
 export const useDmMessages = (
   wsSlug: string,
   conversationId: string,
-  page: number = 1,
+  cursor: string,
+  direction: 'next' | 'prev',
   take?: number,
 ) => {
   const socket = useSocketStore((state) => state.socket);
   const queryClient = useQueryClient();
   const query = useQuery({
-    queryKey: DM_QUERY_KEYS.dmMessages(wsSlug, conversationId, page),
-    queryFn: () => dmApi.getDmMessages(wsSlug, conversationId, page, take),
+    queryKey: DM_QUERY_KEYS.dmMessages(wsSlug, conversationId, cursor),
+    queryFn: async () =>
+      await dmApi.getDmMessages(wsSlug, conversationId, {
+        cursor,
+        take,
+        direction,
+      }),
     staleTime: 1000 * 60, // 1분
     enabled: !!(wsSlug && conversationId),
     gcTime: 5 * 60 * 1000, // 5분
@@ -98,7 +104,7 @@ export const useDmMessages = (
       // React Query cache 업데이트
       if (conversationId && message?.dmConversationId) {
         queryClient.setQueryData(
-          DM_QUERY_KEYS.dmMessages(wsSlug, message?.dmConversationId, page),
+          DM_QUERY_KEYS.dmMessages(wsSlug, message?.dmConversationId, cursor),
           (old: any) => {
             console.log('old: ', old);
             // old가 배열인지 확인
@@ -114,17 +120,99 @@ export const useDmMessages = (
     return () => {
       socket.off('newMessage', handler);
     };
-  }, [socket, wsSlug, conversationId, page, queryClient]);
+  }, [socket, wsSlug, conversationId, cursor, queryClient]);
 
   return query;
 };
 
-export function useSendMessage(
-  wsSlug: string,
-  conversationId: string,
-  page: number = 1,
-  take?: number,
-) {
+type InfiniteMessageType = {
+  wsSlug: string;
+  conversationId: string;
+  take?: number;
+  direction: 'prev' | 'next';
+  initData?: MessageResponse;
+};
+
+export const useInfiniteDMMessages = ({
+  wsSlug,
+  conversationId,
+  take = 20,
+  direction,
+  initData,
+}: InfiniteMessageType) => {
+  const socket = useSocketStore((state) => state.socket);
+  const queryClient = useQueryClient();
+
+  const query = useInfiniteQuery({
+    queryKey: DM_QUERY_KEYS.dmInfiniteMessages(wsSlug, conversationId),
+    queryFn: async ({
+      pageParam = { cursor: undefined, direction: 'next' as const },
+    }: {
+      pageParam: { cursor?: string; direction: 'prev' | 'next' };
+    }) => {
+      return await dmApi.getDmMessages(wsSlug, conversationId, {
+        cursor: pageParam.cursor,
+        take,
+        direction: pageParam.direction,
+      });
+    },
+    enabled: !!(wsSlug && conversationId),
+    initialPageParam: { cursor: undefined, direction: direction },
+    initialData: initData
+      ? {
+          pages: [initData],
+          pageParams: [
+            {
+              cursor: initData.direction === 'next' ? initData.nextCursor : initData.prevCursor,
+              direction: initData.direction,
+            },
+          ],
+        }
+      : undefined,
+    getNextPageParam: (lastPage) => {
+      return lastPage.hasMore && lastPage.nextCursor
+        ? { cursor: lastPage.nextCursor, direction: 'next' as const }
+        : undefined;
+    },
+    getPreviousPageParam: (firstPage) => {
+      return firstPage.hasMore && firstPage.prevCursor
+        ? { cursor: firstPage.prevCursor, direction: 'prev' as const }
+        : undefined;
+    },
+    staleTime: 5 * 60 * 1000, // 5분
+    gcTime: 10 * 60 * 1000, // 10분
+  });
+
+  useEffect(() => {
+    if (!socket) return;
+
+    const handler = (payload: any) => {
+      const { message, isNew } = payload;
+      // React Query cache 업데이트
+      if (conversationId && message?.dmConversationId) {
+        queryClient.setQueryData(
+          DM_QUERY_KEYS.dmInfiniteMessages(wsSlug, message?.dmConversationId),
+          (old: any) => {
+            console.log('old: ', old);
+            // old가 배열인지 확인
+
+            return { ...old, messages: [...old.messages, message], total: Number(old.total) + 1 };
+          },
+        );
+      }
+    };
+
+    socket.on('newMessage', handler);
+
+    return () => {
+      socket.off('newMessage', handler);
+    };
+  }, [socket, wsSlug, conversationId, queryClient]);
+
+  return query;
+};
+
+export function useSendMessage(wsSlug: string, conversationId: string) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: {
@@ -135,7 +223,7 @@ export function useSendMessage(
     }) => dmApi.createDmMessage(data),
     onSuccess: (newMessage: any) => {
       queryClient.setQueryData(
-        DM_QUERY_KEYS.dmMessages(wsSlug, conversationId, page),
+        DM_QUERY_KEYS.dmInfiniteMessages(wsSlug, conversationId),
         (old: any) => {
           if (!old) {
             return { messages: [newMessage], total: 1 };
