@@ -143,7 +143,6 @@ export default function Sidebar() {
         <ChannelSection
           isOpen={activeDropDowns?.channel}
           onToggle={() => toggleDropdown('channel')}
-          onAddChannel={() => {}}
         />
       </section>
 
