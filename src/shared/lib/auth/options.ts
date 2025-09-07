@@ -1,21 +1,8 @@
 import type { NextAuthOptions, Session, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
-import { apiFetch } from '@/shared/api';
+import { authApi } from '@/shared/api';
 import { cookies } from 'next/headers';
-
-interface AuthResponse {
-  user: {
-    id: string;
-    email: string;
-    name?: string;
-    profileImageUrl?: string;
-    status: string;
-  };
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
-}
 
 export const authOptions: NextAuthOptions = {
   pages: {
@@ -32,37 +19,27 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        console.log('credentials : ', credentials);
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
 
-        console.log('credentials : ', credentials);
         try {
-          const res = await apiFetch(`/auth/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({
-              email: credentials.email,
-              password: credentials.password,
-            }),
+          const auth = await authApi.login({
+            email: credentials.email,
+            password: credentials.password,
           });
 
-          const result = await res.json();
-
-          const data = result?.data;
-
-          if (data) {
-            (await cookies()).set('refreshToken', data?.refreshToken);
+          if (auth) {
+            (await cookies()).set('refreshToken', auth?.refreshToken);
 
             return {
-              id: data?.user?.id,
-              email: data?.user?.email,
-              name: data?.user?.name,
-              profileImageUrl: data?.user?.profileImageUrl,
-              status: data?.user?.status,
-              accessToken: data?.accessToken,
+              id: auth?.user?.id,
+              email: auth?.user?.email,
+              name: auth?.user?.name,
+              profileImageUrl: auth?.user?.profileImageUrl,
+              status: auth?.user?.status,
+              accessToken: auth?.accessToken,
+              refreshToken: auth?.refreshToken,
               // expiresIn: data?.expiresIn,
               expiresIn: Date.now() + 15 * 60 * 1000,
             };
@@ -97,6 +74,7 @@ export const authOptions: NextAuthOptions = {
         session.user.profileImageUrl = user?.profileImageUrl ?? token.profileImageUrl;
         session.user.status = user?.status ?? token.status;
         session.user.accessToken = token.accessToken as string;
+        session.user.refreshToken = token.refreshToken as string;
         session.user.expiresIn = token.expiresIn as number;
       }
       return session;
@@ -109,29 +87,27 @@ export const authOptions: NextAuthOptions = {
         token.profileImageUrl = user.profileImageUrl ?? undefined;
         token.status = user.status;
         token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
         token.expiresIn = user.expiresIn;
       }
 
       // 토큰 만료 확인 및 리프레시
       if (token.accessToken) {
         try {
-          const payload = JSON.parse(atob((token.accessToken as string).split('.')[1]));
-          const now = Math.floor(Date.now() / 1000);
-
           if (Date.now() < (token.expiresIn as number)) {
             return token; // 토큰 만료시 null 반환
           }
 
-          const refreshedTokens = await refreshAccessToken();
+          const refreshedTokens = await authApi.tokenRefresh();
 
           console.log('refreshedTokens : ', refreshedTokens);
           if (refreshedTokens) {
             token.accessToken = refreshedTokens.accessToken;
+            token.refreshToken = refreshedTokens.refreshToken;
             token.expiresIn = Date.now() + 15 * 60 * 1000;
-            (await cookies()).set('refreshToken', refreshedTokens.refreshToken!);
           } else {
             // 리프레시 실패시 로그아웃
-            await logout();
+            await authApi.logout();
             return null;
           }
         } catch (error) {
@@ -149,45 +125,8 @@ export const authOptions: NextAuthOptions = {
     // },
     async signOut(message) {
       console.log('User signed out:', message);
-      await logout();
+      await authApi.logout();
     },
   },
 };
 // 토큰 리프레시 함수
-async function refreshAccessToken() {
-  try {
-    const res = await apiFetch('/auth/refresh', {
-      method: 'POST',
-      credentials: 'include',
-    });
-
-    console.log('refreshAccessToken res : ', res);
-    if (!res.ok) return null;
-
-    const data: AuthResponse = await res.json();
-
-    return {
-      accessToken: data.accessToken,
-      refreshToken: data.refreshToken,
-      expiresIn: data.expiresIn,
-    };
-  } catch (error) {
-    console.error('Refresh token error:', error);
-    return null;
-  }
-}
-
-// 토큰 리프레시 함수
-async function logout() {
-  try {
-    const res = await apiFetch('/auth/logout', {
-      method: 'POST',
-      credentials: 'include',
-    });
-    console.log('logout res : ', res);
-    if (!res.ok) return null;
-  } catch (error) {
-    console.error('Refresh token error:', error);
-    return null;
-  }
-}
