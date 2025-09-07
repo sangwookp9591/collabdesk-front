@@ -148,7 +148,7 @@ export const useInfiniteDMMessages = ({
       return await dmApi.getDmMessages(wsSlug, conversationId, {
         cursor: pageParam?.cursor,
         take,
-        direction: pageParam?.direction,
+        direction: pageParam?.direction ?? 'prev',
       });
     },
     enabled: !!(wsSlug && conversationId),
