@@ -157,7 +157,7 @@ export const useInfiniteChannelMessages = ({
   return query;
 };
 
-export function useSendMessage(wsSlug: string, chSlug: string, take?: number) {
+export function useSendMessage(wsSlug: string, chSlug: string) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data: {
