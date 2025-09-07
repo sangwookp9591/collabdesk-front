@@ -16,8 +16,8 @@ export function DmMessage({
   conversationId: string;
   initData: MessageResponse;
 }) {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, error } =
-    useInfiniteDMMessages({ wsSlug, conversationId, take: 10, direction: 'next', initData });
+  const { data, hasPreviousPage, fetchPreviousPage, isFetchingPreviousPage, isLoading, error } =
+    useInfiniteDMMessages({ wsSlug, conversationId, take: 10, direction: 'prev', initData });
 
   const { mutate: sendMessage, isPending } = useSendMessage(wsSlug, conversationId);
 
@@ -33,9 +33,9 @@ export function DmMessage({
       <MessageList
         messages={data.pages?.flatMap((page) => page.messages)}
         isLoading={isLoading}
-        hasNextPage={hasNextPage}
-        fetchNextPage={fetchNextPage}
-        isFetchingNextPage={isFetchingNextPage}
+        hasPreviousPage={hasPreviousPage}
+        fetchPreviousPage={fetchPreviousPage}
+        isFetchingPreviousPage={isFetchingPreviousPage}
       />
       <MessageSend onSend={handleSendMessaage} />
     </>

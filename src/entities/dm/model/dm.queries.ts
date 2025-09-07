@@ -137,7 +137,6 @@ export const useInfiniteDMMessages = ({
   wsSlug,
   conversationId,
   take = 20,
-  direction,
   initData,
 }: InfiniteMessageType) => {
   const socket = useSocketStore((state) => state.socket);
@@ -145,19 +144,15 @@ export const useInfiniteDMMessages = ({
 
   const query = useInfiniteQuery({
     queryKey: DM_QUERY_KEYS.dmInfiniteMessages(wsSlug, conversationId),
-    queryFn: async ({
-      pageParam = { cursor: undefined, direction: 'next' as const },
-    }: {
-      pageParam: { cursor?: string; direction: 'prev' | 'next' };
-    }) => {
+    queryFn: async ({ pageParam }) => {
       return await dmApi.getDmMessages(wsSlug, conversationId, {
-        cursor: pageParam.cursor,
+        cursor: pageParam?.cursor,
         take,
-        direction: pageParam.direction,
+        direction: pageParam?.direction,
       });
     },
     enabled: !!(wsSlug && conversationId),
-    initialPageParam: { cursor: undefined, direction: direction },
+    initialPageParam: null,
     initialData: initData
       ? {
           pages: [initData],
@@ -187,16 +182,35 @@ export const useInfiniteDMMessages = ({
     if (!socket) return;
 
     const handler = (payload: any) => {
-      const { message, isNew } = payload;
+      const { message: newMessage, isNew } = payload;
       // React Query cache 업데이트
-      if (conversationId && message?.dmConversationId) {
+      if (conversationId && newMessage?.dmConversationId) {
         queryClient.setQueryData(
-          DM_QUERY_KEYS.dmInfiniteMessages(wsSlug, message?.dmConversationId),
-          (old: any) => {
-            console.log('old: ', old);
-            // old가 배열인지 확인
+          DM_QUERY_KEYS.dmInfiniteMessages(wsSlug, newMessage?.dmConversationId),
+          (oldData: any) => {
+            if (!oldData) return oldData;
 
-            return { ...old, messages: [...old.messages, message], total: Number(old.total) + 1 };
+            // 이미 존재하는 메시지인지 확인
+            const existsInCache = oldData.messages.some((m: Message) => m.id === newMessage.id);
+            if (existsInCache) return oldData;
+            const newPageData = oldData.pages.map((page: any, index: number) => {
+              // 마지막 페이지에 새 메시지 추가
+              if (index === oldData.pages.length - 1) {
+                return {
+                  ...page,
+                  messages: [...page.messages, newMessage],
+                  total: page.total + 1,
+                };
+              }
+              return {
+                ...page,
+              };
+            });
+
+            return {
+              ...oldData,
+              pages: newPageData,
+            };
           },
         );
       }
@@ -224,14 +238,28 @@ export function useSendMessage(wsSlug: string, conversationId: string) {
     onSuccess: (newMessage: any) => {
       queryClient.setQueryData(
         DM_QUERY_KEYS.dmInfiniteMessages(wsSlug, conversationId),
-        (old: any) => {
-          if (!old) {
-            return { messages: [newMessage], total: 1 };
-          }
+        (oldData: any) => {
+          if (!oldData) return oldData;
+          const existsInCache = oldData.messages.some((m: Message) => m.id === newMessage.id);
+          if (existsInCache) return oldData;
+          const newPageData = oldData.pages.map((page: any, index: number) => {
+            // 마지막 페이지에 새 메시지 추가
+            if (index === oldData.pages.length - 1) {
+              return {
+                ...page,
+                messages: [...page.messages, newMessage],
+                total: page.total + 1,
+              };
+            }
+            return {
+              ...page,
+            };
+          });
+
+          console.log('newPageData : ', newPageData);
           return {
-            ...old,
-            messages: [...old.messages, newMessage],
-            total: Number(old.total) + 1,
+            ...oldData,
+            pages: newPageData,
           };
         },
       );

@@ -78,7 +78,6 @@ export const useInfiniteChannelMessages = ({
   wsSlug,
   chSlug,
   take = 20,
-  direction,
   initData,
 }: InfiniteMessageType) => {
   const socket = useSocketStore((state) => state.socket);
@@ -91,7 +90,7 @@ export const useInfiniteChannelMessages = ({
       return await messageApi.getMessagesByChannel(wsSlug, chSlug, {
         cursor: pageParam?.cursor,
         take,
-        direction: pageParam?.direction,
+        direction: pageParam?.direction ?? 'prev',
       });
     },
     enabled: !!(wsSlug && chSlug),
@@ -117,7 +116,6 @@ export const useInfiniteChannelMessages = ({
         ? { cursor: firstPage.prevCursor, direction: 'prev' as const }
         : undefined;
     },
-
     staleTime: 5 * 60 * 1000, // 5분
     gcTime: 10 * 60 * 1000, // 10분
   });
