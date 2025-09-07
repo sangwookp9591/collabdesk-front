@@ -1,6 +1,7 @@
 // UserLoadingSpinner.tsx
 import React from 'react';
 import * as styles from './loadingConent.css';
+import { DotLoading } from './DotLoading';
 
 interface LoadingContentProps {
   mainTitle: string;
@@ -27,11 +28,7 @@ export function LoadingConent({
         {/* 로딩 텍스트 */}
         <div className={styles.textContainer}>
           <h2 className={styles.mainTitle}>{mainTitle}</h2>
-          <div className={styles.dotsContainer}>
-            <span className={styles.dot1}></span>
-            <span className={styles.dot2}></span>
-            <span className={styles.dot3}></span>
-          </div>
+          <DotLoading size={8} />
           <p className={styles.subtitle}>{subTitle}</p>
         </div>
 
