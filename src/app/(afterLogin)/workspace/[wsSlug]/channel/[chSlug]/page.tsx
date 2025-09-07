@@ -8,7 +8,11 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { wsSlug, chSlug } = await params;
-  const result = await messageApi.getMessagesByChannel(wsSlug, chSlug, 1);
+  const result = await messageApi.getMessagesByChannel(wsSlug, chSlug, {
+    cursor: '',
+    take: 10,
+    direction: 'next',
+  });
   return (
     <Suspense fallback={<ChannelMessageSkeleton />}>
       <ChannelMessage wsSlug={wsSlug} chSlug={chSlug} initData={result} />

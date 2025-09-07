@@ -8,7 +8,13 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { wsSlug, dmId } = await params;
-  const result = await dmApi.getDmMessages(wsSlug, dmId, 1);
+
+  const result = await dmApi.getDmMessages(wsSlug, dmId, {
+    cursor: '',
+    take: 10,
+    direction: 'next',
+  });
+
   return (
     <Suspense fallback={<DMMessageSkeleton />}>
       <DmMessage wsSlug={wsSlug} conversationId={dmId} initData={result} />
