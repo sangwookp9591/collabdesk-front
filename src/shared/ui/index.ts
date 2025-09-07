@@ -1,4 +1,3 @@
-import { LoadingConent } from './loading/LoadingConent';
 export {
   HomeIcon,
   DirectMessageIcon,
@@ -35,3 +34,4 @@ export * as cardStyle from './card/card.css';
 export { StatusView } from './state/StatusView';
 
 export { LoadingConent } from './loading/LoadingConent';
+export { DotLoading } from './loading/DotLoading';
