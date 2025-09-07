@@ -1,3 +1,4 @@
+import { LoadingConent } from './loading/LoadingConent';
 export {
   HomeIcon,
   DirectMessageIcon,
@@ -32,3 +33,5 @@ export { NextModal } from './NextModal';
 export * as typographyStyle from './typography/typography.css';
 export * as cardStyle from './card/card.css';
 export { StatusView } from './state/StatusView';
+
+export { LoadingConent } from './loading/LoadingConent';
