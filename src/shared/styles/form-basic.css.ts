@@ -144,13 +144,16 @@ export const deleteMessageStyle = style({
 });
 
 export const errorMessageStyle = style({
+  marginTop: '5px',
+  display: 'flex',
+  justifyContent: 'center',
   padding: '12px',
   backgroundColor: themeTokens.colors.status.error.backgroundColor,
   border: `1px solid ${themeTokens.colors.status.error.border}`,
   borderRadius: '6px',
   color: themeTokens.colors.status.error.color,
   fontSize: '0.875rem',
-  marginBottom: '10px',
+  marginBottom: '5px',
 });
 
 export const successMessageStyle = style({
