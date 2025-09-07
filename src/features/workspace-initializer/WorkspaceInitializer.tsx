@@ -6,6 +6,17 @@ import { useRouter, useParams } from 'next/navigation';
 import { useWorkspaceStore } from '@/shared/stores/workspace-store';
 import { queries } from '@/entities/channel';
 import { useWorkspaceInitBySlug, useWorkspaceMembersBySlug } from './model/workspace-init.queries';
+import { LoadingConent } from '@/shared/ui';
+
+function contentsLoadingMessage(ws: boolean, ch: boolean, mb: boolean) {
+  if (ws) {
+    return '워크스페이스를 불러오는 중입니다.';
+  } else if (ch) {
+    return '채널을 불러오는 중입니다.';
+  } else {
+    return '멤버를 불러오는 중입니다.';
+  }
+}
 
 export const WorkspaceInitializer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { data: session, status } = useSession();
@@ -91,17 +102,19 @@ export const WorkspaceInitializer: React.FC<{ children: React.ReactNode }> = ({ 
   useEffect(() => {
     if (status === 'unauthenticated') {
       reset();
-      console.log('사인인으로 이동');
       router.replace('/signin');
     }
   }, [status, reset, router]);
 
-  if (status === 'loading') {
-    return null; // 로딩 화면 표시 가능
-  }
-
-  if (status === 'unauthenticated') {
-    return null; // 페이지 렌더링 차단 후 useEffect에서 이동 처리
+  if (wsLoading || chLoading || mbLoading) {
+    return (
+      <LoadingConent
+        mainTitle="이용자 정보를 불러오는 중..."
+        subTitle="잠시만 기다려 주세요"
+        cardTitle="컨텐츠 로딩"
+        cardSubtitle={contentsLoadingMessage(wsLoading, chLoading, mbLoading)}
+      />
+    );
   }
 
   return <>{children}</>;
