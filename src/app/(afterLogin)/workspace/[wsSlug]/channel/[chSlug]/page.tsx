@@ -11,7 +11,7 @@ export default async function Page({ params }: PageProps) {
   const result = await messageApi.getMessagesByChannel(wsSlug, chSlug, {
     cursor: '',
     take: 10,
-    direction: 'next',
+    direction: 'prev',
   });
   return (
     <Suspense fallback={<ChannelMessageSkeleton />}>
