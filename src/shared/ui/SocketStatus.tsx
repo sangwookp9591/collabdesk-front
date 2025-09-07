@@ -51,7 +51,7 @@ export function SocketStatus({ children }: { children: React.ReactNode }) {
   // }, [getConnectionInfo]);
 
   useEffect(() => {
-    if (isConnected && currentWorkspace) {
+    if (isConnected && currentWorkspace?.id) {
       joinWorkspace(currentWorkspace?.id);
     }
   }, [isConnected, currentWorkspace, joinWorkspace]);
