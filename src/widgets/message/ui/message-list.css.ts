@@ -10,6 +10,15 @@ export const messageList = style({
   gap: '8px',
 });
 
+export const loadMore = style({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '10px',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginBottom: '10px',
+});
+
 export const hasPrevButton = style({
   display: 'flex',
   justifyContent: 'center',
@@ -19,11 +28,13 @@ export const hasPrevButton = style({
   fontSize: '1rem',
 });
 
-export const fetchPrevLoading = style({
+export const lastMessage = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  border: `1px solid ${themeTokens.colors.border}`,
   color: themeTokens.colors.textDisabled,
   fontSize: '1rem',
+  width: '100%',
+  padding: '10px',
+  borderBottom: `1px solid ${themeTokens.colors.border}`,
 });

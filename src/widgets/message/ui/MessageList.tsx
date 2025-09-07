@@ -5,6 +5,8 @@ import * as styles from './message-list.css';
 import { Message } from '@/shared/types/message';
 import { MessageItem } from '@/entities/message';
 import { MessageListSkeleton } from './MessageListSkeleton';
+import { useDebounceCallback } from '@/shared/hooks';
+import { DotLoading } from '@/shared/ui';
 
 type MessageListProps = {
   messages: Message[];
@@ -30,23 +32,28 @@ export function MessageList({
 
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
 
+  const debouncedFetch = useDebounceCallback(() => {
+    console.log('디바운스 패치');
+    const container = containerRef.current;
+    const prevScrollHeight = container?.scrollHeight || 0;
+
+    fetchPreviousPage().then(() => {
+      requestAnimationFrame(() => {
+        if (container) {
+          const newScrollHeight = container.scrollHeight;
+          container.scrollTop = newScrollHeight - prevScrollHeight;
+        }
+      });
+    });
+  }, 500);
+
   useEffect(() => {
     if (!hasPreviousPage || isFetchingPreviousPage) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          const container = containerRef.current;
-          const prevScrollHeight = container?.scrollHeight || 0;
-
-          fetchPreviousPage().then(() => {
-            // 스크롤 위치 유지 (새로운 메시지가 위에 추가되므로)
-            requestAnimationFrame(() => {
-              if (container) {
-                const newScrollHeight = container.scrollHeight;
-                container.scrollTop = newScrollHeight - prevScrollHeight;
-              }
-            });
-          });
+          debouncedFetch();
         }
       },
       { threshold: 1.0 },
@@ -56,7 +63,9 @@ export function MessageList({
       observer.observe(loadMoreRef.current);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+    };
   }, [hasPreviousPage, isFetchingPreviousPage, fetchPreviousPage]);
 
   // 최초 제일아래로
@@ -78,11 +87,10 @@ export function MessageList({
 
   return (
     <div ref={containerRef} className={styles.messageList}>
-      <div ref={loadMoreRef} className="h-10 flex justify-center items-center">
-        {isFetchingPreviousPage && <div className="text-gray-500">이전 메세지 가져오는 중...</div>}
-        {hasPreviousPage && <div className={styles.hasPrevButton}>이전 메세지 조회</div>}
+      <div ref={loadMoreRef} className={styles.loadMore}>
+        {(isFetchingPreviousPage || hasPreviousPage) && <DotLoading size={10} />}
         {!hasPreviousPage && messages.length > 0 && (
-          <div className="text-gray-500">모든 메시지를 불러왔습니다.</div>
+          <div className={styles.lastMessage}>모든 메시지를 불러왔습니다.</div>
         )}
       </div>
 
