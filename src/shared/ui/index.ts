@@ -25,6 +25,8 @@ export {
   UserIcon,
   SystemIcon,
   BotIcon,
+  SleepIcon,
+  NoNotificationIcon,
 } from './IconSvg';
 export { default as Button } from './Button';
 export { Modal } from './Modal';
