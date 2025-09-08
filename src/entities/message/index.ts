@@ -4,3 +4,4 @@ export { MessagePreview } from './ui/MessagePreview';
 export { messageApi } from './api/message.api';
 export { useSocketStore } from './model/socket.store';
 export { useChannelMessages, useInfiniteChannelMessages } from './model/message.queries';
+export { useRealtimeMessages } from './hooks/useRealtimeMessages';
