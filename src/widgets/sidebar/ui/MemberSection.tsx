@@ -1,43 +1,55 @@
 'use client';
 
 import { useState } from 'react';
-import { ArrowRightIcon, MessageIcon, UserIcon } from '@/shared/ui';
+import { Modal, UserIcon } from '@/shared/ui';
 import * as styles from './memberSection.css';
-import { InviteMemberButton } from '@/features/invite';
-import { MemberManagementButton } from '@/features/member-management/indext';
 import { useWorkspaceStore } from '@/shared/stores/workspace-store';
 import { themeTokens } from '@/shared/styles';
+import SidebarDropdown from './SidebarDropdown';
+import WorkspaceInviteForm from '@/features/invite/ui/WorkspaceInvite';
+import { Avatar } from '@/entities/user';
+import { useSession } from 'next-auth/react';
 
 export function MemberSection() {
+  const { data: session } = useSession();
   const { currentWorkspace, workspaceMembers } = useWorkspaceStore();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <section className={styles.memberSection}>
-      {/* 섹션 헤더 */}
-      <div className={styles.sectionHeader} onClick={() => setIsExpanded(!isExpanded)}>
-        <div className={styles.headerLeft}>
-          <div className={isExpanded ? styles.arrowIconExpanded : styles.arrowIcon}>
-            <ArrowRightIcon size={16} />
-          </div>
-          <MessageIcon size={16} />
-          <span className={styles.sectionTitle}>멤버 관리</span>
-        </div>
-      </div>
-
-      {/* 확장된 메뉴 */}
+    <SidebarDropdown
+      title={'멤버 관리'}
+      isOpen={isExpanded}
+      onToggle={() => setIsExpanded(!isExpanded)}
+      handleAdd={() => setIsModalOpen(true)}
+      hasButton={true}
+    >
       {isExpanded && (
         <div className={styles.expandedMenu}>
-          {/* Features 레이어의 컴포넌트 사용 */}
-          <InviteMemberButton
-            workspaceId={currentWorkspace?.id}
-            onSuccess={() => {
-              /* 성공 시 stats 새로고침 */
-            }}
-          />
-          <MemberManagementButton workspaceId={currentWorkspace?.id} />
-
           {/* 멤버 현황 카드 */}
+
+          <div className={styles.workspaceMemberList}>
+            {workspaceMembers
+              ?.filter((item) => item.userId !== session?.user?.id)
+              ?.map((member) => {
+                return (
+                  <div className={styles.workspaceMemberCard} key={member.id}>
+                    <Avatar
+                      userId={member?.userId}
+                      size={35}
+                      isActiveIcon={true}
+                      profileImageUrl={member?.user?.profileImageUrl}
+                      name={member?.user?.name || ''}
+                      borderRadius="10px"
+                    ></Avatar>
+                    <div className={styles.infoCard}>
+                      <div className={styles.workspaceMemberName}>{member.user?.name}</div>
+                      <div className={styles.workspaceMemberRole[member.role]}>{member.role}</div>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
           <div className={styles.memberStatusCard}>
             <div className={styles.statusRow}>
               <UserIcon size={15} color={themeTokens.colors.text} />
@@ -47,6 +59,10 @@ export function MemberSection() {
           </div>
         </div>
       )}
-    </section>
+
+      <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <WorkspaceInviteForm workspaceId={currentWorkspace?.id} />
+      </Modal>
+    </SidebarDropdown>
   );
 }

@@ -59,17 +59,6 @@ export function DMSection({ isOpen, onToggle, onStartDM }: DMSectionProps) {
     setShowStartDMModal(true);
   };
 
-  const getStatusStyle = (status: DMUser['status']) => {
-    switch (status) {
-      case 'ONLINE':
-        return styles.statusOnline;
-      case 'AWAY':
-        return styles.statusAway;
-      default:
-        return styles.statusOffline;
-    }
-  };
-
   const formatLastMessageTime = (timestamp: string) => {
     return formatDistanceToNow(new Date(timestamp), {
       addSuffix: true,
@@ -107,11 +96,11 @@ export function DMSection({ isOpen, onToggle, onStartDM }: DMSectionProps) {
                 onClick={() => handleDMClick(dm.id)}
               >
                 <Avatar
+                  userId={dm.otherUser.id}
                   profileImageUrl={dm.otherUser.profileImageUrl}
-                  size={30}
+                  size={35}
                   name={dm.otherUser.name}
                   isActiveIcon={true}
-                  isActive={true}
                   borderRadius={'10px'}
                 ></Avatar>
                 {/* <div

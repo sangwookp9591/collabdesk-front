@@ -1,3 +1,4 @@
+import { themeTokens } from '@/shared/styles';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const avatarSize = style({
@@ -41,7 +42,7 @@ export const statusBase = style({
   width: '1em',
   height: '1em',
   borderRadius: '50%',
-  border: '1px solid gray',
+  border: `2px solid  ${themeTokens.colors.border}`,
 });
 export const status = styleVariants({
   ONLINE: [statusBase, { backgroundColor: '#28a745' }],

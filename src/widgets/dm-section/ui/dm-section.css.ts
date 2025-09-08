@@ -98,23 +98,12 @@ export const statusIndicator = style({
   border: `2px solid ${themeTokens.colors.backgroundHover}`,
 });
 
-export const statusOnline = style({
-  backgroundColor: '#28a745',
-});
-
-export const statusAway = style({
-  backgroundColor: '#ffc107',
-});
-
-export const statusOffline = style({
-  backgroundColor: '#6c757d',
-});
-
 export const dmUserInfo = style({
   display: 'flex',
   flexDirection: 'column',
   flex: 1,
   minWidth: 0,
+  gap: '2px',
 });
 
 export const dmUserName = style({

@@ -50,7 +50,7 @@ export const authOptions: NextAuthOptions = {
 
           const data = await res.json();
 
-          if (data) {
+          if (data?.user?.id) {
             return {
               id: data?.user?.id,
               email: data?.user?.email,
