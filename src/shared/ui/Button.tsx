@@ -12,8 +12,10 @@ type buttonProps = {
   onDoubleClick?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  isLoading?: boolean;
   role?: string; // 기본은 button
   tabIndex?: number; // 기본은 0
+  disabled?: boolean;
 };
 
 export default function Button({
@@ -30,6 +32,8 @@ export default function Button({
   onBlur,
   role = 'button',
   tabIndex = 0,
+  isLoading = false,
+  disabled = false,
 }: buttonProps) {
   const buttonBaseStyle: React.CSSProperties = {
     width,
@@ -38,7 +42,7 @@ export default function Button({
     ...style,
   };
   return (
-    <div
+    <button
       className={styles.button}
       style={buttonBaseStyle}
       role={role}
@@ -54,8 +58,10 @@ export default function Button({
           onClick?.(); // 키보드에서도 클릭되게
         }
       }}
+      disabled={disabled}
     >
+      {isLoading && <div className={styles.buttonLoading} />}
       {title}
-    </div>
+    </button>
   );
 }

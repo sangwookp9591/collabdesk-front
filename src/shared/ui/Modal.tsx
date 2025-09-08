@@ -28,7 +28,7 @@ export function Modal({ children, open, onClose }: ModalProps) {
   return createPortal(
     <div className={styles.overlay} onClick={onClose}>
       <div
-        className={styles.modal}
+        className={styles.fadeModal[open ? 'in' : 'out']}
         onClick={(e) => e.stopPropagation()} // 내부 클릭 시 닫히지 않도록
       >
         <div

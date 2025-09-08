@@ -25,6 +25,9 @@ export const item = style({
   justifyContent: 'space-between',
 
   transition: 'background-color 0.3s ease, color 0.3s ease',
+  ':hover': {
+    backgroundColor: themeTokens.colors.backgroundHover,
+  },
 });
 
 export const activeItem = style([

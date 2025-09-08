@@ -2,6 +2,7 @@ import type { NextAuthOptions, Session, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import { apiFetch } from '@/shared/api';
+
 interface AuthResponse {
   user: {
     id: string;
@@ -11,6 +12,7 @@ interface AuthResponse {
     status: string;
   };
   accessToken: string;
+  refreshToken: string;
   expiresIn: number;
 }
 
@@ -36,20 +38,18 @@ export const authOptions: NextAuthOptions = {
 
         console.log('credentials : ', credentials);
         try {
-          // MSW가 활성화되면 mock API 호출, 아니면 실제 API 호출
-
           const res = await apiFetch(`/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify({
               email: credentials.email,
               password: credentials.password,
             }),
           });
 
-          const result = await res.json();
+          const data = await res.json();
 
-          const data = result?.data;
           if (data) {
             return {
               id: data?.user?.id,
@@ -58,7 +58,9 @@ export const authOptions: NextAuthOptions = {
               profileImageUrl: data?.user?.profileImageUrl,
               status: data?.user?.status,
               accessToken: data?.accessToken,
-              expiresIn: data?.expiresIn,
+              refreshToken: data?.refreshToken,
+              // expiresIn: data?.expiresIn,
+              expiresIn: Date.now() + 15 * 60 * 1000,
             };
           }
           return null;
@@ -78,7 +80,8 @@ export const authOptions: NextAuthOptions = {
 
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30일
+    // maxAge: 30 * 24 * 60 * 60, // 30일
+    maxAge: 60 * 24 * 60 * 60, // 30일
   },
 
   callbacks: {
@@ -90,12 +93,12 @@ export const authOptions: NextAuthOptions = {
         session.user.profileImageUrl = user?.profileImageUrl ?? token.profileImageUrl;
         session.user.status = user?.status ?? token.status;
         session.user.accessToken = token.accessToken as string;
+        session.user.refreshToken = token.refreshToken as string;
         session.user.expiresIn = token.expiresIn as number;
       }
       return session;
     },
     async jwt({ token, user }: { token: any; user?: User }) {
-      console.log(' token, user', token, user);
       if (user) {
         token.id = user.id;
         token.name = user.name;
@@ -103,30 +106,27 @@ export const authOptions: NextAuthOptions = {
         token.profileImageUrl = user.profileImageUrl ?? undefined;
         token.status = user.status;
         token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
         token.expiresIn = user.expiresIn;
       }
 
       // 토큰 만료 확인 및 리프레시
       if (token.accessToken) {
         try {
-          const payload = JSON.parse(atob((token.accessToken as string).split('.')[1]));
-          const now = Math.floor(Date.now() / 1000);
-
-          console.log('payload : ', payload, ' now : ', now);
-
-          if (payload.exp > now) {
-            return token;
+          if (Date.now() < (token.expiresIn as number)) {
+            return token; // 토큰 만료시 null 반환
           }
 
-          const refreshedTokens = await refreshAccessToken();
+          const refreshedTokens = await refreshAccessToken(token.refreshToken);
 
           console.log('refreshedTokens : ', refreshedTokens);
           if (refreshedTokens) {
             token.accessToken = refreshedTokens.accessToken;
-            token.expiresIn = refreshedTokens.expiresIn;
+            token.refreshToken = refreshedTokens.refreshToken;
+            token.expiresIn = Date.now() + 15 * 60 * 1000;
           } else {
             // 리프레시 실패시 로그아웃
-            await logout();
+            await logout(token.refreshToken);
             return null;
           }
         } catch (error) {
@@ -144,16 +144,20 @@ export const authOptions: NextAuthOptions = {
     // },
     async signOut(message) {
       console.log('User signed out:', message);
-      await logout();
+      await logout((message.token?.refreshToken as string | undefined) ?? '');
     },
   },
 };
 // 토큰 리프레시 함수
-async function refreshAccessToken() {
+async function refreshAccessToken(refreshToken: string) {
   try {
     const res = await apiFetch('/auth/refresh', {
       method: 'POST',
       credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ refreshToken: refreshToken }),
     });
 
     console.log('refreshAccessToken res : ', res);
@@ -163,6 +167,7 @@ async function refreshAccessToken() {
 
     return {
       accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
       expiresIn: data.expiresIn,
     };
   } catch (error) {
@@ -172,11 +177,15 @@ async function refreshAccessToken() {
 }
 
 // 토큰 리프레시 함수
-async function logout() {
+async function logout(refreshToken: string) {
   try {
     const res = await apiFetch('/auth/logout', {
       method: 'POST',
       credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ refreshToken: refreshToken }),
     });
     console.log('logout res : ', res);
     if (!res.ok) return null;

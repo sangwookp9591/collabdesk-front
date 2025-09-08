@@ -5,6 +5,7 @@ import { devtools, subscribeWithSelector } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import { Workspace, WorkspaceMember } from '../types/workspace';
 import { Channel } from '../types/channel';
+import { DMConversation } from '@/entities/dm';
 
 interface WorkspaceState {
   // State
@@ -14,23 +15,30 @@ interface WorkspaceState {
   workspaceMembers: WorkspaceMember[];
   channels: Channel[];
   currentChannel: Channel | null;
+  dms: DMConversation[];
+  currentDm: DMConversation | null;
 
   // Actions
   setInitialized: (flag: boolean) => void;
   setWorkspaces: (workspaces: Workspace[]) => void;
   setCurrentWorkspace: (workspace: Workspace) => void;
   setWorkspaceMembers: (workspaceMembers: WorkspaceMember[]) => void;
+  addWorkspace: (workspace: Workspace) => void;
   setChannels: (channels: Channel[]) => void;
   setCurrentChannel: (channel: Channel | null) => void;
-  addChannel: (chaanel: Channel) => void;
-  deleteChannel: (chaanelId: string) => void;
-
+  addChannel: (channel: Channel) => void;
+  deleteChannel: (channelId: string) => void;
+  setDms: (dms: DMConversation[]) => void;
+  setCurrentDm: (dm: DMConversation | null) => void;
+  addDm: (dm: DMConversation) => void;
+  deleteDm: (dmId: string) => void;
   // Async Actions
   //   loadWorkspaces: () => Promise<void>;
 
   // Getters
   getCurrentWorkspaceId: () => string | null;
   getCurrentChannelId: () => string | null;
+  getCurrentDmId: () => string | null;
   // Reset
   reset: () => void;
 }
@@ -45,6 +53,8 @@ export const useWorkspaceStore = create<WorkspaceState>()(
         currentWorkspace: null,
         channels: [],
         currentChannel: null,
+        dms: [],
+        currentDm: null,
         setInitialized: (flag) =>
           set((state) => {
             state.isInitialized = flag;
@@ -61,12 +71,17 @@ export const useWorkspaceStore = create<WorkspaceState>()(
           set((state) => {
             state.workspaceMembers = workspaceMembers;
           }),
-
+        addWorkspace: (workspace) =>
+          set((state) => {
+            const exists = state.workspaces.some((ws) => ws.id === workspace.id);
+            if (!exists) {
+              state.workspaces.push(workspace);
+            }
+          }),
         setChannels: (channels) =>
           set((state) => {
             state.channels = channels;
           }),
-
         setCurrentChannel: (channel) =>
           set((state) => {
             state.currentChannel = channel;
@@ -83,6 +98,26 @@ export const useWorkspaceStore = create<WorkspaceState>()(
             const fitlerChannels = state.channels.filter((ch) => ch.id !== channelId);
             state.channels = fitlerChannels;
           }),
+        setDms: (dms) =>
+          set((state) => {
+            state.dms = dms;
+          }),
+        setCurrentDm: (dm) =>
+          set((state) => {
+            state.currentDm = dm;
+          }),
+        addDm: (conversation) =>
+          set((state) => {
+            const exists = state.dms.some((dm) => dm.id === conversation.id);
+            if (!exists) {
+              state.dms.push(conversation);
+            }
+          }),
+        deleteDm: (dmId: string) =>
+          set((state) => {
+            const fitlerDms = state.dms.filter((dm) => dm.id !== dmId);
+            state.dms = fitlerDms;
+          }),
         getCurrentWorkspaceId() {
           const { currentWorkspace } = get();
           return currentWorkspace?.id ?? null;
@@ -91,11 +126,16 @@ export const useWorkspaceStore = create<WorkspaceState>()(
           const { currentChannel } = get();
           return currentChannel?.id ?? null;
         },
+        getCurrentDmId() {
+          const { currentDm } = get();
+          return currentDm?.id ?? null;
+        },
         getWorkspaceMember(userId: string) {
           const { workspaceMembers } = get();
           workspaceMembers.find((member) => member.userId === userId);
           return workspaceMembers.find((member) => member.userId === userId);
         },
+
         // Reset State
         reset: () =>
           set((state) => {
@@ -105,6 +145,8 @@ export const useWorkspaceStore = create<WorkspaceState>()(
             state.workspaceMembers = [];
             state.channels = [];
             state.currentChannel = null;
+            state.dms = [];
+            state.currentDm = null;
           }),
       })),
     ),

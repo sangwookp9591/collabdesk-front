@@ -11,6 +11,7 @@ declare module 'next-auth' {
           profileImageUrl?: string; // 여기에 원하는 필드 추가
           status?: 'ONLINE' | 'AWAY' | 'OFFLINE' | 'DO_NOT_DISTURB';
           accessToken?: string;
+          refreshToken?: string;
           expiresIn?: number;
         } & DefaultSession['user'])
       | null;
@@ -20,6 +21,7 @@ declare module 'next-auth' {
     profileImageUrl?: string; // 여기에도 추가
     status?: 'ONLINE' | 'AWAY' | 'OFFLINE' | 'DO_NOT_DISTURB';
     accessToken?: string;
+    refreshToken?: string;
     expiresIn?: number;
   }
 }

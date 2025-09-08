@@ -11,11 +11,13 @@ class UserApi extends ApiBase {
   }> {
     return await this.fetchWithAuth('/lastworkspace', {
       method: 'GET',
+      credentials: 'include',
     });
   }
   async updatelastworkspace(workspaceId: string) {
     return await this.fetchWithAuth('/lastworkspace', {
       method: 'PATCH',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },

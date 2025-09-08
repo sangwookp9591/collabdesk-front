@@ -1,6 +1,12 @@
-import { style, styleVariants } from '@vanilla-extract/css';
+import { style, styleVariants, keyframes } from '@vanilla-extract/css';
 
 import { themeTokens } from '../styles';
+const spin = keyframes({
+  from: {
+    transform: 'rotate(0deg)',
+  },
+  to: { transform: 'rotate(360deg)' },
+});
 
 export const button = style({
   padding: '8px 16px',
@@ -35,11 +41,11 @@ export const customButton = styleVariants({
   primary: [
     baseButton,
     {
-      backgroundColor: '#007acc',
+      backgroundColor: themeTokens.colors.backgroundTertiary,
       color: '#ffffff',
 
       ':hover': {
-        backgroundColor: '#005a9e',
+        backgroundColor: themeTokens.colors.backgroundSecondary,
       },
     },
   ],
@@ -65,4 +71,13 @@ export const customButton = styleVariants({
       },
     },
   ],
+});
+
+export const buttonLoading = style({
+  width: '16px',
+  height: '16px',
+  border: '2px solid transparent',
+  borderTop: '2px solid white',
+  borderRadius: '50%',
+  animation: `${spin} 1s linear infinite`,
 });

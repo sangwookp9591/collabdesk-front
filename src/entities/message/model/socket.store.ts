@@ -2,16 +2,14 @@ import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 import { io, Socket } from 'socket.io-client';
 import { EVENT_KEYS } from './socket-event-keys';
-type SendMessage = {
-  channelId: string;
-  content: string;
-  parentId?: string;
-};
+import { UserStatus } from '@/shared/types/user';
+
 interface SocketState {
   socket: Socket | null;
   isConnected: boolean;
   currentChannel: string | null;
   currentWorkspace: string | null;
+  currentDm: string | null;
   connectionStatus: 'disconnected' | 'connecting' | 'connected' | 'error';
   error: string | null;
 
@@ -20,9 +18,13 @@ interface SocketState {
   disconnect: () => void;
 
   joinWorkspace: (workspaceId: string) => void;
+  leaveWorkspace: () => void;
+  changeWorkspace: (newWorkspaceId: string) => void;
+  joinRoom: (roomId: string, roomType: 'channel' | 'dm') => void;
   joinChannel: (channelId: string) => void;
   leaveChannel: (channelId: string) => void;
-  sendMessage: (message: SendMessage) => void;
+  typing: (isTyping: boolean, roomId: string, roomType: 'channel' | 'dm') => void;
+  updateUserStatus: (status: UserStatus) => void;
   getConnectionInfo: () => { isConnected: boolean; status: string; error: string | null };
 }
 
@@ -32,6 +34,7 @@ export const useSocketStore = create<SocketState>()(
     isConnected: false,
     currentChannel: null,
     currentWorkspace: null,
+    currentDm: null,
     connectionStatus: 'disconnected',
     error: null,
 
@@ -82,6 +85,9 @@ export const useSocketStore = create<SocketState>()(
         console.error('🔥 소켓 에러:', error);
         set({ error: `소켓 에러: ${error.message}` });
       });
+      socket.on('roomJoined', (message) => {
+        console.log('roomJoined success:', message);
+      });
 
       set({ socket });
     },
@@ -92,6 +98,7 @@ export const useSocketStore = create<SocketState>()(
 
       if (socket) {
         socket.disconnect();
+        socket.removeAllListeners();
         set({
           socket: null,
           isConnected: false,
@@ -104,8 +111,35 @@ export const useSocketStore = create<SocketState>()(
     joinWorkspace: (workspaceId: string) => {
       const { socket } = get();
       if (socket) {
-        socket.emit(EVENT_KEYS.PUB_JOIN_WORKSPACE, { workspaceId });
+        socket.emit(EVENT_KEYS.PUB_JOIN_WORKSPACE, { workspaceId: workspaceId });
         set({ currentWorkspace: workspaceId });
+      }
+    },
+    leaveWorkspace: () => {
+      const { socket, currentWorkspace } = get();
+      if (socket && currentWorkspace) {
+        socket.emit(EVENT_KEYS.PUB_LEAVE_WORKSPACE);
+        set({ currentWorkspace: null });
+      }
+    },
+
+    changeWorkspace: (newWorkspaceId: string) => {
+      const { socket, currentWorkspace } = get();
+      if (socket && currentWorkspace) {
+        socket.emit(EVENT_KEYS.PUB_CHANGE_WORKSPACE, { newWorkspaceId: newWorkspaceId });
+        set({ currentWorkspace: newWorkspaceId });
+      }
+    },
+
+    joinRoom: (roomId: string, roomType: 'channel' | 'dm') => {
+      const { socket } = get();
+      if (socket) {
+        socket.emit(EVENT_KEYS.PUB_JOIN_ROOM, { roomId, roomType });
+        if (roomType === 'channel') {
+          set({ currentChannel: roomId, currentDm: null });
+        } else {
+          set({ currentChannel: null, currentDm: roomId });
+        }
       }
     },
     joinChannel: (channelId: string) => {
@@ -128,10 +162,21 @@ export const useSocketStore = create<SocketState>()(
         set({ currentChannel: null });
       }
     },
-    sendMessage: (message) => {
+    typing: (isTyping: boolean, roomId: string, roomType: 'channel' | 'dm') => {
       const { socket } = get();
       if (socket) {
-        socket.emit(EVENT_KEYS.PUB_SEND_MESSAGE, message);
+        socket.emit(isTyping ? EVENT_KEYS.PUB_START_TYPING : EVENT_KEYS.PUB_STOP_TYPING, {
+          roomId: roomId,
+          roomType: roomType,
+        });
+      }
+    },
+    updateUserStatus: (status: UserStatus) => {
+      const { socket } = get();
+      if (socket) {
+        socket.emit(EVENT_KEYS.PUB_UPDATE_STATUS, {
+          status: status,
+        });
       }
     },
     getConnectionInfo: () => {

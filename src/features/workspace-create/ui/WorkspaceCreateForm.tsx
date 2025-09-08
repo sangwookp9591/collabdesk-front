@@ -5,11 +5,18 @@ import Image from 'next/image';
 import { useActionState, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createWorkspaceAction } from '../model/createWorkspaceAction';
+import { useWorkspaceStore } from '@/shared/stores';
+import { Workspace } from '@/shared/types/workspace';
 
-export default function WorkspaceCreateForm() {
+export default function WorkspaceCreateForm({
+  onSuccess,
+}: {
+  onSuccess?: (workspace: Workspace) => void;
+}) {
   const formRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const { reset } = useWorkspaceStore();
   const [state, formAction, isPending] = useActionState(createWorkspaceAction, null);
   const [preview, setPreview] = useState<string | null>(null);
 
@@ -32,15 +39,21 @@ export default function WorkspaceCreateForm() {
 
   useEffect(() => {
     if (state?.status) {
-      router.replace(`/workspace/${state.workspace?.slug}`);
+      if (onSuccess) {
+        console.log('state.workspace :', state.workspace);
+        onSuccess(state.workspace);
+      } else {
+        reset();
+        router.replace(`/workspace/${state.workspace?.slug}`);
+      }
     }
-  }, [state?.status]);
+  }, [state, router, reset, onSuccess]);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
       <div
         style={{
-          fontSize: '1.5rem',
+          fontSize: '1.1rem',
           fontWeight: 800,
         }}
       >
@@ -103,7 +116,7 @@ export default function WorkspaceCreateForm() {
         <label className={labelStyle} htmlFor="name">
           Name
         </label>
-        <input className={inputStyle} name="name" />
+        <input className={inputStyle} name="name" placeholder="워크스페이스 이름" />
         {/* 버튼 */}
         {isPending ? (
           <div style={{ textAlign: 'center', marginBottom: '10px' }}>로딩중...</div>

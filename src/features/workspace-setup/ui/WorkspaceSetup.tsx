@@ -37,7 +37,7 @@ export default function WorkspaceSetup() {
       <div className={styles.workspaceList}>
         {isLoading ? (
           <>
-            {Array(3).map((_, i) => (
+            {Array.from({ length: 3 }).map((_, i) => (
               <InfoCardSkeleton key={i} />
             ))}
           </>

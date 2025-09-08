@@ -89,21 +89,21 @@ export const selectOptionDesc = style({
 });
 
 export const buttonStyle = style({
-  padding: '10px',
-  backgroundColor: themeTokens.colors.button.background,
-  color: 'white',
+  padding: '8px 12px',
+  fontSize: '1rem',
+  fontWeight: '500',
   textAlign: 'center',
-  borderRadius: '4px',
+  color: themeTokens.colors.text,
+  backgroundColor: themeTokens.colors.background,
+  border: '1px solid #d1d5db',
+  borderRadius: '8px',
   cursor: 'pointer',
-  fontWeight: 'bold',
-  border: 'none',
-  transition: 'background-color 0.5s ease, transform 0.1s ease',
+  transition: 'background-color 0.15s ease, color 0.15s ease, transform 0.2s ease',
   ':hover': {
-    backgroundColor: `${themeTokens.colors.button.background}`,
-    transform: 'translateY(-1px)',
-  },
-  ':active': {
-    transform: 'translateY(0)',
+    backgroundColor: themeTokens.colors.backgroundSecondary,
+    color: themeTokens.colors.textSecondary,
+    border: `1px solid ${themeTokens.colors.border}`,
+    transform: 'translateX(1px)',
   },
 });
 export const disableButtonStyle = style({
@@ -144,13 +144,16 @@ export const deleteMessageStyle = style({
 });
 
 export const errorMessageStyle = style({
+  marginTop: '5px',
+  display: 'flex',
+  justifyContent: 'center',
   padding: '12px',
   backgroundColor: themeTokens.colors.status.error.backgroundColor,
   border: `1px solid ${themeTokens.colors.status.error.border}`,
   borderRadius: '6px',
   color: themeTokens.colors.status.error.color,
   fontSize: '0.875rem',
-  marginBottom: '10px',
+  marginBottom: '5px',
 });
 
 export const successMessageStyle = style({

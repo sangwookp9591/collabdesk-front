@@ -20,8 +20,12 @@ export class WorkspaceApi extends ApiBase {
     });
   }
 
-  async membersBySlug(wsSlug: string) {
-    return await this.fetchWithAuth(`/${wsSlug}/members`, {
+  async membersBySlug(wsSlug: string, q?: string) {
+    let url = `/${wsSlug}/members`;
+    if (q) {
+      url = `/${wsSlug}/members?search=${encodeURIComponent(q)}`;
+    }
+    return await this.fetchWithAuth(`${url}`, {
       method: 'GET',
     });
   }

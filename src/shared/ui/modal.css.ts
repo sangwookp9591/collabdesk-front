@@ -1,5 +1,27 @@
-import { style } from '@vanilla-extract/css';
+import { keyframes, style, styleVariants } from '@vanilla-extract/css';
 import { themeTokens } from '@/shared/styles/theme.css';
+
+const fadeIn = keyframes({
+  from: {
+    opacity: 0,
+    transform: ' scale(0.85)',
+  },
+  to: {
+    opacity: 1,
+    transform: 'scale(1)',
+  },
+});
+
+const fadeOut = keyframes({
+  from: {
+    opacity: 1,
+    transform: 'scale(1)',
+  },
+  to: {
+    opacity: 1,
+    transform: ' scale(0.8)',
+  },
+});
 
 export const overlay = style({
   position: 'fixed',
@@ -14,11 +36,18 @@ export const overlay = style({
 export const modal = style({
   position: 'relative',
   backgroundColor: themeTokens.colors.background,
-  borderRadius: '12px',
   padding: '24px',
-  minWidth: '300px',
+  minWidth: '320px',
   maxWidth: '90%',
-  boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
+  borderRadius: '12px',
+  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+  border: '1px solid #e5e7eb',
+  overflow: 'hidden',
+});
+
+export const fadeModal = styleVariants({
+  in: [modal, { animation: `${fadeIn} 0.2s ease forwards` }],
+  out: [modal, { animation: `${fadeOut} 0.2s ease forwards` }],
 });
 
 export const close = style({

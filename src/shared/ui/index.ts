@@ -11,6 +11,7 @@ export {
   HourglassIcon,
   ArrowBottomIcon,
   ArrowRightIcon,
+  ArrowLeftIcon,
   PageIcon,
   PrevIcon,
   NextIcon,
@@ -30,3 +31,7 @@ export { Modal } from './Modal';
 export { NextModal } from './NextModal';
 export * as typographyStyle from './typography/typography.css';
 export * as cardStyle from './card/card.css';
+export { StatusView } from './state/StatusView';
+
+export { LoadingConent } from './loading/LoadingConent';
+export { DotLoading } from './loading/DotLoading';

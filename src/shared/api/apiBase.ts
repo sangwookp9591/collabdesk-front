@@ -1,3 +1,4 @@
+import { signOut } from 'next-auth/react';
 import { getSession } from '../lib';
 
 export class ApiBase {
@@ -18,6 +19,17 @@ export class ApiBase {
       } catch (err) {
         console.error('서버 에러:', err);
       }
+
+      if (response.status === 401) {
+        // 예: 로그아웃 처리, 로그인 페이지로 리다이렉트 등
+        console.warn('인증 오류: 로그인 필요');
+        signOut({ callbackUrl: '/signin' });
+        throw new Error('로그인이 필요합니다.');
+      }
+      if (response.status === 403) {
+        throw new Error('접근 권한이 없습니다.');
+      }
+
       throw new Error(errorMessage);
     }
     return response.json();

@@ -21,8 +21,9 @@ export default function WorkspaceLayout({
 }: WorkspaceLayoutProps) {
   const pathname = usePathname();
   const isChannelDetail = /\/channel\/[^/]+$/.test(pathname);
+  const isDm = /\/dm\/[^/]+$/.test(pathname);
 
-  if (isChannelDetail) {
+  if (isChannelDetail || isDm) {
     // 채널 상세라면 그냥 children만 노출
     return <>{children}</>;
   }

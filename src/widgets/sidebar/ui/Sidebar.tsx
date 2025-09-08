@@ -12,6 +12,7 @@ import {
 import ChannelSection from './ChannelSection';
 import { themeTokens } from '@/shared/styles/theme.css';
 import { MemberSection } from './MemberSection';
+import { DMSection } from '@/widgets/dm-section';
 
 type DropDown = {
   channel: boolean;
@@ -138,20 +139,25 @@ export default function Sidebar() {
         <ArrowRightIcon size={20} />
       </section>
 
-      <section
-        style={{
-          display: 'flex',
-          width: '100%',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        }}
-      >
+      <section className={styles.section}>
         <ChannelSection
           isOpen={activeDropDowns?.channel}
           onToggle={() => toggleDropdown('channel')}
-          onAddChannel={() => {}}
         />
       </section>
+
+      {/* DM Section */}
+      {/* DM Section */}
+      <section className={styles.section}>
+        <DMSection
+          isOpen={activeDropDowns.dm}
+          onToggle={() => toggleDropdown('dm')}
+          onStartDM={(userId) => {
+            console.log('Start DM with user:', userId);
+          }}
+        />
+      </section>
+      {/* Member Section */}
       <MemberSection />
       <div className={styles.resizerStyle} onMouseDown={onMouseDown} />
     </div>

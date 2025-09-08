@@ -11,5 +11,5 @@ export default async function Page() {
     );
   }
 
-  return <WorkspaceSetup session={session} />;
+  return <WorkspaceSetup />;
 }

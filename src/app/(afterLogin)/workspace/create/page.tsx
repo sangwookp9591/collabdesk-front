@@ -1,3 +1,9 @@
+import { WorkspaceCreateForm } from '@/features/workspace-create';
+
 export default function Page() {
-  return <div>생성하기</div>;
+  return (
+    <div>
+      <WorkspaceCreateForm />
+    </div>
+  );
 }
