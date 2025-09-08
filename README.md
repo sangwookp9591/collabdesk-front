@@ -34,7 +34,7 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
+```bash
 src/
 ├── app/ # Next.js App Router (라우팅만 담당)
 └── [FSD 레이어들] # 실제 비즈니스 로직
@@ -47,7 +47,7 @@ src/
 🟡 features ← 사용자 시나리오 (로그인, 검색, 장바구니)
 🟢 entities ← 비즈니스 엔티티 (User, Product, Order)
 🔵 shared ← 공통 로직 (UI, API, Utils)
-
+```
 # collabdesk-front
 
 -   [F.S.D Next.js](https://feature-sliced.design/docs/guides/tech/with-nextjs)- an F.S.D Next.js tutorial.
