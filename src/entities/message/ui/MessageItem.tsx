@@ -37,11 +37,12 @@ export function MessageItem({ message, isSameUserWithinMinute }: MessageItemProp
       {!isSameUserWithinMinute ? (
         <div style={{ display: 'flex', gap: '10px' }}>
           <Avatar
-            isActive={message?.user?.status === 'ONLINE'}
+            userId={message?.user?.id}
             profileImageUrl={message?.user?.profileImageUrl ?? '/images/default_profile.png'}
             name={message?.user?.name || ''}
             size={44}
             borderRadius="18px"
+            isActiveIcon={true}
           />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', width: '100%' }}>
             <div style={{ display: 'flex', gap: '10px' }}>

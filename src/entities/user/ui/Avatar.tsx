@@ -29,6 +29,7 @@ export function Avatar({
     () => (Object.keys(userStatuses).length > 0 ? userStatuses[userId]?.status : 'OFFLINE'),
     [userStatuses, userId],
   );
+
   return (
     <div
       className={profileImageUrl ? styles.profileIcon : styles.userIcon}
@@ -51,7 +52,7 @@ export function Avatar({
 
       {/* 상태 표시 */}
       {isActiveIcon && (
-        <div className={styles.status[status]}>
+        <div className={styles.status[status ?? 'OFFLINE']}>
           {status === 'AWAY' && <SleepIcon size={10} color={'#6c757d'} />}
           {status === 'DO_NOT_DISTURB' && <NoNotificationIcon size={10} color={'#6c757d'} />}
         </div>
