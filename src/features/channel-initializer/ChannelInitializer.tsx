@@ -19,7 +19,7 @@ export default function ChannelInitializer({ children }: { children: ReactNode }
       setCurrentChannel(targetChannel);
       setCurrentDm(null);
       // 채널 소켓 연결
-      joinRoom(targetChannel.id, 'dm');
+      joinRoom(targetChannel.id, 'channel');
     }
   }, [targetChannel, currentChannel, setCurrentChannel, setCurrentDm, joinRoom]);
   return <>{children}</>;
