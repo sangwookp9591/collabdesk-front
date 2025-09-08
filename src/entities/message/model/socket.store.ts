@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 import { io, Socket } from 'socket.io-client';
 import { EVENT_KEYS } from './socket-event-keys';
+import { UserStatus } from '@/shared/types/user';
 
 interface SocketState {
   socket: Socket | null;
@@ -17,9 +18,13 @@ interface SocketState {
   disconnect: () => void;
 
   joinWorkspace: (workspaceId: string) => void;
+  leaveWorkspace: () => void;
+  changeWorkspace: (newWorkspaceId: string) => void;
   joinRoom: (roomId: string, roomType: 'channel' | 'dm') => void;
   joinChannel: (channelId: string) => void;
   leaveChannel: (channelId: string) => void;
+  typing: (isTyping: boolean, roomId: string, roomType: 'channel' | 'dm') => void;
+  updateUserStatus: (status: UserStatus) => void;
   getConnectionInfo: () => { isConnected: boolean; status: string; error: string | null };
 }
 
@@ -110,6 +115,22 @@ export const useSocketStore = create<SocketState>()(
         set({ currentWorkspace: workspaceId });
       }
     },
+    leaveWorkspace: () => {
+      const { socket, currentWorkspace } = get();
+      if (socket && currentWorkspace) {
+        socket.emit(EVENT_KEYS.PUB_LEAVE_WORKSPACE);
+        set({ currentWorkspace: null });
+      }
+    },
+
+    changeWorkspace: (newWorkspaceId: string) => {
+      const { socket, currentWorkspace } = get();
+      if (socket && currentWorkspace) {
+        socket.emit(EVENT_KEYS.PUB_CHANGE_WORKSPACE, { newWorkspaceId: newWorkspaceId });
+        set({ currentWorkspace: newWorkspaceId });
+      }
+    },
+
     joinRoom: (roomId: string, roomType: 'channel' | 'dm') => {
       const { socket } = get();
       if (socket) {
@@ -141,7 +162,23 @@ export const useSocketStore = create<SocketState>()(
         set({ currentChannel: null });
       }
     },
-
+    typing: (isTyping: boolean, roomId: string, roomType: 'channel' | 'dm') => {
+      const { socket } = get();
+      if (socket) {
+        socket.emit(isTyping ? EVENT_KEYS.PUB_START_TYPING : EVENT_KEYS.PUB_STOP_TYPING, {
+          roomId: roomId,
+          roomType: roomType,
+        });
+      }
+    },
+    updateUserStatus: (status: UserStatus) => {
+      const { socket } = get();
+      if (socket) {
+        socket.emit(EVENT_KEYS.PUB_UPDATE_STATUS, {
+          status: status,
+        });
+      }
+    },
     getConnectionInfo: () => {
       const { isConnected, connectionStatus, error } = get();
       return { isConnected, status: connectionStatus, error };
