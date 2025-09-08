@@ -24,7 +24,6 @@ export const dotsContainer = style({
 });
 
 export const dot = style({
-  backgroundColor: '#2563eb',
   borderRadius: '50%',
   animation: `${bounce} 1.4s ease-in-out infinite both`,
 });
