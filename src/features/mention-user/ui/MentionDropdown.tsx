@@ -1,19 +1,22 @@
 'use client';
 
-import { useMentionStore } from '../model/useMentionStore';
+import { Avatar } from '@/entities/user';
 import * as styles from './mentionDropdown.css';
 
+export interface MentionUser {
+  id: string;
+  name: string;
+  email: string;
+  profileImageUrl?: string;
+}
 interface MentionDropdownProps {
+  candidates: MentionUser[];
   position: { top: number; left: number };
   onSelectUser: (user: any) => void;
 }
 
-export function MentionDropdown({ position, onSelectUser }: MentionDropdownProps) {
-  const { filteredUsers, selectedIndex } = useMentionStore();
-
-  if (filteredUsers.length === 0) return null;
-
-  console.log('position : ', position);
+export function MentionDropdown({ candidates, position, onSelectUser }: MentionDropdownProps) {
+  console.log('candidates :', candidates);
   return (
     <div
       className={styles.mentionDropdown}
@@ -21,20 +24,19 @@ export function MentionDropdown({ position, onSelectUser }: MentionDropdownProps
         position: 'fixed',
         top: position.top,
         left: position.left,
+        height: 'auto',
+        width: 'auto',
       }}
     >
-      {filteredUsers.map((user, index) => (
-        <div
-          key={user.id}
-          className={`${styles.mentionItem} ${
-            index === selectedIndex ? styles.mentionItemSelected : ''
-          }`}
-          onClick={() => onSelectUser(user)}
-        >
-          <img
-            src={user.profileImageUrl || '/images/default_profile.png'}
-            alt={user.name}
-            className={styles.mentionAvatar}
+      {candidates.map((user) => (
+        <div key={user.id} className={`${styles.mentionItem}`} onClick={() => onSelectUser(user)}>
+          <Avatar
+            userId={user?.id}
+            name={user.name}
+            profileImageUrl={user?.profileImageUrl}
+            size={30}
+            borderRadius="10px"
+            isActiveIcon={false}
           />
           <div className={styles.mentionUserInfo}>
             <span className={styles.mentionUserName}>{user.name}</span>

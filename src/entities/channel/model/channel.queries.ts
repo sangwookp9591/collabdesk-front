@@ -11,6 +11,15 @@ export const useChannels = (wsSlug?: string) => {
   });
 };
 
+export const useMembersBySlug = (wsSlug: string, chSlug: string) => {
+  return useQuery({
+    queryKey: CHANNEL_QUERY_KEYS.membersBySlug(wsSlug!, chSlug),
+    queryFn: () => channelApi.setWorkspaceSlug(wsSlug!).membersBySlug(chSlug),
+    enabled: !!(wsSlug && chSlug),
+    staleTime: 5 * 60 * 1000,
+  });
+};
+
 export function useDeleteChannel(wsSlug: string, slug: string, onSuccess?: () => void) {
   return useMutation({
     mutationFn: () => channelApi.setWorkspaceSlug(wsSlug).delete(slug),
