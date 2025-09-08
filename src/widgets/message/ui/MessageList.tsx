@@ -9,6 +9,7 @@ import { useDebounceCallback } from '@/shared/hooks';
 import { DotLoading } from '@/shared/ui';
 
 type MessageListProps = {
+  roomType: 'channel' | 'dm';
   messages: Message[];
   isLoading: boolean;
   hasPreviousPage: boolean;

@@ -31,13 +31,14 @@ export function DmMessage({
   return (
     <>
       <MessageList
+        roomType={'dm'}
         messages={data.pages?.flatMap((page) => page.messages)}
         isLoading={isLoading}
         hasPreviousPage={hasPreviousPage}
         fetchPreviousPage={fetchPreviousPage}
         isFetchingPreviousPage={isFetchingPreviousPage}
       />
-      <MessageSend onSend={handleSendMessaage} />
+      <MessageSend onSend={handleSendMessaage} roomType={'dm'} />
     </>
   );
 }

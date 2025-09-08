@@ -1,6 +1,12 @@
 import * as styles from './dotLoading.css';
 
-export const DotLoading = ({ size }: { size: number }) => {
+export const DotLoading = ({
+  size,
+  backgroundColor = '#2563eb',
+}: {
+  size: number;
+  backgroundColor?: string;
+}) => {
   return (
     <div className={styles.dotsContainer}>
       <span
@@ -8,6 +14,7 @@ export const DotLoading = ({ size }: { size: number }) => {
         style={{
           width: `${size}px`,
           height: `${size}px`,
+          backgroundColor: backgroundColor,
         }}
       ></span>
       <span
@@ -15,6 +22,7 @@ export const DotLoading = ({ size }: { size: number }) => {
         style={{
           width: `${size}px`,
           height: `${size}px`,
+          backgroundColor: backgroundColor,
         }}
       ></span>
       <span
@@ -22,6 +30,7 @@ export const DotLoading = ({ size }: { size: number }) => {
         style={{
           width: `${size}px`,
           height: `${size}px`,
+          backgroundColor: backgroundColor,
         }}
       ></span>
     </div>

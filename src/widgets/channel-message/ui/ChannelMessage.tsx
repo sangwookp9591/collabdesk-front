@@ -33,13 +33,14 @@ export function ChannelMessage({
   return (
     <>
       <MessageList
+        roomType={'channel'}
         messages={data.pages?.flatMap((page) => page.messages)}
         isLoading={isLoading}
         hasPreviousPage={hasPreviousPage}
         fetchPreviousPage={fetchPreviousPage}
         isFetchingPreviousPage={isFetchingPreviousPage}
       />
-      <MessageSend onSend={handleSendMessaage} />
+      <MessageSend onSend={handleSendMessaage} roomType={'channel'} />
     </>
   );
 }

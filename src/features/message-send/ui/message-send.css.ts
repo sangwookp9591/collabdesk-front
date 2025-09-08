@@ -1,6 +1,12 @@
 import { themeTokens } from '@/shared/styles';
 import { style } from '@vanilla-extract/css';
 
+export const sendMessageContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+});
+
 export const sendMessage = style({
   display: 'flex',
   padding: '12px 16px',
