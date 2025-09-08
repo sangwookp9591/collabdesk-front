@@ -1,8 +1,13 @@
+'use client';
+
 import Image from 'next/image';
 import * as styles from './avatar.css';
+import { useWorkspaceStore } from '@/shared/stores';
+import { useMemo } from 'react';
+import { NoNotificationIcon, SleepIcon } from '@/shared/ui';
 
 type AvatarProps = {
-  isActive: boolean;
+  userId: string;
   profileImageUrl?: string;
   name: string;
   size: number;
@@ -11,13 +16,19 @@ type AvatarProps = {
 };
 
 export function Avatar({
-  isActive,
+  userId,
   profileImageUrl,
   name,
   size,
   isActiveIcon = true,
   borderRadius = '20px',
 }: AvatarProps) {
+  const userStatuses = useWorkspaceStore((state) => state.userStatuses);
+
+  const status = useMemo(
+    () => (Object.keys(userStatuses).length > 0 ? userStatuses[userId]?.status : 'OFFLINE'),
+    [userStatuses, userId],
+  );
   return (
     <div
       className={profileImageUrl ? styles.profileIcon : styles.userIcon}
@@ -40,7 +51,10 @@ export function Avatar({
 
       {/* 상태 표시 */}
       {isActiveIcon && (
-        <div className={isActive ? styles.loginLight : styles.userIconInactive}></div>
+        <div className={styles.status[status]}>
+          {status === 'AWAY' && <SleepIcon size={10} color={'#6c757d'} />}
+          {status === 'DO_NOT_DISTURB' && <NoNotificationIcon size={10} color={'#6c757d'} />}
+        </div>
       )}
     </div>
   );
