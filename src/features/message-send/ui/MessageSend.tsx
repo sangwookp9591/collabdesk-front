@@ -208,21 +208,6 @@ export function MessageSend({ onSend, roomType }: MessageInputProps) {
     handleTypingStop();
   }, [value, parseMentions, onSend, handleTypingStop]);
 
-  // Enter 키 처리
-  const handleKeyUp = useCallback(
-    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        if (showMentionDropdown && mentionCandidates[activeMentionIndex]) {
-          insertMention(mentionCandidates[activeMentionIndex]);
-        } else {
-          handleSend();
-        }
-      }
-    },
-    [showMentionDropdown, mentionCandidates, activeMentionIndex, handleSend],
-  );
-
   // 멘션 후보 필터링
   const filterMentionCandidates = useCallback(
     (query: string) => {
@@ -394,34 +379,43 @@ export function MessageSend({ onSend, roomType }: MessageInputProps) {
   }, [mentionQuery, filterMentionCandidates]);
 
   // 키보드 네비게이션
-  const handleKeyDown = useCallback(
+  const handleKeyUp = useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if (!showMentionDropdown) return;
-
-      switch (e.key) {
-        case 'ArrowDown':
-          e.preventDefault();
-          setActiveMentionIndex((prev) => Math.min(prev + 1, mentionCandidates.length - 1));
-          break;
-        case 'ArrowUp':
-          e.preventDefault();
-          setActiveMentionIndex((prev) => Math.max(prev - 1, 0));
-          break;
-        case 'Escape':
-          e.preventDefault();
-          setShowMentionDropdown(false);
-          setMentionQuery('');
-          setMentionTriggerPos(null);
-          break;
-        case 'Tab':
-          e.preventDefault();
-          if (mentionCandidates[activeMentionIndex]) {
-            insertMention(mentionCandidates[activeMentionIndex]);
-          }
-          break;
+      if (!showMentionDropdown) {
+        switch (e.key) {
+          case 'ArrowDown':
+            e.preventDefault();
+            setActiveMentionIndex((prev) => Math.min(prev + 1, mentionCandidates.length - 1));
+            break;
+          case 'ArrowUp':
+            e.preventDefault();
+            setActiveMentionIndex((prev) => Math.max(prev - 1, 0));
+            break;
+          case 'Escape':
+            e.preventDefault();
+            setShowMentionDropdown(false);
+            setMentionQuery('');
+            setMentionTriggerPos(null);
+            break;
+          case 'Tab':
+            e.preventDefault();
+            if (mentionCandidates[activeMentionIndex]) {
+              insertMention(mentionCandidates[activeMentionIndex]);
+            }
+            break;
+          case 'Enter':
+            e.preventDefault();
+            if (mentionCandidates[activeMentionIndex]) {
+              insertMention(mentionCandidates[activeMentionIndex]);
+            }
+        }
+      } else {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          handleSend();
+        }
       }
     },
-    [showMentionDropdown, mentionCandidates, activeMentionIndex, insertMention],
+    [showMentionDropdown, mentionCandidates, activeMentionIndex, handleSend, insertMention],
   );
 
   // IME 처리 - 개선된 버전
@@ -556,7 +550,6 @@ export function MessageSend({ onSend, roomType }: MessageInputProps) {
             // onInput={handleInput}
             onBeforeInput={handleBeforeInput}
             onKeyUp={handleKeyUp}
-            onKeyDown={handleKeyDown}
             onScroll={handleScroll}
             rows={1}
             style={{
