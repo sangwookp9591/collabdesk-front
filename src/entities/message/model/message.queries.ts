@@ -177,6 +177,7 @@ export function useSendMessage(wsSlug: string, chSlug: string) {
       wsSlug: string;
       chSlug: string;
       content: string;
+      mentionIds?: string[];
       parentId?: string;
     }) => await messageApi.createChannelMessage(data),
     onSuccess: (newMessage) => {

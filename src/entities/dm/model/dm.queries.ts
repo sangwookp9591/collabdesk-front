@@ -235,6 +235,7 @@ export function useSendMessage(wsSlug: string, conversationId: string) {
       wsSlug: string;
       conversationId: string;
       content: string;
+      mentionIds: string[];
       parentId?: string;
     }) => dmApi.createDmMessage(data),
     onSuccess: (newMessage: any) => {

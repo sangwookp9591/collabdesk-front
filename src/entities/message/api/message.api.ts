@@ -7,9 +7,10 @@ class MessageApi extends ApiBase {
     wsSlug: string;
     chSlug: string;
     content: string;
+    mentionIds?: string[];
     parentId?: string;
   }) {
-    const { wsSlug, chSlug, content, parentId } = data;
+    const { wsSlug, chSlug, content, mentionIds, parentId } = data;
 
     console.log('wsSlug, chSlug, content, parentId  : ', wsSlug, chSlug, content, parentId);
     return await this.fetchWithAuth(`/workspaces/${wsSlug}/channels/${chSlug}/messages`, {
@@ -20,6 +21,7 @@ class MessageApi extends ApiBase {
       body: JSON.stringify({
         content,
         parentId,
+        mentionIds: mentionIds ?? [],
       }),
     });
   }

@@ -27,9 +27,10 @@ class DirectMessageApi extends ApiBase {
     wsSlug: string;
     conversationId: string;
     content: string;
+    mentionIds: string[];
     parentId?: string;
   }) {
-    const { wsSlug, conversationId, content, parentId } = data;
+    const { wsSlug, conversationId, content, mentionIds, parentId } = data;
     return await this.fetchWithAuth(
       `/workspaces/${wsSlug}/dm/conversations/${conversationId}/messages`,
       {
@@ -39,6 +40,7 @@ class DirectMessageApi extends ApiBase {
         },
         body: JSON.stringify({
           content: content,
+          mentionIds: mentionIds,
           parentId: parentId,
         }),
       },
