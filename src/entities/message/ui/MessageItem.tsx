@@ -42,7 +42,7 @@ export function MessageItem({ message, isSameUserWithinMinute }: MessageItemProp
     let cursor = 0; // 현재까지 처리한 인덱스
 
     mentions?.forEach((mention, idx) => {
-      const name = mention.user?.name || '';
+      const name = mention.type === 'USER' ? mention.user?.name || '' : mention.type.toLowerCase();
       const mentionText = `@${name}`;
 
       const startIdx = message.content.indexOf(mentionText, cursor);
@@ -50,7 +50,7 @@ export function MessageItem({ message, isSameUserWithinMinute }: MessageItemProp
 
       // mention 시작 전 일반 텍스트
       if (startIdx > cursor) {
-        elements.push(<span>message.content.slice(cursor, startIdx)</span>);
+        elements.push(message.content.slice(cursor, startIdx));
       }
 
       // mention 하이라이트
