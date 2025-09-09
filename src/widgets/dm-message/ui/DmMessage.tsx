@@ -22,8 +22,8 @@ export function DmMessage({
   const { mutate: sendMessage, isPending } = useSendMessage(wsSlug, conversationId);
 
   const handleSendMessaage = useCallback(
-    (content: string) => {
-      sendMessage({ wsSlug, conversationId, content });
+    (content: string, mentionIds: string[]) => {
+      sendMessage({ wsSlug, conversationId, content, mentionIds: mentionIds ?? [] });
     },
     [wsSlug, conversationId, sendMessage],
   );

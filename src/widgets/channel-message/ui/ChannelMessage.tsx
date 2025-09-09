@@ -24,8 +24,8 @@ export function ChannelMessage({
   const { mutate: sendMessage, isPending } = useSendMessage(wsSlug, chSlug);
 
   const handleSendMessaage = useCallback(
-    (content: string) => {
-      sendMessage({ wsSlug, chSlug, content });
+    (content: string, mentionIds: string[]) => {
+      sendMessage({ wsSlug, chSlug, content, mentionIds });
     },
     [wsSlug, chSlug, sendMessage],
   );
