@@ -6,6 +6,7 @@ import { messageKeys } from './message-keys';
 import { useSocketStore } from './socket.store';
 import { useEffect } from 'react';
 import { Message, MessageResponse } from '@/shared/types/message';
+import { MentionedUserId } from '@/entities/metion';
 
 export const useChannelMessages = (
   wsSlug: string,
@@ -177,7 +178,7 @@ export function useSendMessage(wsSlug: string, chSlug: string) {
       wsSlug: string;
       chSlug: string;
       content: string;
-      mentionIds?: string[];
+      mentions?: MentionedUserId[];
       parentId?: string;
     }) => await messageApi.createChannelMessage(data),
     onSuccess: (newMessage) => {

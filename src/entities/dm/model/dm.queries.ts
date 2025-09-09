@@ -7,6 +7,7 @@ import { dmApi } from '../api/dm.api';
 import { DM_QUERY_KEYS } from './dm-keys';
 import { User } from '@/shared/types/user';
 import { Message, MessageResponse } from '@/shared/types/message';
+import { MentionedUserId } from '@/entities/metion';
 
 export const useDMConversations = (wsSlug: string) => {
   return useQuery({
@@ -235,7 +236,7 @@ export function useSendMessage(wsSlug: string, conversationId: string) {
       wsSlug: string;
       conversationId: string;
       content: string;
-      mentionIds: string[];
+      mentions: MentionedUserId[];
       parentId?: string;
     }) => dmApi.createDmMessage(data),
     onSuccess: (newMessage: any) => {

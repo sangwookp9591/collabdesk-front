@@ -6,9 +6,10 @@ import { useSocketStore } from '@/entities/message';
 import { useDebounce } from '@/shared/hooks';
 import { MessageTyping } from '@/widgets/message/ui/MessageTyping';
 import { MentionDropdown, useMentionStore } from '@/features/mention-user';
+import { MentionedUserId, MentionType } from '@/entities/metion/model/mention';
 
 type MessageInputProps = {
-  onSend: (content: string, mentions: string[]) => void;
+  onSend: (content: string, mentions: MentionedUserId[]) => void;
   roomType: 'channel' | 'dm';
 };
 
@@ -17,6 +18,7 @@ export interface MentionUser {
   name: string;
   email: string;
   profileImageUrl?: string;
+  type: MentionType;
 }
 
 export interface MentionData {
@@ -196,7 +198,10 @@ export function MessageSend({ onSend, roomType }: MessageInputProps) {
   const handleSend = useCallback(() => {
     if (!value.trim()) return;
 
-    const mentionData = mentions.map((item) => item?.user?.id);
+    const mentionData = mentions.map((item) => ({
+      type: item?.user?.type,
+      userId: item?.user?.id || '',
+    }));
     onSend(value.trim(), mentionData);
 
     // 상태 초기화

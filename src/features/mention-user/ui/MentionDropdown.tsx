@@ -3,13 +3,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { Avatar } from '@/entities/user';
 import * as styles from './mentionDropdown.css';
-
-export interface MentionUser {
-  id: string;
-  name: string;
-  email: string;
-  profileImageUrl?: string;
-}
+import { MentionUser } from '@/entities/metion/model/mention';
 
 interface MentionDropdownProps {
   candidates: MentionUser[];

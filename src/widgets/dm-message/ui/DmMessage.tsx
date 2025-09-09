@@ -2,6 +2,7 @@
 
 import { useSendMessage } from '@/entities/dm';
 import { useInfiniteDMMessages } from '@/entities/dm/model/dm.queries';
+import { MentionedUserId } from '@/entities/metion';
 import { MessageSend } from '@/features/message-send';
 import { MessageResponse } from '@/shared/types/message';
 import { MessageList } from '@/widgets/message';
@@ -22,8 +23,8 @@ export function DmMessage({
   const { mutate: sendMessage, isPending } = useSendMessage(wsSlug, conversationId);
 
   const handleSendMessaage = useCallback(
-    (content: string, mentionIds: string[]) => {
-      sendMessage({ wsSlug, conversationId, content, mentionIds: mentionIds ?? [] });
+    (content: string, mentions: MentionedUserId[]) => {
+      sendMessage({ wsSlug, conversationId, content, mentions: mentions ?? [] });
     },
     [wsSlug, conversationId, sendMessage],
   );

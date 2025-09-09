@@ -4,6 +4,7 @@ import {
   useInfiniteChannelMessages,
   useSendMessage,
 } from '@/entities/message/model/message.queries';
+import { MentionedUserId } from '@/entities/metion';
 import { MessageSend } from '@/features/message-send';
 import { MessageResponse } from '@/shared/types/message';
 import { MessageList } from '@/widgets/message';
@@ -24,8 +25,8 @@ export function ChannelMessage({
   const { mutate: sendMessage, isPending } = useSendMessage(wsSlug, chSlug);
 
   const handleSendMessaage = useCallback(
-    (content: string, mentionIds: string[]) => {
-      sendMessage({ wsSlug, chSlug, content, mentionIds });
+    (content: string, mentions: MentionedUserId[]) => {
+      sendMessage({ wsSlug, chSlug, content, mentions });
     },
     [wsSlug, chSlug, sendMessage],
   );
