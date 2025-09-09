@@ -95,18 +95,31 @@ export function MentionDropdown({
               // 마우스 호버 시 활성 인덱스 업데이트는 부모에서 처리
             }}
           >
-            <Avatar
-              userId={user.id}
-              name={user.name}
-              profileImageUrl={user.profileImageUrl}
-              size={32}
-              borderRadius="6px"
-              isActiveIcon={false}
-            />
-            <div className={styles.mentionUserInfo}>
-              <span className={styles.mentionUserName}>{user.name}</span>
-              <span className={styles.mentionUserEmail}>{user.email}</span>
-            </div>
+            {user.type === 'USER' ? (
+              <>
+                <Avatar
+                  userId={user.id}
+                  name={user.name}
+                  profileImageUrl={user.profileImageUrl}
+                  size={32}
+                  borderRadius="6px"
+                  isActiveIcon={false}
+                />
+                <div className={styles.mentionUserInfo}>
+                  <span className={styles.mentionUserName}>{user.name}</span>
+                  <span className={styles.mentionUserEmail}>{user.email}</span>
+                </div>
+              </>
+            ) : (
+              <div>
+                <div className={styles.mentionSpecialInfo}>
+                  <span className={styles.mentionSpecial}>{`@${user.name}`}</span>
+                  <span className={styles.mentionDesc}>
+                    {user.type === 'HERE' ? '현재 방 사용자에게 알림' : '모든 사용자에게 알림'}
+                  </span>
+                </div>
+              </div>
+            )}
             {index === activeIndex && (
               <div className={styles.activeIndicator}>
                 <kbd className={styles.keyboardShortcut}>Enter</kbd>

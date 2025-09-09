@@ -30,6 +30,7 @@ export const mentionList = style({
 
 export const mentionItem = style({
   display: 'flex',
+  justifyContent: 'space-between',
   alignItems: 'center',
   padding: '10px 12px',
   borderRadius: '8px',
@@ -70,6 +71,31 @@ export const mentionUserName = style({
 });
 
 export const mentionUserEmail = style({
+  fontSize: '12px',
+  color: '#6b7280',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+});
+
+export const mentionSpecialInfo = style({
+  flex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '1px',
+  minWidth: 0, // 텍스트 오버플로우 처리
+});
+
+export const mentionSpecial = style({
+  fontWeight: '600',
+  fontSize: '15px',
+  color: '#111827',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+});
+
+export const mentionDesc = style({
   fontSize: '12px',
   color: '#6b7280',
   whiteSpace: 'nowrap',
