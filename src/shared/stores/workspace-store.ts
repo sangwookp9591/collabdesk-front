@@ -34,6 +34,7 @@ interface WorkspaceState {
   addWorkspace: (workspace: Workspace) => void;
   setChannels: (channels: Channel[]) => void;
   setCurrentChannel: (channel: Channel | null) => void;
+  getChannelSlug: (channelId: string) => string | undefined;
   addChannel: (channel: Channel) => void;
   deleteChannel: (channelId: string) => void;
   setDms: (dms: DMConversation[]) => void;
@@ -100,6 +101,10 @@ export const useWorkspaceStore = create<WorkspaceState>()(
           set((state) => {
             state.currentChannel = channel;
           }),
+        getChannelSlug(channelId: string) {
+          const { channels } = get();
+          return channels.find((item) => item.id === channelId)?.slug;
+        },
         addChannel: (channel) =>
           set((state) => {
             const exists = state.channels.some((ch) => ch.id === channel.id);
