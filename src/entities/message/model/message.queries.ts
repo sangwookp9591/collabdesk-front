@@ -6,6 +6,7 @@ import { messageKeys } from './message-keys';
 import { useSocketStore } from './socket.store';
 import { useEffect } from 'react';
 import { Message, MessageResponse } from '@/shared/types/message';
+import { MentionedUserId } from '@/entities/metion';
 
 export const useChannelMessages = (
   wsSlug: string,
@@ -133,7 +134,9 @@ export const useInfiniteChannelMessages = ({
             if (!oldData) return oldData;
 
             // 이미 존재하는 메시지인지 확인
-            const existsInCache = oldData.messages.some((m: Message) => m.id === newMessage.id);
+            const existsInCache = oldData.pages
+              .flatMap((data: any) => data.messages)
+              .some((m: Message) => m.id === newMessage.id);
             if (existsInCache) return oldData;
             const newPageData = oldData.pages.map((page: any, index: number) => {
               // 마지막 페이지에 새 메시지 추가
@@ -175,6 +178,7 @@ export function useSendMessage(wsSlug: string, chSlug: string) {
       wsSlug: string;
       chSlug: string;
       content: string;
+      mentions?: MentionedUserId[];
       parentId?: string;
     }) => await messageApi.createChannelMessage(data),
     onSuccess: (newMessage) => {
@@ -183,7 +187,9 @@ export function useSendMessage(wsSlug: string, chSlug: string) {
         messageKeys.channelInfiniteMessages(wsSlug, chSlug),
         (oldData: any) => {
           if (!oldData) return oldData;
-          const existsInCache = oldData.messages.some((m: Message) => m.id === newMessage.id);
+          const existsInCache = oldData.pages
+            .flatMap((data: any) => data.messages)
+            .some((m: Message) => m.id === newMessage.id);
           if (existsInCache) return oldData;
           const newPageData = oldData.pages.map((page: any, index: number) => {
             // 마지막 페이지에 새 메시지 추가

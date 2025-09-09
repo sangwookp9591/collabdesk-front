@@ -314,7 +314,7 @@ export default function ChannelInviteForm({
                     />
 
                     <Avatar
-                      isActive={false}
+                      userId={member?.userId}
                       profileImageUrl={member?.user?.profileImageUrl}
                       name={member?.user?.name || ''}
                       size={30}

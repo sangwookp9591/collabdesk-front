@@ -6,7 +6,13 @@ import { immer } from 'zustand/middleware/immer';
 import { Workspace, WorkspaceMember } from '../types/workspace';
 import { Channel } from '../types/channel';
 import { DMConversation } from '@/entities/dm';
-
+import { UserStatus } from '../types/user';
+interface Status {
+  userId: string;
+  status: UserStatus;
+  customMessage?: string;
+  lastActiveAt: Date;
+}
 interface WorkspaceState {
   // State
   isInitialized: boolean;
@@ -17,6 +23,8 @@ interface WorkspaceState {
   currentChannel: Channel | null;
   dms: DMConversation[];
   currentDm: DMConversation | null;
+  userStatuses: Record<string, Status>;
+  notifications: { type: string; data: any }[];
 
   // Actions
   setInitialized: (flag: boolean) => void;
@@ -32,6 +40,9 @@ interface WorkspaceState {
   setCurrentDm: (dm: DMConversation | null) => void;
   addDm: (dm: DMConversation) => void;
   deleteDm: (dmId: string) => void;
+  setUserStatuses: (userStatuses: Record<string, Status>) => void;
+  updateUserStatus: (updateData: Status) => void;
+  setNotifications: (notification: { type: string; data: any }) => void;
   // Async Actions
   //   loadWorkspaces: () => Promise<void>;
 
@@ -39,6 +50,7 @@ interface WorkspaceState {
   getCurrentWorkspaceId: () => string | null;
   getCurrentChannelId: () => string | null;
   getCurrentDmId: () => string | null;
+  getMemberStatus: (userId: string) => UserStatus;
   // Reset
   reset: () => void;
 }
@@ -55,6 +67,8 @@ export const useWorkspaceStore = create<WorkspaceState>()(
         currentChannel: null,
         dms: [],
         currentDm: null,
+        userStatuses: {},
+        notifications: [],
         setInitialized: (flag) =>
           set((state) => {
             state.isInitialized = flag;
@@ -118,6 +132,22 @@ export const useWorkspaceStore = create<WorkspaceState>()(
             const fitlerDms = state.dms.filter((dm) => dm.id !== dmId);
             state.dms = fitlerDms;
           }),
+        setUserStatuses: (userStatuses: Record<string, Status>) =>
+          set((state) => {
+            state.userStatuses = userStatuses ?? {};
+          }),
+        updateUserStatus: (updateData) =>
+          set((state) => {
+            state.userStatuses[updateData.userId] = {
+              ...(state.userStatuses[updateData.userId] ?? {}),
+              ...updateData,
+            };
+          }),
+
+        setNotifications: (notice: { type: string; data: any }) =>
+          set((state) => {
+            state.notifications.push(notice);
+          }),
         getCurrentWorkspaceId() {
           const { currentWorkspace } = get();
           return currentWorkspace?.id ?? null;
@@ -135,6 +165,10 @@ export const useWorkspaceStore = create<WorkspaceState>()(
           workspaceMembers.find((member) => member.userId === userId);
           return workspaceMembers.find((member) => member.userId === userId);
         },
+        getMemberStatus(userId: string) {
+          const { userStatuses } = get();
+          return userStatuses[userId]?.status ?? 'OFFLINE';
+        },
 
         // Reset State
         reset: () =>
@@ -147,6 +181,7 @@ export const useWorkspaceStore = create<WorkspaceState>()(
             state.currentChannel = null;
             state.dms = [];
             state.currentDm = null;
+            state.userStatuses = {};
           }),
       })),
     ),

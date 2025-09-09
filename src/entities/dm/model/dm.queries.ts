@@ -7,6 +7,7 @@ import { dmApi } from '../api/dm.api';
 import { DM_QUERY_KEYS } from './dm-keys';
 import { User } from '@/shared/types/user';
 import { Message, MessageResponse } from '@/shared/types/message';
+import { MentionedUserId } from '@/entities/metion';
 
 export const useDMConversations = (wsSlug: string) => {
   return useQuery({
@@ -191,7 +192,9 @@ export const useInfiniteDMMessages = ({
             if (!oldData) return oldData;
 
             // 이미 존재하는 메시지인지 확인
-            const existsInCache = oldData.messages.some((m: Message) => m.id === newMessage.id);
+            const existsInCache = oldData.pages
+              .flatMap((data: any) => data.messages)
+              .some((m: Message) => m.id === newMessage.id);
             if (existsInCache) return oldData;
             const newPageData = oldData.pages.map((page: any, index: number) => {
               // 마지막 페이지에 새 메시지 추가
@@ -233,6 +236,7 @@ export function useSendMessage(wsSlug: string, conversationId: string) {
       wsSlug: string;
       conversationId: string;
       content: string;
+      mentions: MentionedUserId[];
       parentId?: string;
     }) => dmApi.createDmMessage(data),
     onSuccess: (newMessage: any) => {
@@ -240,7 +244,9 @@ export function useSendMessage(wsSlug: string, conversationId: string) {
         DM_QUERY_KEYS.dmInfiniteMessages(wsSlug, conversationId),
         (oldData: any) => {
           if (!oldData) return oldData;
-          const existsInCache = oldData.messages.some((m: Message) => m.id === newMessage.id);
+          const existsInCache = oldData.pages
+            .flatMap((data: any) => data.messages)
+            .some((m: Message) => m.id === newMessage.id);
           if (existsInCache) return oldData;
           const newPageData = oldData.pages.map((page: any, index: number) => {
             // 마지막 페이지에 새 메시지 추가

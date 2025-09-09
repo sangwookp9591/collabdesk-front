@@ -35,7 +35,7 @@ export interface ChannelMember {
   role: ChannelRole;
   joinedAt: Date;
   lastReadAt: Date;
-  user?: User;
+  user: User;
   channel?: Channel;
 }
 

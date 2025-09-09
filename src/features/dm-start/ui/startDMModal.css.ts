@@ -190,22 +190,6 @@ export const statusIndicator = style({
   border: `2px solid ${themeTokens.colors.border}`,
 });
 
-export const statusONLINE = style({
-  backgroundColor: '#28a745',
-});
-
-export const statusAWAY = style({
-  backgroundColor: '#ffc107',
-});
-
-export const statusOFFLINE = style({
-  backgroundColor: '#6c757d',
-});
-
-export const statusDO_NOT_DISTURB = style({
-  backgroundColor: '#dc3545',
-});
-
 export const userInfo = style({
   flex: 1,
   minWidth: 0,

@@ -158,7 +158,9 @@ export default function Sidebar() {
         />
       </section>
       {/* Member Section */}
-      <MemberSection />
+      <section className={styles.section}>
+        <MemberSection />
+      </section>
       <div className={styles.resizerStyle} onMouseDown={onMouseDown} />
     </div>
   );

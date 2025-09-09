@@ -108,7 +108,7 @@ export function StartDMModal({ isOpen, onClose }: StartDMModalProps) {
                     }}
                   >
                     <Avatar
-                      isActive={user?.status === 'ONLINE'}
+                      userId={user?.id}
                       profileImageUrl={user?.profileImageUrl ?? '/images/default_profile.png'}
                       name={user?.name || ''}
                       size={44}
@@ -161,18 +161,14 @@ export function StartDMModal({ isOpen, onClose }: StartDMModalProps) {
                   >
                     <div className={styles.userAvatar}>
                       <Avatar
-                        isActive={member?.user?.status === 'ONLINE'}
+                        userId={member.userId}
                         profileImageUrl={
                           member?.user?.profileImageUrl ?? '/images/default_profile.png'
                         }
                         name={member?.user?.name || ''}
                         size={44}
                         borderRadius="18px"
-                      />
-                      <div
-                        className={`${styles.statusIndicator} ${
-                          styles[`status${member.user!.status}`]
-                        }`}
+                        isActiveIcon={true}
                       />
                     </div>
 

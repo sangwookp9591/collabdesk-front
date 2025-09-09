@@ -97,6 +97,28 @@ export const themeTokens = createThemeContract({
         color: null,
       },
     },
+    role: {
+      owner: {
+        backgound: null,
+        border: null,
+        color: null,
+      },
+      admin: {
+        backgound: null,
+        border: null,
+        color: null,
+      },
+      member: {
+        backgound: null,
+        border: null,
+        color: null,
+      },
+      guest: {
+        backgound: null,
+        border: null,
+        color: null,
+      },
+    },
   },
 
   // 그림자
@@ -204,6 +226,28 @@ export const darkTheme = createTheme(themeTokens, {
         color: '#dc2626',
       },
     },
+    role: {
+      owner: {
+        backgound: '#f3e8ff',
+        border: '#c084fc',
+        color: '#6b21a8',
+      },
+      admin: {
+        backgound: '#dbeafe',
+        border: '#60a5fa',
+        color: '#1d4ed8',
+      },
+      member: {
+        backgound: '#dcfce7',
+        border: '#4ade80',
+        color: '#166534',
+      },
+      guest: {
+        backgound: '#f3f4f6',
+        border: '#d1d5db',
+        color: '#374151',
+      },
+    },
   },
 
   shadows: {
@@ -306,6 +350,28 @@ export const purpleTheme = createTheme(themeTokens, {
         border: '#fecaca',
         backgroundColor: '#fef2f2',
         color: '#dc2626',
+      },
+    },
+    role: {
+      owner: {
+        backgound: '#f3e8ff',
+        border: '#c084fc',
+        color: '#6b21a8',
+      },
+      admin: {
+        backgound: '#dbeafe',
+        border: '#60a5fa',
+        color: '#1d4ed8',
+      },
+      member: {
+        backgound: '#dcfce7',
+        border: '#4ade80',
+        color: '#166534',
+      },
+      guest: {
+        backgound: '#f3f4f6',
+        border: '#d1d5db',
+        color: '#374151',
       },
     },
   },
@@ -412,6 +478,28 @@ export const lightTheme = createTheme(themeTokens, {
         color: '#dc2626',
       },
     },
+    role: {
+      owner: {
+        backgound: '#f3e8ff',
+        border: '#c084fc',
+        color: '#6b21a8',
+      },
+      admin: {
+        backgound: '#dbeafe',
+        border: '#60a5fa',
+        color: '#1d4ed8',
+      },
+      member: {
+        backgound: '#dcfce7',
+        border: '#4ade80',
+        color: '#166534',
+      },
+      guest: {
+        backgound: '#f3f4f6',
+        border: '#d1d5db',
+        color: '#374151',
+      },
+    },
   },
 
   shadows: {
@@ -516,6 +604,28 @@ export const aubergineTheme = createTheme(themeTokens, {
         color: '#dc2626',
       },
     },
+    role: {
+      owner: {
+        backgound: '#fff7ed',
+        border: '#fb923c',
+        color: '#c2410c',
+      },
+      admin: {
+        backgound: '#fef2f2',
+        border: '#f87171',
+        color: '#b91c1c',
+      },
+      member: {
+        backgound: '#dbeafe',
+        border: '#60a5fa',
+        color: '#1d4ed8',
+      },
+      guest: {
+        backgound: '#f3f4f6',
+        border: '#d1d5db',
+        color: '#374151',
+      },
+    },
   },
 
   shadows: {
@@ -618,6 +728,28 @@ export const greenTheme = createTheme(themeTokens, {
         border: '#fecaca',
         backgroundColor: '#fef2f2',
         color: '#dc2626',
+      },
+    },
+    role: {
+      owner: {
+        backgound: '#f3e8ff',
+        border: '#c084fc',
+        color: '#6b21a8',
+      },
+      admin: {
+        backgound: '#dbeafe',
+        border: '#60a5fa',
+        color: '#1d4ed8',
+      },
+      member: {
+        backgound: '#dcfce7',
+        border: '#4ade80',
+        color: '#166534',
+      },
+      guest: {
+        backgound: '#f3f4f6',
+        border: '#d1d5db',
+        color: '#374151',
       },
     },
   },

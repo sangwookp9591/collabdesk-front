@@ -1,6 +1,7 @@
 import { DMConversation } from '@/entities/dm';
 import { Channel } from './channel';
 import { User } from './user';
+import { Mention } from '@/entities/metion';
 export type messageType = 'USER' | 'DM' | 'SYSTEM' | 'BOT';
 export interface Message {
   id: string;
@@ -32,6 +33,7 @@ export interface Message {
   >;
   parent?: Message;
   replies?: Message[];
+  mentions?: Mention[];
 }
 
 export interface MessageResponse {

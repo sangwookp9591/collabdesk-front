@@ -57,7 +57,7 @@ const SideMenu = () => {
 
       <div className={styles.BottomSection}>
         <Avatar
-          isActive={session?.user?.status === 'ONLINE'}
+          userId={session?.user?.id ?? ''}
           profileImageUrl={session?.user?.profileImageUrl}
           name={session?.user?.name || ''}
           size={48}
