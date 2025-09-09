@@ -4,6 +4,7 @@ import { Avatar } from '@/entities/user';
 import * as styles from './message-item.css';
 import { format, differenceInCalendarDays } from 'date-fns';
 import { Message } from '@/shared/types/message';
+import { useCallback, useMemo } from 'react';
 
 type MessageItemProps = {
   message: Message;
@@ -32,6 +33,45 @@ function formatMessageDate(date: Date) {
 export function MessageItem({ message, isSameUserWithinMinute }: MessageItemProps) {
   const currentDate = new Date(message.createdAt);
 
+  const mentions = useMemo(() => message.mentions ?? [], [message.mentions]);
+
+  const renderHighlightedText = useCallback(() => {
+    if (!message.content) return null;
+
+    const elements: React.ReactNode[] = [];
+    let cursor = 0; // 현재까지 처리한 인덱스
+
+    mentions?.forEach((mention, idx) => {
+      const name = mention.user?.name || '';
+      const mentionText = `@${name}`;
+
+      const startIdx = message.content.indexOf(mentionText, cursor);
+      if (startIdx === -1) return; // mention 없으면 넘어감
+
+      // mention 시작 전 일반 텍스트
+      if (startIdx > cursor) {
+        elements.push(<span>message.content.slice(cursor, startIdx)</span>);
+      }
+
+      // mention 하이라이트
+      elements.push(
+        <span key={`mention-${idx}`} className={styles.mentionHighlight}>
+          {mentionText}
+        </span>,
+      );
+
+      // cursor 이동
+      cursor = startIdx + mentionText.length;
+    });
+
+    // 마지막 남은 일반 텍스트
+    if (cursor < message.content.length) {
+      elements.push(message.content.slice(cursor));
+    }
+
+    return elements;
+  }, [mentions, message.content]);
+
   return message?.messageType === 'USER' || message?.messageType === 'DM' ? (
     <div key={message.id} className={styles.messageItem}>
       {!isSameUserWithinMinute ? (
@@ -51,11 +91,13 @@ export function MessageItem({ message, isSameUserWithinMinute }: MessageItemProp
                 {formatMessageDate(currentDate)}
               </span>
             </div>
-            {message.content}
+            <div>{mentions.length > 0 ? renderHighlightedText() : message.content}</div>
           </div>
         </div>
       ) : (
-        <div style={{ marginLeft: '58px', marginTop: '2px' }}>{message.content}</div>
+        <div style={{ marginLeft: '58px', marginTop: '2px' }}>
+          {mentions.length > 0 ? renderHighlightedText() : message.content}
+        </div>
       )}
     </div>
   ) : (
