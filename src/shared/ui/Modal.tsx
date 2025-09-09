@@ -9,9 +9,10 @@ interface ModalProps {
   children: ReactNode;
   open: boolean;
   onClose: () => void;
+  hasClose?: boolean;
 }
 
-export function Modal({ children, open, onClose }: ModalProps) {
+export function Modal({ children, open, onClose, hasClose }: ModalProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -31,18 +32,20 @@ export function Modal({ children, open, onClose }: ModalProps) {
         className={styles.fadeModal[open ? 'in' : 'out']}
         onClick={(e) => e.stopPropagation()} // 내부 클릭 시 닫히지 않도록
       >
-        <div
-          style={{
-            position: 'absolute',
-            right: '10px',
-            top: '25px',
-            cursor: 'pointer',
-          }}
-        >
-          <div onClick={onClose}>
-            <CloseIcon size={25} color="black" />
+        {hasClose && (
+          <div
+            style={{
+              position: 'absolute',
+              right: '10px',
+              top: '25px',
+              cursor: 'pointer',
+            }}
+          >
+            <div onClick={onClose}>
+              <CloseIcon size={25} color="black" />
+            </div>
           </div>
-        </div>
+        )}
         {children}
       </div>
     </div>,
