@@ -24,6 +24,7 @@ interface WorkspaceState {
   dms: DMConversation[];
   currentDm: DMConversation | null;
   userStatuses: Record<string, Status>;
+  notifications: { type: string; data: any }[];
 
   // Actions
   setInitialized: (flag: boolean) => void;
@@ -41,7 +42,7 @@ interface WorkspaceState {
   deleteDm: (dmId: string) => void;
   setUserStatuses: (userStatuses: Record<string, Status>) => void;
   updateUserStatus: (updateData: Status) => void;
-
+  setNotifications: (notification: { type: string; data: any }) => void;
   // Async Actions
   //   loadWorkspaces: () => Promise<void>;
 
@@ -67,6 +68,7 @@ export const useWorkspaceStore = create<WorkspaceState>()(
         dms: [],
         currentDm: null,
         userStatuses: {},
+        notifications: [],
         setInitialized: (flag) =>
           set((state) => {
             state.isInitialized = flag;
@@ -140,6 +142,11 @@ export const useWorkspaceStore = create<WorkspaceState>()(
               ...(state.userStatuses[updateData.userId] ?? {}),
               ...updateData,
             };
+          }),
+
+        setNotifications: (notice: { type: string; data: any }) =>
+          set((state) => {
+            state.notifications.push(notice);
           }),
         getCurrentWorkspaceId() {
           const { currentWorkspace } = get();

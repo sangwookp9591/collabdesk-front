@@ -12,6 +12,7 @@ export const EVENT_KEYS = {
   SUB_STOP_TYPING: 'userStopTyping',
   PUB_JOIN_WORKSPACE: 'joinWorkspace',
   SUB_JOIN_WORKSPACE: 'workspaceJoined',
+  SUB_NOTICE_WORKSPACE: 'workspaceNotice',
   PUB_CHANGE_WORKSPACE: 'changeWorkspace',
   PUB_LEAVE_WORKSPACE: 'leaveWorkspace',
   PUB_JOIN_CHANNEL: 'joinRoom',

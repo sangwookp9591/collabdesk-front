@@ -13,8 +13,15 @@ import { UserStatus } from '../types/user';
 export const useRealtimeSubEvents = () => {
   const queryClient = useQueryClient();
   const { socket } = useSocketStore();
-  const { addChannel, currentWorkspace, deleteChannel, addDm, setUserStatuses, updateUserStatus } =
-    useWorkspaceStore();
+  const {
+    addChannel,
+    currentWorkspace,
+    deleteChannel,
+    addDm,
+    setUserStatuses,
+    updateUserStatus,
+    setNotifications,
+  } = useWorkspaceStore();
 
   useEffect(() => {
     console.log('socket realtime : ', currentWorkspace);
@@ -23,6 +30,11 @@ export const useRealtimeSubEvents = () => {
     const handleJoinedWorkspace = (message: { workspaceId: string; userStatuses: any }) => {
       console.log('handleJoinedWorkspace message : ', message);
       setUserStatuses(message.userStatuses);
+    };
+
+    const handleNoticeWorkspace = (message: { type: string; data: any }) => {
+      console.log('handleNoticeWorkspace message : ', message);
+      setNotifications(message);
     };
 
     const handleChannelCreatedEvent = (message: Channel) => {
@@ -72,6 +84,7 @@ export const useRealtimeSubEvents = () => {
 
     // ADD Event Listener
     socket.on(EVENT_KEYS.SUB_JOIN_WORKSPACE, handleJoinedWorkspace);
+    socket.on(EVENT_KEYS.SUB_NOTICE_WORKSPACE, handleNoticeWorkspace);
     socket.on(EVENT_KEYS.SUB_CHANNEL_CREATED, handleChannelCreatedEvent);
     socket.on(EVENT_KEYS.SUB_CHANNEL_DELETED, handleChannelDeletedEvent);
     socket.on(EVENT_KEYS.SUB_CHANNEL_UPDATED, handleChannelUpdateEvent);
