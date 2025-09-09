@@ -32,9 +32,10 @@ export const useRealtimeSubEvents = () => {
       setUserStatuses(message.userStatuses);
     };
 
-    const handleNoticeWorkspace = (message: { type: string; data: any }) => {
-      console.log('handleNoticeWorkspace message : ', message);
-      setNotifications(message);
+    const handleNoticeWorkspace = (message: { workspaceId: string; type: string; data: any }) => {
+      if (currentWorkspace?.id === message.workspaceId) {
+        setNotifications(message);
+      }
     };
 
     const handleChannelCreatedEvent = (message: Channel) => {
