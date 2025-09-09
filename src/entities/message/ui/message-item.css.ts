@@ -1,3 +1,4 @@
+import { themeTokens } from '@/shared/styles';
 import { style } from '@vanilla-extract/css';
 
 export const messageItem = style({
@@ -10,4 +11,12 @@ export const messageItem = style({
       maxWidth: '100%',
     },
   },
+});
+
+export const mentionHighlight = style({
+  backgroundColor: themeTokens.colors.channel.backgroundMention,
+  borderRadius: '10px',
+  padding: '4px 10px',
+  fontWeight: 'bold',
+  color: '#34495e',
 });

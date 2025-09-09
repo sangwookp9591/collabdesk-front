@@ -1,3 +1,4 @@
+import { MentionedUserId } from '@/entities/metion';
 import { ApiBase } from '@/shared/api';
 import { GetMessagesQueryDto, MessageResponse } from '@/shared/types/message';
 
@@ -27,9 +28,10 @@ class DirectMessageApi extends ApiBase {
     wsSlug: string;
     conversationId: string;
     content: string;
+    mentions: MentionedUserId[];
     parentId?: string;
   }) {
-    const { wsSlug, conversationId, content, parentId } = data;
+    const { wsSlug, conversationId, content, mentions, parentId } = data;
     return await this.fetchWithAuth(
       `/workspaces/${wsSlug}/dm/conversations/${conversationId}/messages`,
       {
@@ -39,6 +41,7 @@ class DirectMessageApi extends ApiBase {
         },
         body: JSON.stringify({
           content: content,
+          mentions: mentions,
           parentId: parentId,
         }),
       },

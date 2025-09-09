@@ -1,4 +1,5 @@
-import { style } from '@vanilla-extract/css';
+import { themeTokens } from '@/shared/styles';
+import { style, styleVariants } from '@vanilla-extract/css';
 
 export const avatarSize = style({
   display: 'flex',
@@ -34,9 +35,18 @@ export const loginLight = style({
   border: '3px gray solid',
 });
 
-export const userIconInactive = style([
-  loginLight,
-  {
-    backgroundColor: 'black',
-  },
-]);
+export const statusBase = style({
+  position: 'absolute',
+  bottom: '0px',
+  right: '0px',
+  width: '1em',
+  height: '1em',
+  borderRadius: '50%',
+  border: `2px solid  ${themeTokens.colors.border}`,
+});
+export const status = styleVariants({
+  ONLINE: [statusBase, { backgroundColor: '#28a745' }],
+  AWAY: [statusBase, { backgroundColor: '#ffc107' }],
+  OFFLINE: [statusBase, { backgroundColor: '#6c757d' }],
+  DO_NOT_DISTURB: [statusBase, { backgroundColor: '#FFFFFF' }],
+});

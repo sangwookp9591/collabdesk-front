@@ -1,4 +1,5 @@
 import { ApiBase } from '@/shared/api';
+import { ChannelMember } from '@/shared/types/channel';
 
 class ChannelApi extends ApiBase {
   private workspaceSlug: string | null = null;
@@ -47,7 +48,7 @@ class ChannelApi extends ApiBase {
     });
   }
 
-  async membersBySlug(channelSlug: string) {
+  async membersBySlug(channelSlug: string): Promise<ChannelMember[]> {
     return await this.fetchWithAuth(
       `/workspaces/${this.workspaceSlug}/channels/${channelSlug}/members`,
       {

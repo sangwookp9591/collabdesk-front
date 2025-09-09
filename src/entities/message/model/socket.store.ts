@@ -86,7 +86,7 @@ export const useSocketStore = create<SocketState>()(
         set({ error: `소켓 에러: ${error.message}` });
       });
       socket.on('roomJoined', (message) => {
-        console.log('roomJoined success:', message);
+        // console.log('roomJoined success:', message);
       });
 
       set({ socket });

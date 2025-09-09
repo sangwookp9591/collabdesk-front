@@ -1,34 +1,27 @@
-import { style, keyframes } from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
 import { themeTokens } from '@/shared/styles/theme.css';
 
-// 애니메이션 정의
-const slideDown = keyframes({
-  from: {
-    opacity: 0,
-    transform: 'translateY(-10px)',
-  },
-  to: {
-    opacity: 1,
-    transform: 'translateY(0)',
-  },
-});
-
-// 멤버 섹션 컨테이너
-export const memberSection = style({
+// 확장된 메뉴 컨테이너
+export const expandedMenu = style({
   display: 'flex',
-  width: '100%',
   flexDirection: 'column',
-  padding: '8px 0',
-  borderTop: '1px solid rgba(220, 214, 223, 0.3)',
-  marginTop: '16px',
+  gap: '4px',
+  paddingLeft: '8px',
+  marginTop: '8px',
 });
 
-// 섹션 헤더
-export const sectionHeader = style({
+export const workspaceMemberList = style({
   display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  padding: '8px 12px',
+  flexDirection: 'column',
+  gap: '10px',
+  marginBottom: '15px',
+});
+
+export const workspaceMemberCard = style({
+  display: 'flex',
+  padding: '6px 12px',
+  flexDirection: 'row',
+  gap: '8px',
   cursor: 'pointer',
   borderRadius: '8px',
   transition: 'background-color 0.2s',
@@ -37,52 +30,59 @@ export const sectionHeader = style({
   },
 });
 
-// 헤더 좌측 영역
-export const headerLeft = style({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-});
-
-// 화살표 아이콘 컨테이너
-export const arrowIcon = style({
-  transition: 'transform 0.2s',
-});
-
-export const arrowIconExpanded = style([
-  arrowIcon,
-  {
-    transform: 'rotate(90deg)',
-  },
-]);
-
-// 섹션 타이틀
-export const sectionTitle = style({
-  fontSize: '14px',
-  fontWeight: '600',
-  color: themeTokens.colors.textSecondary,
-});
-
-// 배지 (대기중인 초대 수)
-export const badge = style({
-  backgroundColor: '#3B82F6',
-  color: 'white',
-  borderRadius: '10px',
-  padding: '2px 8px',
-  fontSize: '11px',
-  fontWeight: '600',
-  minWidth: '18px',
-  textAlign: 'center',
-});
-
-// 확장된 메뉴 컨테이너
-export const expandedMenu = style({
+export const infoCard = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: '4px',
-  paddingLeft: '32px',
-  marginTop: '8px',
-  animation: `${slideDown} 0.2s ease-out`,
+  gap: '2px',
+});
+
+export const roleBase = style({
+  color: themeTokens.colors.textSecondary,
+  fontSize: '10px',
+  fontWeight: 'bold',
+  borderRadius: '10px',
+  padding: '2px 5px',
+});
+
+export const workspaceMemberRole = styleVariants({
+  OWNER: [
+    roleBase,
+    {
+      border: `1px solid ${themeTokens.colors.role.owner.border}`,
+      backgroundColor: themeTokens.colors.role.owner.backgound,
+      color: themeTokens.colors.role.owner.color,
+    },
+  ],
+  ADMIN: [
+    roleBase,
+    {
+      border: `1px solid ${themeTokens.colors.role.admin.border}`,
+      backgroundColor: themeTokens.colors.role.admin.backgound,
+      color: themeTokens.colors.role.admin.color,
+    },
+  ],
+  MEMBER: [
+    roleBase,
+    {
+      border: `1px solid ${themeTokens.colors.role.member.border}`,
+      backgroundColor: themeTokens.colors.role.member.backgound,
+      color: themeTokens.colors.role.member.color,
+    },
+  ],
+  GUEST: [
+    roleBase,
+    {
+      border: `1px solid ${themeTokens.colors.role.guest.border}`,
+      backgroundColor: themeTokens.colors.role.guest.backgound,
+      color: themeTokens.colors.role.guest.color,
+    },
+  ],
+});
+
+export const workspaceMemberName = style({
+  color: themeTokens.colors.textSecondary,
+  fontSize: '14px',
+  fontWeight: 'bold',
 });
 
 // 메뉴 버튼 기본 스타일
@@ -100,19 +100,6 @@ export const menuButton = style({
   transition: 'all 0.2s',
   textAlign: 'left',
   width: '100%',
-});
-
-// 대기중인 초대 알림
-export const pendingInviteNotice = style({
-  padding: '8px 12px',
-  fontSize: '12px',
-  color: '#6B7280',
-  backgroundColor: 'rgba(251, 191, 36, 0.1)',
-  borderRadius: '6px',
-  border: '1px solid rgba(251, 191, 36, 0.2)',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '6px',
 });
 
 // 멤버 현황 카드

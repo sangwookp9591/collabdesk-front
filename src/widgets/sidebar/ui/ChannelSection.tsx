@@ -36,8 +36,6 @@ export default function ChannelSection({ isOpen, onToggle }: ChannelSectionProps
     setIsModalOpen(false);
   }, [setIsModalOpen]);
 
-  console.log('currentChannel : ', currentChannel);
-
   return (
     <div>
       <SidebarDropdown

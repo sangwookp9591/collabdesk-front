@@ -50,7 +50,7 @@ export const authOptions: NextAuthOptions = {
 
           const data = await res.json();
 
-          if (data) {
+          if (data?.user?.id) {
             return {
               id: data?.user?.id,
               email: data?.user?.email,
@@ -126,7 +126,7 @@ export const authOptions: NextAuthOptions = {
             token.expiresIn = Date.now() + 15 * 60 * 1000;
           } else {
             // 리프레시 실패시 로그아웃
-            await logout(token.refreshToken);
+            await logout(token.email, token.refreshToken);
             return null;
           }
         } catch (error) {
@@ -144,7 +144,10 @@ export const authOptions: NextAuthOptions = {
     // },
     async signOut(message) {
       console.log('User signed out:', message);
-      await logout((message.token?.refreshToken as string | undefined) ?? '');
+      await logout(
+        message?.token?.email ?? '',
+        (message.token?.refreshToken as string | undefined) ?? '',
+      );
     },
   },
 };
@@ -177,7 +180,7 @@ async function refreshAccessToken(refreshToken: string) {
 }
 
 // 토큰 리프레시 함수
-async function logout(refreshToken: string) {
+async function logout(email: string, refreshToken: string) {
   try {
     const res = await apiFetch('/auth/logout', {
       method: 'POST',
@@ -185,7 +188,7 @@ async function logout(refreshToken: string) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ refreshToken: refreshToken }),
+      body: JSON.stringify({ email: email, refreshToken: refreshToken }),
     });
     console.log('logout res : ', res);
     if (!res.ok) return null;

@@ -100,7 +100,7 @@ export function MessageTyping({ roomType }: { roomType: 'channel' | 'dm' }) {
       <div className={styles.typingAvatars}>
         {typingUsers.slice(0, 3).map((user) => (
           <Avatar
-            isActive={false}
+            userId={user?.id}
             key={user.id}
             size={25}
             profileImageUrl={user.profileImageUrl}

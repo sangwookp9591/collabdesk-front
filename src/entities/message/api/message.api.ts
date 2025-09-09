@@ -1,15 +1,17 @@
 import { ApiBase } from '@/shared/api';
 import { GetMessagesQueryDto } from '@/shared/types/message';
 import { MessageResponse } from '../../../shared/types/message';
+import { MentionedUserId } from '@/entities/metion';
 
 class MessageApi extends ApiBase {
   async createChannelMessage(data: {
     wsSlug: string;
     chSlug: string;
     content: string;
+    mentions?: MentionedUserId[];
     parentId?: string;
   }) {
-    const { wsSlug, chSlug, content, parentId } = data;
+    const { wsSlug, chSlug, content, mentions, parentId } = data;
 
     console.log('wsSlug, chSlug, content, parentId  : ', wsSlug, chSlug, content, parentId);
     return await this.fetchWithAuth(`/workspaces/${wsSlug}/channels/${chSlug}/messages`, {
@@ -20,6 +22,7 @@ class MessageApi extends ApiBase {
       body: JSON.stringify({
         content,
         parentId,
+        mentions: mentions ?? [],
       }),
     });
   }
