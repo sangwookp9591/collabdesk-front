@@ -1,3 +1,4 @@
+import { themeTokens } from '@/shared/styles';
 import { style } from '@vanilla-extract/css';
 export const mentionDropdown = style({
   background: '#ffffff',
@@ -43,11 +44,11 @@ export const mentionItem = style({
 });
 
 export const mentionItemActive = style({
-  backgroundColor: '#eff6ff',
-  borderLeft: '3px solid #3b82f6',
-
+  backgroundColor: `${themeTokens.colors.channel.backgroundMention}`,
+  borderLeft: `10px solid ${themeTokens.colors.channel.badge}`,
+  cursor: 'pointer',
   ':hover': {
-    backgroundColor: '#eff6ff',
+    backgroundColor: `${themeTokens.colors.channel.backgroundMention}`,
   },
 });
 
