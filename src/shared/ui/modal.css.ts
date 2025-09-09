@@ -53,3 +53,25 @@ export const fadeModal = styleVariants({
 export const close = style({
   backgroundColor: themeTokens.colors.background,
 });
+
+export const positionOverlay = style({
+  position: 'fixed',
+  inset: 0,
+  backgroundColor: 'rgba(0, 0, 0, 0.2)',
+  zIndex: 50,
+});
+
+export const positionModal = style({
+  position: 'absolute',
+  backgroundColor: 'white',
+  borderRadius: '12px',
+  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+  border: '1px solid #e5e7eb',
+  overflow: 'hidden',
+  animation: `${fadeIn} 0.2s ease-out`,
+});
+
+export const positionFadeModal = styleVariants({
+  in: [positionModal, { animation: `${fadeIn} 0.2s ease forwards` }],
+  out: [positionModal, { animation: `${fadeOut} 0.2s ease forwards` }],
+});
