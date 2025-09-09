@@ -1,12 +1,6 @@
+import { MentionUser } from '@/entities/metion';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-
-export interface MentionUser {
-  id: string;
-  name: string;
-  email: string;
-  profileImageUrl?: string;
-}
 
 interface MentionState {
   // 멘션 드롭다운 상태
@@ -32,7 +26,14 @@ export const useMentionStore = create<MentionState>()(
 
     setDropdownOpen: (open) => set({ isDropdownOpen: open }),
 
-    setMembers: (members) => set({ members: members }),
+    setMembers: (members) =>
+      set({
+        members: [
+          { id: 'here', type: 'HERE', name: 'here', email: '' },
+          { id: 'everyone', type: 'EVERYONE', name: 'everyone', email: '' },
+          ...members,
+        ],
+      }),
 
     setSelectedIndex: (index) => {
       const { filteredUsers } = get();

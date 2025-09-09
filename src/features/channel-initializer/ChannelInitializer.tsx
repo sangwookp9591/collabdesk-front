@@ -6,6 +6,7 @@ import { useWorkspaceStore } from '@/shared/stores/workspace-store';
 import { useParams } from 'next/navigation';
 import { ReactNode, useEffect } from 'react';
 import { useMentionStore } from '../mention-user';
+import { MentionUser } from '@/entities/metion';
 
 export default function ChannelInitializer({ children }: { children: ReactNode }) {
   const params = useParams();
@@ -28,13 +29,14 @@ export default function ChannelInitializer({ children }: { children: ReactNode }
     }
 
     if (!isMemberLoading) {
-      console.log('setMembers!!! ', members);
-      const users = members?.map((member) => ({
+      const users: MentionUser[] | undefined = members?.map((member) => ({
         id: member.user?.id,
         name: member.user?.name || '',
-        email: member.user?.email,
+        email: member.user?.email || '',
         profileImageUrl: member.user?.profileImageUrl,
+        type: 'USER',
       }));
+
       setMembers(users ?? []);
     }
   }, [

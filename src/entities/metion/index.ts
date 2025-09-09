@@ -1,1 +1,1 @@
-export type { Mention } from './model/mention';
+export type { Mention, MentionType, MentionUser, MentionedUserId } from './model/mention';
