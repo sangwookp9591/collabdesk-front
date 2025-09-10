@@ -7,10 +7,12 @@ import Link from 'next/link';
 import { useCallback, useState } from 'react';
 import { useParams } from 'next/navigation';
 import type { Notification as INotification } from '@/entities/notification';
+import { useSocketStore } from '@/entities/message';
 export function Notification() {
   const params = useParams();
   const wsSlug = params?.wsSlug as string;
   const { notifications, getChannelSlug } = useWorkspaceStore();
+  const { markAsReadNotification } = useSocketStore();
   const [isOpen, setIsOpen] = useState(false);
 
   const onOpen = useCallback(() => {
@@ -21,7 +23,13 @@ export function Notification() {
     setIsOpen(false);
   }, []);
 
-  console.log('notifications : ', notifications);
+  const handleClick = useCallback(
+    ({ messageId }: { messageId?: string }) => {
+      console.log('markAsReadNotification : ', messageId);
+      markAsReadNotification({ messageId });
+    },
+    [markAsReadNotification],
+  );
 
   return (
     <div>
@@ -43,6 +51,11 @@ export function Notification() {
                         nt?.channelId
                           ? `/worksapce/${wsSlug}/channel/${getChannelSlug(nt?.channelId)}`
                           : `/worksapce/${wsSlug}/dm/${nt?.dmConversationId}`
+                      }
+                      onClick={() =>
+                        handleClick({
+                          messageId: nt?.messageId,
+                        })
                       }
                     >
                       {nt?.data ?? ''}
