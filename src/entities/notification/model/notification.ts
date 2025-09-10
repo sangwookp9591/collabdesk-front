@@ -19,7 +19,7 @@ export interface Notification {
   messageId?: string;
   workspaceId?: string;
   channelId?: string;
-  dmId?: string;
+  dmConversationId?: string;
   isRead?: boolean;
   readAt?: Date;
   data: any;
@@ -28,5 +28,5 @@ export interface Notification {
   message?: Message;
   workspace?: Workspace;
   channel?: Channel;
-  dm?: DMConversation;
+  dmConversation?: DMConversation;
 }

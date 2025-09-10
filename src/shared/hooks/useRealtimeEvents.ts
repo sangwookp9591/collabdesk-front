@@ -9,6 +9,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { CHANNEL_QUERY_KEYS } from '@/entities/channel';
 import { DMConversation, DM_QUERY_KEYS } from '@/entities/dm';
 import { UserStatus } from '../types/user';
+import type { Notification } from '@/entities/notification/model/notification';
 
 export const useRealtimeSubEvents = () => {
   const queryClient = useQueryClient();
@@ -32,9 +33,25 @@ export const useRealtimeSubEvents = () => {
       setUserStatuses(message.userStatuses);
     };
 
-    const handleNoticeWorkspace = (message: { workspaceId: string; type: string; data: any }) => {
+    const handleNoticeWorkspace = (message: { workspaceId: string; data: any }) => {
       if (currentWorkspace?.id === message.workspaceId) {
-        setNotifications(message);
+        const data: Notification = {
+          id: '',
+          userId: '',
+          type: message.data.type,
+          channelId: message.data?.roomId,
+          dmConversationId: message.data?.roomId,
+          messageId: message.data?.messageId,
+          workspaceId: message.workspaceId,
+          message: message?.data?.message,
+          data: message?.data.title,
+          createdAt: message?.data?.message?.createdAt,
+          user: undefined,
+          workspace: undefined,
+          channel: undefined,
+          dmConversation: undefined,
+        };
+        setNotifications(data);
       }
     };
 
