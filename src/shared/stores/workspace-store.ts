@@ -3,11 +3,12 @@
 import { create } from 'zustand';
 import { devtools, subscribeWithSelector } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
-import { Workspace, WorkspaceMember } from '../types/workspace';
-import { Channel } from '../types/channel';
-import { DMConversation } from '@/entities/dm';
-import { UserStatus } from '../types/user';
+import type { Workspace, WorkspaceMember } from '../types/workspace';
+import type { Channel } from '../types/channel';
+import type { DMConversation } from '@/entities/dm';
+import type { User, UserStatus } from '../types/user';
 import type { Notification } from '@/entities/notification';
+
 interface Status {
   userId: string;
   status: UserStatus;
@@ -54,6 +55,7 @@ interface WorkspaceState {
   getCurrentChannelId: () => string | null;
   getCurrentDmId: () => string | null;
   getMemberStatus: (userId: string) => UserStatus;
+  getMember: (userId: string) => User | undefined;
   // Reset
   reset: () => void;
 }
@@ -179,7 +181,10 @@ export const useWorkspaceStore = create<WorkspaceState>()(
           const { userStatuses } = get();
           return userStatuses[userId]?.status ?? 'OFFLINE';
         },
-
+        getMember(userId: string) {
+          const { workspaceMembers } = get();
+          return workspaceMembers?.find((member) => member.userId === userId)?.user;
+        },
         // Reset State
         reset: () =>
           set((state) => {
