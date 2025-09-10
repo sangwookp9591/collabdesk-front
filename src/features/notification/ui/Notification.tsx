@@ -6,7 +6,7 @@ import { NotificationIcon, PositionModal } from '@/shared/ui';
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
 import { useParams } from 'next/navigation';
-
+import type { Notification as INotification } from '@/entities/notification';
 export function Notification() {
   const params = useParams();
   const wsSlug = params?.wsSlug as string;
@@ -33,23 +33,21 @@ export function Notification() {
           <div className={styles.header}>알림</div>
           <div className={styles.notificationList}>
             {notifications && notifications.length > 0 ? (
-              notifications.map((noti: any, index) => (
+              notifications.map((nt: INotification, index) => (
                 <div key={index}>
                   <div className={styles.line} />
                   <div className={styles.notificationItem}>
                     <Link
                       className={styles.notificationTitle}
                       href={
-                        noti?.data?.roomType === 'channel'
-                          ? `/worksapce/${wsSlug}/channel/${getChannelSlug(noti?.data?.roomId)}`
-                          : `/worksapce/${wsSlug}/dm/${noti?.data?.roomId}`
+                        nt?.channelId
+                          ? `/worksapce/${wsSlug}/channel/${getChannelSlug(nt?.channelId)}`
+                          : `/worksapce/${wsSlug}/dm/${nt?.dmConversationId}`
                       }
                     >
-                      {noti?.data?.title ?? '타이틀'}
+                      {nt?.data ?? ''}
                     </Link>
-                    <div className={styles.notificationMessage}>
-                      {noti?.data?.message ?? '테스트메세지'}
-                    </div>
+                    <div className={styles.notificationMessage}>{nt?.message?.content ?? ''}</div>
                   </div>
                 </div>
               ))
