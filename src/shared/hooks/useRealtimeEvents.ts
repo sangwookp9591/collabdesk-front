@@ -44,7 +44,7 @@ export const useRealtimeSubEvents = () => {
           messageId: message.data?.messageId,
           workspaceId: message.workspaceId,
           message: message?.data?.message,
-          data: message?.data.title,
+          data: message?.data?.data,
           createdAt: message?.data?.message?.createdAt,
           user: undefined,
           workspace: undefined,
