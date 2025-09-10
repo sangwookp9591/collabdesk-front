@@ -9,7 +9,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { CHANNEL_QUERY_KEYS } from '@/entities/channel';
 import { DMConversation, DM_QUERY_KEYS } from '@/entities/dm';
 import { UserStatus } from '../types/user';
-import type { Notification } from '@/entities/notification/model/notification';
+import type { Notification } from '@/entities/notification';
 
 export const useRealtimeSubEvents = () => {
   const queryClient = useQueryClient();
@@ -21,7 +21,7 @@ export const useRealtimeSubEvents = () => {
     addDm,
     setUserStatuses,
     updateUserStatus,
-    setNotifications,
+    addNotification,
   } = useWorkspaceStore();
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export const useRealtimeSubEvents = () => {
           channel: undefined,
           dmConversation: undefined,
         };
-        setNotifications(data);
+        addNotification(data);
       }
     };
 

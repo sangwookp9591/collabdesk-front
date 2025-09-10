@@ -7,6 +7,7 @@ import { Workspace, WorkspaceMember } from '../types/workspace';
 import { Channel } from '../types/channel';
 import { DMConversation } from '@/entities/dm';
 import { UserStatus } from '../types/user';
+import type { Notification } from '@/entities/notification';
 interface Status {
   userId: string;
   status: UserStatus;
@@ -24,7 +25,7 @@ interface WorkspaceState {
   dms: DMConversation[];
   currentDm: DMConversation | null;
   userStatuses: Record<string, Status>;
-  notifications: { type: string; data: any }[];
+  notifications: Notification[];
 
   // Actions
   setInitialized: (flag: boolean) => void;
@@ -43,7 +44,8 @@ interface WorkspaceState {
   deleteDm: (dmId: string) => void;
   setUserStatuses: (userStatuses: Record<string, Status>) => void;
   updateUserStatus: (updateData: Status) => void;
-  setNotifications: (notification: { type: string; data: any }) => void;
+  addNotification: (notification: Notification) => void;
+  setNotifications: (notifications: Notification[]) => void;
   // Async Actions
   //   loadWorkspaces: () => Promise<void>;
 
@@ -148,10 +150,13 @@ export const useWorkspaceStore = create<WorkspaceState>()(
               ...updateData,
             };
           }),
-
-        setNotifications: (notice: { type: string; data: any }) =>
+        setNotifications: (notifications: Notification[]) =>
           set((state) => {
-            state.notifications.push(notice);
+            state.notifications = notifications;
+          }),
+        addNotification: (notification: Notification) =>
+          set((state) => {
+            state.notifications.push(notification);
           }),
         getCurrentWorkspaceId() {
           const { currentWorkspace } = get();
