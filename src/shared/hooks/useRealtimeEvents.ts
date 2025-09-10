@@ -23,6 +23,7 @@ export const useRealtimeSubEvents = () => {
     updateUserStatus,
     addNotification,
     markNotification,
+    markLastMessage,
   } = useWorkspaceStore();
 
   useEffect(() => {
@@ -138,13 +139,25 @@ export const useRealtimeSubEvents = () => {
       markNotification(message);
     };
 
+    const handleMarkAsMessage = (message: {
+      userId: string;
+      roomId: string;
+      roomType: 'channel' | 'dm';
+      lastReadMessageId: string;
+      readAt: Date;
+    }) => {
+      markLastMessage(message);
+    };
+
     socket.on(EVENT_KEYS.SUB_NOTICE_WORKSPACE, handleNoticeWorkspace);
     socket.on(EVENT_KEYS.SUB_MARK_AS_READ_NOTIFICATION, handleMarkAsReadNotification);
+    socket.on(EVENT_KEYS.SUB_MARK_AS_READ_MESSAGE, handleMarkAsMessage);
     return () => {
       socket.off(EVENT_KEYS.SUB_NOTICE_WORKSPACE);
       socket.off(EVENT_KEYS.SUB_MARK_AS_READ_NOTIFICATION);
+      socket.off(EVENT_KEYS.SUB_MARK_AS_READ_MESSAGE);
     };
-  }, [socket, currentWorkspace, addNotification, markNotification]);
+  }, [socket, currentWorkspace, addNotification, markNotification, markLastMessage]);
 
   return {};
 };

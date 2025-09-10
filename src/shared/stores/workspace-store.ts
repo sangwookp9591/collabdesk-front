@@ -22,6 +22,13 @@ interface MarkNoteData {
   readAt?: Date;
 }
 
+interface MarkLastMessageData {
+  userId: string;
+  roomId: string;
+  roomType: 'channel' | 'dm';
+  lastReadMessageId: string;
+  readAt: Date;
+}
 interface WorkspaceState {
   // State
   isInitialized: boolean;
@@ -55,6 +62,7 @@ interface WorkspaceState {
   addNotification: (notification: Notification) => void;
   setNotifications: (notifications: Notification[]) => void;
   markNotification: (markNoteData: MarkNoteData) => void;
+  markLastMessage: (markLastMessageData: MarkLastMessageData) => void;
   // Async Actions
   //   loadWorkspaces: () => Promise<void>;
 
@@ -188,6 +196,45 @@ export const useWorkspaceStore = create<WorkspaceState>()(
                 };
               }
             });
+          });
+        },
+        markLastMessage: ({
+          userId,
+          roomId,
+          roomType,
+          lastReadMessageId,
+          readAt,
+        }: MarkLastMessageData) => {
+          set((state) => {
+            if (roomType === 'channel') {
+              state.channels.map((channel) => {
+                if (channel?.id === roomId) {
+                  return {
+                    ...channel,
+                    lastReadMessageId: lastReadMessageId,
+                  };
+                }
+                return channel;
+              });
+            } else {
+              state.dms.map((dm) => {
+                if (dm.id === roomId) {
+                  const isUser1 = dm.user1Id === userId;
+                  if (isUser1) {
+                    return {
+                      ...dm,
+                      user1LastReadMessageId: lastReadMessageId,
+                    };
+                  } else {
+                    return {
+                      ...dm,
+                      user2LastReadMessageId: lastReadMessageId,
+                    };
+                  }
+                }
+                return dm;
+              });
+            }
           });
         },
         getCurrentWorkspaceId: () => {
