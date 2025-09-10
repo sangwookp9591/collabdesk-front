@@ -15,6 +15,13 @@ interface Status {
   customMessage?: string;
   lastActiveAt: Date;
 }
+
+interface MarkNoteData {
+  id: string | undefined;
+  messageId: string;
+  readAt?: Date;
+}
+
 interface WorkspaceState {
   // State
   isInitialized: boolean;
@@ -47,6 +54,7 @@ interface WorkspaceState {
   updateUserStatus: (updateData: Status) => void;
   addNotification: (notification: Notification) => void;
   setNotifications: (notifications: Notification[]) => void;
+  markNotification: (markNoteData: MarkNoteData) => void;
   // Async Actions
   //   loadWorkspaces: () => Promise<void>;
 
@@ -160,28 +168,50 @@ export const useWorkspaceStore = create<WorkspaceState>()(
           set((state) => {
             state.notifications.push(notification);
           }),
-        getCurrentWorkspaceId() {
+
+        markNotification: ({ id, messageId, readAt }: MarkNoteData) => {
+          set((state) => {
+            state.notifications.map((nt) => {
+              if (nt.id === id) {
+                return {
+                  ...nt,
+                  id: id,
+                  isRead: true,
+                  readAt: readAt,
+                };
+              } else if (nt.messageId === messageId) {
+                return {
+                  ...nt,
+                  id: id,
+                  isRead: true,
+                  readAt: readAt,
+                };
+              }
+            });
+          });
+        },
+        getCurrentWorkspaceId: () => {
           const { currentWorkspace } = get();
           return currentWorkspace?.id ?? null;
         },
-        getCurrentChannelId() {
+        getCurrentChannelId: () => {
           const { currentChannel } = get();
           return currentChannel?.id ?? null;
         },
-        getCurrentDmId() {
+        getCurrentDmId: () => {
           const { currentDm } = get();
           return currentDm?.id ?? null;
         },
-        getWorkspaceMember(userId: string) {
+        getWorkspaceMember: (userId: string) => {
           const { workspaceMembers } = get();
           workspaceMembers.find((member) => member.userId === userId);
           return workspaceMembers.find((member) => member.userId === userId);
         },
-        getMemberStatus(userId: string) {
+        getMemberStatus: (userId: string) => {
           const { userStatuses } = get();
           return userStatuses[userId]?.status ?? 'OFFLINE';
         },
-        getMember(userId: string) {
+        getMember: (userId: string) => {
           const { workspaceMembers } = get();
           return workspaceMembers?.find((member) => member.userId === userId)?.user;
         },
