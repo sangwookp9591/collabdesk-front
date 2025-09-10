@@ -50,6 +50,7 @@ export const useRealtimeSubEvents = () => {
           workspace: undefined,
           channel: undefined,
           dmConversation: undefined,
+          isRead: false,
         };
         addNotification(data);
       }
