@@ -8,6 +8,7 @@ import { useCallback, useState } from 'react';
 import { useParams } from 'next/navigation';
 import type { Notification as INotification } from '@/entities/notification';
 import { useSocketStore } from '@/entities/message';
+
 export function Notification() {
   const params = useParams();
   const wsSlug = params?.wsSlug as string;
