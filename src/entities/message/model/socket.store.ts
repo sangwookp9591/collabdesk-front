@@ -3,6 +3,15 @@ import { subscribeWithSelector } from 'zustand/middleware';
 import { io, Socket } from 'socket.io-client';
 import { EVENT_KEYS } from './socket-event-keys';
 import { UserStatus } from '@/shared/types/user';
+interface MarkMessagePayload {
+  roomId: string;
+  roomType: 'channel' | 'dm';
+  lastReadMessageId?: string;
+}
+
+interface MarkNotiPayload {
+  messageId?: string;
+}
 
 interface SocketState {
   socket: Socket | null;
@@ -25,6 +34,8 @@ interface SocketState {
   leaveChannel: (channelId: string) => void;
   typing: (isTyping: boolean, roomId: string, roomType: 'channel' | 'dm') => void;
   updateUserStatus: (status: UserStatus) => void;
+  markAsReadMessage: (payload: MarkMessagePayload) => void;
+  markAsReadNotification: (payload: MarkNotiPayload) => void;
   getConnectionInfo: () => { isConnected: boolean; status: string; error: string | null };
 }
 
@@ -177,6 +188,18 @@ export const useSocketStore = create<SocketState>()(
         socket.emit(EVENT_KEYS.PUB_UPDATE_STATUS, {
           status: status,
         });
+      }
+    },
+    markAsReadMessage: (payload: MarkMessagePayload) => {
+      const { socket } = get();
+      if (socket) {
+        socket.emit(EVENT_KEYS.PUB_MARK_AS_READ_MESSAGE, payload);
+      }
+    },
+    markAsReadNotification: (payload: MarkNotiPayload) => {
+      const { socket } = get();
+      if (socket) {
+        socket.emit(EVENT_KEYS.PUB_MARK_AS_READ_NOTIFICATION, payload);
       }
     },
     getConnectionInfo: () => {
