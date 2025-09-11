@@ -9,10 +9,23 @@ interface ModalProps {
   children: ReactNode;
   open: boolean;
   onClose: () => void;
+  top?: string;
+  left?: string;
+  right?: string;
+  bottom?: string;
   hasClose?: boolean;
 }
 
-export function Modal({ children, open, onClose, hasClose }: ModalProps) {
+export function PositionModal({
+  children,
+  open,
+  onClose,
+  hasClose = true,
+  top,
+  left,
+  right,
+  bottom,
+}: ModalProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -27,9 +40,10 @@ export function Modal({ children, open, onClose, hasClose }: ModalProps) {
   if (!open || !mounted) return null;
 
   return createPortal(
-    <div className={styles.overlay} onClick={onClose}>
+    <div className={styles.positionOverlay} onClick={onClose}>
       <div
-        className={styles.fadeModal[open ? 'in' : 'out']}
+        className={styles.positionFadeModal[open ? 'in' : 'out']}
+        style={{ top: top, right: right, bottom: bottom, left: left }}
         onClick={(e) => e.stopPropagation()} // 내부 클릭 시 닫히지 않도록
       >
         {hasClose && (

@@ -25,4 +25,8 @@ export const EVENT_KEYS = {
   SUB_CHANNEL_LEAVED: 'channelLeaved',
   SUB_DM_ROOM_CREATED: 'dmRoomCreated',
   SUB_NEW_MESSAGE: 'newMessage',
+  PUB_MARK_AS_READ_MESSAGE: 'markAsReadMessage',
+  SUB_MARK_AS_READ_MESSAGE: 'readMessageSync',
+  PUB_MARK_AS_READ_NOTIFICATION: 'markAsReadNotification',
+  SUB_MARK_AS_READ_NOTIFICATION: 'readNotificationSync',
 };

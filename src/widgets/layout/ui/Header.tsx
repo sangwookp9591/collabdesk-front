@@ -3,6 +3,7 @@ import * as styles from './header.css';
 import { themeTokens } from '@/shared/styles/theme.css';
 import { ThemeSelector } from '@/widgets/theme-selector';
 import { LogoutButton } from '@/features/auth';
+import { Notification } from '@/features/notification';
 
 export default function Header() {
   return (
@@ -26,6 +27,7 @@ export default function Header() {
 
       {/* right */}
       <div className={styles.rightContainer}>
+        <Notification />
         <LogoutButton />
         <HelpIcon size={20} />
       </div>

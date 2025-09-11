@@ -32,6 +32,7 @@ export const WorkspaceInitializer: React.FC<{ children: React.ReactNode }> = ({ 
     setCurrentWorkspace,
     setChannels,
     setWorkspaceMembers,
+    setNotifications,
   } = useWorkspaceStore();
 
   // 워크스페이스 조회
@@ -70,6 +71,7 @@ export const WorkspaceInitializer: React.FC<{ children: React.ReactNode }> = ({ 
     ) {
       setWorkspaces(workspaceData.workspaces);
       setCurrentWorkspace(workspaceData.currentWorkspace);
+      setNotifications(workspaceData.notifications);
       setChannels(channelsData);
       setWorkspaceMembers(memberData);
       setInitialized(true);
@@ -90,6 +92,7 @@ export const WorkspaceInitializer: React.FC<{ children: React.ReactNode }> = ({ 
     setWorkspaceMembers,
     setChannels,
     setInitialized,
+    setNotifications,
   ]);
 
   //워크스페이스 슬러그 변경시 데이터 패칭 초기화

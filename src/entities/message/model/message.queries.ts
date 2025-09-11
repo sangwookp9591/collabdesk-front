@@ -78,7 +78,7 @@ type InfiniteMessageType = {
 export const useInfiniteChannelMessages = ({
   wsSlug,
   chSlug,
-  take = 20,
+  take = 10,
   initData,
 }: InfiniteMessageType) => {
   const socket = useSocketStore((state) => state.socket);
@@ -108,12 +108,12 @@ export const useInfiniteChannelMessages = ({
         }
       : undefined,
     getNextPageParam: (lastPage) => {
-      return lastPage.hasMore && lastPage.nextCursor
+      return lastPage.hasNext && lastPage.nextCursor
         ? { cursor: lastPage.nextCursor, direction: 'next' as const }
         : undefined;
     },
     getPreviousPageParam: (firstPage) => {
-      return firstPage.hasMore && firstPage.prevCursor
+      return firstPage.hasPrev && firstPage.prevCursor
         ? { cursor: firstPage.prevCursor, direction: 'prev' as const }
         : undefined;
     },
@@ -145,6 +145,8 @@ export const useInfiniteChannelMessages = ({
                   ...page,
                   messages: [...page.messages, newMessage],
                   total: page.total + 1,
+                  hasNext: true,
+                  nextCursor: newMessage.id,
                 };
               }
               return {
@@ -215,3 +217,54 @@ export function useSendMessage(wsSlug: string, chSlug: string) {
     },
   });
 }
+
+export const useMessageNavigation = () => {
+  const queryClient = useQueryClient();
+
+  // 특정 메시지로 점프
+  const jumpToMessage = useMutation({
+    mutationFn: async ({
+      wsSlug,
+      chSlug,
+      messageId,
+      take = 20,
+    }: {
+      wsSlug: string;
+      chSlug: string;
+      messageId: string;
+      take?: number;
+    }) => {
+      return await messageApi.getMessagesAround(wsSlug, chSlug, messageId, { take });
+    },
+    onSuccess: (data, variables) => {
+      // 기존 무한 쿼리 캐시를 업데이트
+      queryClient.setQueryData(
+        messageKeys.channelInfiniteMessages(variables.wsSlug, variables.chSlug),
+        (oldData: any) => {
+          // 새로운 페이지로 교체 (메시지 중심으로)
+          return {
+            pages: [
+              {
+                messages: data.messages,
+                total: data.messages.length,
+                hasMore: data.hasPrev || data.hasNext,
+                prevCursor: data.prevCursor,
+                nextCursor: data.nextCursor,
+                direction: 'around' as const,
+                targetMessageId: variables.messageId,
+              },
+            ],
+            pageParams: [
+              {
+                cursor: variables.messageId,
+                direction: 'around' as const,
+              },
+            ],
+          };
+        },
+      );
+    },
+  });
+
+  return { jumpToMessage };
+};

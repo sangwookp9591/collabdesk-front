@@ -4,6 +4,7 @@ import * as styles from './messageTyping.css';
 import { useSocketStore } from '@/entities/message';
 import { EVENT_KEYS } from '@/entities/message/model/socket-event-keys';
 import { Avatar } from '@/entities/user';
+import { useWorkspaceStore } from '@/shared/stores';
 import { themeTokens } from '@/shared/styles';
 import { DotLoading } from '@/shared/ui';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -17,6 +18,7 @@ interface TypingUser {
 
 export function MessageTyping({ roomType }: { roomType: 'channel' | 'dm' }) {
   const { socket, currentChannel, currentDm } = useSocketStore();
+  const { getMember } = useWorkspaceStore();
   const timeoutRef = useRef<Record<string, NodeJS.Timeout>>({});
   const [typingUsers, setTypingUsers] = useState<TypingUser[]>([]);
 
@@ -29,23 +31,38 @@ export function MessageTyping({ roomType }: { roomType: 'channel' | 'dm' }) {
     if (!socket) return;
 
     // 타이핑 시작 이벤트
-    const handleTypingStarted = (data: { roomId: string; roomType: string; user: TypingUser }) => {
+    const handleTypingStarted = (data: { roomId: string; roomType: string; userId: string }) => {
       if (data.roomId !== roomId || data.roomType !== roomType) return;
 
       console.log('new typing!!!!!');
+
+      const user = getMember(data?.userId);
+
+      if (!user) {
+        return;
+      }
       setTypingUsers((prev) => {
-        const filtered = prev.filter((u) => u.id !== data.user.id);
-        return [...filtered, { ...data.user, startedAt: Date.now() }];
+        const filtered = prev.filter((u) => u.id !== user.id);
+        return [
+          ...filtered,
+          {
+            id: user?.id,
+            name: user?.name ?? '',
+            email: user?.email ?? '',
+            profileImageUrl: user?.profileImageUrl,
+            startedAt: Date.now(),
+          },
+        ];
       });
 
       // 5초 후 자동 제거 (안전장치)
-      if (timeoutRef.current[data.user.id]) {
-        clearTimeout(timeoutRef.current[data.user.id]);
+      if (timeoutRef.current[user.id]) {
+        clearTimeout(timeoutRef.current[user.id]);
       }
 
-      timeoutRef.current[data.user.id] = setTimeout(() => {
-        setTypingUsers((prev) => prev.filter((u) => u.id !== data.user.id));
-        delete timeoutRef.current[data.user.id];
+      timeoutRef.current[user.id] = setTimeout(() => {
+        setTypingUsers((prev) => prev.filter((u) => u.id !== user.id));
+        delete timeoutRef.current[user.id];
       }, 10000);
     };
 
@@ -77,7 +94,7 @@ export function MessageTyping({ roomType }: { roomType: 'channel' | 'dm' }) {
       // 타이머 정리
       Object.values(timeoutRef.current).forEach((timeout) => clearTimeout(timeout));
     };
-  }, [socket, roomId, roomType]);
+  }, [socket, roomId, roomType, getMember]);
 
   useEffect(() => {
     console.log('typingUsers : ', typingUsers);

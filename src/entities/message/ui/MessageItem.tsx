@@ -9,6 +9,7 @@ import { useCallback, useMemo } from 'react';
 type MessageItemProps = {
   message: Message;
   isSameUserWithinMinute: boolean;
+  size?: 'sm' | 'md';
 };
 
 function formatMessageDate(date: Date) {
@@ -30,7 +31,22 @@ function formatMessageDate(date: Date) {
   }
 }
 
-export function MessageItem({ message, isSameUserWithinMinute }: MessageItemProps) {
+const customSize = {
+  sm: {
+    imageSize: 30,
+    nameSize: '0.7rem',
+    contentSize: '0.6rem',
+    dateSize: '0.7rem',
+  },
+  md: {
+    imageSize: 44,
+    nameSize: '1.1rem',
+    contentSize: '0.8rem',
+    dateSize: '0.8rem',
+  },
+};
+
+export function MessageItem({ message, isSameUserWithinMinute, size = 'md' }: MessageItemProps) {
   const currentDate = new Date(message.createdAt);
 
   const mentions = useMemo(() => message.mentions ?? [], [message.mentions]);
@@ -80,18 +96,26 @@ export function MessageItem({ message, isSameUserWithinMinute }: MessageItemProp
             userId={message?.user?.id}
             profileImageUrl={message?.user?.profileImageUrl ?? '/images/default_profile.png'}
             name={message?.user?.name || ''}
-            size={44}
+            size={customSize[size].imageSize}
             borderRadius="18px"
             isActiveIcon={true}
           />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', width: '100%' }}>
             <div style={{ display: 'flex', gap: '10px' }}>
-              <span style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{message.user.name}</span>
-              <span style={{ fontSize: '0.8rem', color: '#ADB5BD' }}>
+              <span style={{ fontSize: customSize[size].nameSize, fontWeight: 'bold' }}>
+                {message.user.name}
+              </span>
+              <span style={{ fontSize: customSize[size].dateSize, color: '#ADB5BD' }}>
                 {formatMessageDate(currentDate)}
               </span>
             </div>
-            <div>{mentions.length > 0 ? renderHighlightedText() : message.content}</div>
+            <div
+              style={{
+                fontSize: customSize[size].contentSize,
+              }}
+            >
+              {mentions.length > 0 ? renderHighlightedText() : message.content}
+            </div>
           </div>
         </div>
       ) : (

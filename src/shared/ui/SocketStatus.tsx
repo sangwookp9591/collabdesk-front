@@ -76,7 +76,7 @@ export function SocketStatus({ children }: { children: React.ReactNode }) {
         }}
       >
         <div>소켓: {connectionStatus}</div>
-        <div>ID: {socket?.id || 'None'}</div>
+        {/* <div>ID: {socket?.id || 'None'}</div> */}
         {error && <div>오류: {error}</div>}
       </div>
       {children}

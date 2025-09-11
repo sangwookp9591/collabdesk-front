@@ -54,6 +54,25 @@ class MessageApi extends ApiBase {
       },
     );
   }
+
+  async getMessagesAround(
+    wsSlug: string,
+    chSlug: string,
+    messageId: string,
+    { take }: GetMessagesQueryDto,
+  ): Promise<MessageResponse> {
+    const params = new URLSearchParams();
+    if (take) {
+      params.append('take', String(take));
+    }
+
+    return await this.fetchWithAuth(
+      `/workspaces/${wsSlug}/channels/${chSlug}/messages/around/${messageId}?${params.toString()}`,
+      {
+        method: 'GET',
+      },
+    );
+  }
 }
 
 export const messageApi = new MessageApi();

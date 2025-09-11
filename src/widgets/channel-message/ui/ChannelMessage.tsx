@@ -13,18 +13,35 @@ import { useCallback } from 'react';
 export function ChannelMessage({
   wsSlug,
   chSlug,
+  messageId,
   initData,
 }: {
   wsSlug: string;
   chSlug: string;
+  messageId?: string;
   initData: MessageResponse;
 }) {
-  const { data, hasPreviousPage, fetchPreviousPage, isFetchingPreviousPage, isLoading, error } =
-    useInfiniteChannelMessages({ wsSlug, chSlug, take: 10, direction: 'prev', initData });
+  const {
+    data,
+    hasPreviousPage,
+    hasNextPage,
+    fetchPreviousPage,
+    fetchNextPage,
+    isFetchingPreviousPage,
+    isFetchingNextPage,
+    isLoading,
+    error,
+  } = useInfiniteChannelMessages({
+    wsSlug,
+    chSlug,
+    take: 10,
+    direction: 'prev',
+    initData,
+  });
 
   const { mutate: sendMessage, isPending } = useSendMessage(wsSlug, chSlug);
 
-  const handleSendMessaage = useCallback(
+  const handleSendMessage = useCallback(
     (content: string, mentions: MentionedUserId[]) => {
       sendMessage({ wsSlug, chSlug, content, mentions });
     },
@@ -35,13 +52,17 @@ export function ChannelMessage({
     <>
       <MessageList
         roomType={'channel'}
-        messages={data.pages?.flatMap((page) => page.messages)}
+        messages={data?.pages?.flatMap((page) => page.messages) || []}
+        targetMessageId={messageId}
         isLoading={isLoading}
         hasPreviousPage={hasPreviousPage}
+        hasNextPage={hasNextPage}
         fetchPreviousPage={fetchPreviousPage}
+        fetchNextPage={fetchNextPage}
         isFetchingPreviousPage={isFetchingPreviousPage}
+        isFetchingNextPage={isFetchingNextPage}
       />
-      <MessageSend onSend={handleSendMessaage} roomType={'channel'} />
+      <MessageSend onSend={handleSendMessage} roomType={'channel'} />
     </>
   );
 }
