@@ -3,10 +3,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as styles from './message-list.css';
 import { Message } from '@/shared/types/message';
-import { MessageItem } from '@/entities/message';
+import { MessageItem, useSocketStore } from '@/entities/message';
 import { MessageListSkeleton } from './MessageListSkeleton';
 import { useDebounceCallback } from '@/shared/hooks';
 import { DotLoading } from '@/shared/ui';
+import { useWorkspaceStore } from '@/shared/stores';
 
 type MessageListProps = {
   roomType: 'channel' | 'dm';
@@ -22,6 +23,7 @@ type MessageListProps = {
 };
 
 export function MessageList({
+  roomType,
   messages,
   targetMessageId,
   isLoading,
@@ -32,6 +34,7 @@ export function MessageList({
   isFetchingPreviousPage,
   isFetchingNextPage,
 }: MessageListProps) {
+  const { markAsReadMessage } = useSocketStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const loadMoreTopRef = useRef<HTMLDivElement>(null);
   const loadMoreBottomRef = useRef<HTMLDivElement>(null);
@@ -46,6 +49,8 @@ export function MessageList({
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
   const [isNearBottom, setIsNearBottom] = useState(true);
   const [isAtBottom, setIsAtBottom] = useState(true);
+  const getCurrentChannelId = useWorkspaceStore((state) => state.getCurrentChannelId);
+  const getCurrentDmId = useWorkspaceStore((state) => state.getCurrentDmId);
 
   // 새 메시지 알림 관련
   const [newMessageCount, setNewMessageCount] = useState(0);
@@ -188,6 +193,16 @@ export function MessageList({
       setShowNewMessageIndicator(true);
     }
   }, [lastMessage?.id, isNearBottom, hasNextPage]);
+
+  useEffect(() => {
+    return () => {
+      markAsReadMessage({
+        roomId: roomType === 'channel' ? getCurrentChannelId() : getCurrentDmId(),
+        roomType: roomType,
+        lastReadMessageId: lastMessage?.id,
+      });
+    };
+  }, [lastMessage?.id, roomType, getCurrentChannelId, getCurrentDmId, markAsReadMessage]);
 
   if (isLoading) {
     return <MessageListSkeleton />;
