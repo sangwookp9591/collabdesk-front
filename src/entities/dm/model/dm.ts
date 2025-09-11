@@ -11,6 +11,8 @@ export interface DMConversation {
   updatedAt: Date;
   user1: User;
   user2: User;
+  user1LastReadMessageId?: string;
+  user2LastReadMessageId?: string;
   workspace: Workspace;
   messages: Message[];
 }

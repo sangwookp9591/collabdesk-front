@@ -39,7 +39,10 @@ export interface Message {
 export interface MessageResponse {
   messages: Message[];
   total: number;
+  targetMessage?: Message;
   hasMore: boolean;
+  hasPrev: boolean;
+  hasNext: boolean;
   prevCursor?: string;
   nextCursor?: string;
   direction: 'next' | 'prev';
@@ -49,4 +52,5 @@ export interface GetMessagesQueryDto {
   cursor?: string;
   direction?: 'next' | 'prev';
   take?: number;
+  messageId?: string;
 }

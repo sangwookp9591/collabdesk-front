@@ -90,6 +90,25 @@ class DirectMessageApi extends ApiBase {
       },
     );
   }
+
+  async getDmMessagesAround(
+    wsSlug: string,
+    conversationId: string,
+    messageId: string,
+    { take }: GetMessagesQueryDto,
+  ): Promise<MessageResponse> {
+    const params = new URLSearchParams();
+    if (take) {
+      params.append('take', String(take));
+    }
+
+    return await this.fetchWithAuth(
+      `/workspaces/${wsSlug}/dm/conversations/${conversationId}/messages/around/${messageId}?${params.toString()}`,
+      {
+        method: 'GET',
+      },
+    );
+  }
 }
 
 export const dmApi = new DirectMessageApi('');
