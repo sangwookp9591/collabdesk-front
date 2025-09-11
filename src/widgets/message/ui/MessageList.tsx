@@ -43,7 +43,6 @@ export function MessageList({
       : null;
   }, [messages]);
 
-  console.log('messages : ', messages);
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
   const [isNearBottom, setIsNearBottom] = useState(true);
   const [isAtBottom, setIsAtBottom] = useState(true);
@@ -77,6 +76,8 @@ export function MessageList({
 
   // 스크롤 위치 감지
   const handleScroll = useCallback(() => {
+    if (isLoading) return;
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -84,11 +85,12 @@ export function MessageList({
     const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
 
     // 하단 근처 (100px 이내)
-    const nearBottom = distanceFromBottom < 100;
+    const nearBottom = distanceFromBottom < 200;
     setIsNearBottom(nearBottom);
 
     // 정확히 하단 (5px 오차 허용)
     const atBottom = distanceFromBottom < 5;
+    console.log('distanceFromBottom : ', distanceFromBottom);
     setIsAtBottom(atBottom);
 
     if (atBottom) {
@@ -96,7 +98,7 @@ export function MessageList({
       setNewMessageCount(0);
       setShowNewMessageIndicator(false);
     }
-  }, []);
+  }, [containerRef, isLoading]);
 
   // 상단 무한스크롤 (이전 메시지)
   useEffect(() => {
@@ -124,19 +126,20 @@ export function MessageList({
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && isAtBottom) {
+        if (entries[0].isIntersecting && isNearBottom) {
+          console.log('isNearBottom :', isNearBottom);
           debouncedFetchNext();
         }
       },
-      { threshold: 0.1 },
+      { threshold: 1 },
     );
 
-    if (loadMoreBottomRef.current) {
-      observer.observe(loadMoreBottomRef.current);
+    if (endRef.current) {
+      observer.observe(endRef.current);
     }
 
     return () => observer.disconnect();
-  }, [hasNextPage, isFetchingNextPage, debouncedFetchNext, isAtBottom]);
+  }, [hasNextPage, isFetchingNextPage, debouncedFetchNext, isNearBottom]);
 
   const handleClickNewMEssage = () => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -159,7 +162,7 @@ export function MessageList({
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
       setShouldScrollToBottom(false);
     } else {
-      if (!targetMessageId || !containerRef.current) return;
+      if (!targetMessageId || !containerRef.current || shouldScrollToBottom) return;
 
       const targetEl = containerRef.current.querySelector<HTMLDivElement>(
         `[data-message-id="${targetMessageId}"]`,
@@ -175,10 +178,16 @@ export function MessageList({
 
   // 새 메시지 자동 스크롤 (하단 근처에 있을 때만)
   useEffect(() => {
-    if (isNearBottom && endRef?.current) {
+    if (isAtBottom && endRef?.current && !hasNextPage) {
       endRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [lastMessage?.id, isNearBottom]);
+  }, [lastMessage?.id, isAtBottom, hasNextPage]);
+
+  useEffect(() => {
+    if (!isNearBottom && !hasNextPage) {
+      setShowNewMessageIndicator(true);
+    }
+  }, [lastMessage?.id, isNearBottom, hasNextPage]);
 
   if (isLoading) {
     return <MessageListSkeleton />;
@@ -221,9 +230,12 @@ export function MessageList({
 
       {/* 새 메시지 알림 버튼 */}
       {showNewMessageIndicator && lastMessage?.message && (
-        <div className={styles.newMessageIndicator} onClick={handleClickNewMEssage}>
-          <MessageItem message={lastMessage?.message} isSameUserWithinMinute={false} />새 메시지{' '}
-          {newMessageCount}개
+        <div className={styles.newMessageView} onClick={handleClickNewMEssage}>
+          <MessageItem message={lastMessage?.message} isSameUserWithinMinute={false} size="sm" />
+
+          <div className={styles.newMessageCount}>
+            새 메시지 <span className={styles.count}>{newMessageCount}</span>개
+          </div>
         </div>
       )}
     </div>
