@@ -38,3 +38,32 @@ export const lastMessage = style({
   padding: '10px',
   borderBottom: `1px solid ${themeTokens.colors.border}`,
 });
+
+export const loadMoreTop = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '16px',
+  borderBottom: '1px solid #e5e7eb',
+});
+export const loadMoreBottom = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '16px',
+  borderBottom: '1px solid #e5e7eb',
+});
+
+export const newMessageIndicator = style({
+  position: 'sticky',
+  bottom: '20px',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  padding: '8px 16px',
+  background: themeTokens.colors.primary,
+  color: '#fff',
+  borderRadius: '16px',
+  cursor: 'pointer',
+  fontSize: '0.9rem',
+  boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+});
