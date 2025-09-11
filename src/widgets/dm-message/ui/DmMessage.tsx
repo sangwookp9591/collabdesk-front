@@ -11,14 +11,25 @@ import { useCallback } from 'react';
 export function DmMessage({
   wsSlug,
   conversationId,
+  messageId,
   initData,
 }: {
   wsSlug: string;
   conversationId: string;
+  messageId?: string;
   initData: MessageResponse;
 }) {
-  const { data, hasPreviousPage, fetchPreviousPage, isFetchingPreviousPage, isLoading, error } =
-    useInfiniteDMMessages({ wsSlug, conversationId, take: 10, direction: 'prev', initData });
+  const {
+    data,
+    hasPreviousPage,
+    hasNextPage,
+    fetchPreviousPage,
+    fetchNextPage,
+    isFetchingPreviousPage,
+    isFetchingNextPage,
+    isLoading,
+    error,
+  } = useInfiniteDMMessages({ wsSlug, conversationId, take: 10, direction: 'prev', initData });
 
   const { mutate: sendMessage, isPending } = useSendMessage(wsSlug, conversationId);
 
@@ -33,11 +44,15 @@ export function DmMessage({
     <>
       <MessageList
         roomType={'dm'}
+        targetMessageId={messageId}
         messages={data.pages?.flatMap((page) => page.messages)}
         isLoading={isLoading}
         hasPreviousPage={hasPreviousPage}
+        hasNextPage={hasNextPage}
         fetchPreviousPage={fetchPreviousPage}
+        fetchNextPage={fetchNextPage}
         isFetchingPreviousPage={isFetchingPreviousPage}
+        isFetchingNextPage={isFetchingNextPage}
       />
       <MessageSend onSend={handleSendMessaage} roomType={'dm'} />
     </>
