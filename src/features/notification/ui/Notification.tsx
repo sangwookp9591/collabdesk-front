@@ -4,7 +4,7 @@ import { useWorkspaceStore } from '@/shared/stores';
 import * as styles from './notification.css';
 import { NotificationIcon, PositionModal } from '@/shared/ui';
 import Link from 'next/link';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import type { Notification as INotification } from '@/entities/notification';
 import { useSocketStore } from '@/entities/message';
@@ -15,6 +15,8 @@ export function Notification() {
   const { notifications, getChannelSlug } = useWorkspaceStore();
   const { markAsReadNotification } = useSocketStore();
   const [isOpen, setIsOpen] = useState(false);
+
+  const isNewNoti = useMemo(() => notifications.some((item) => !item.isRead), [notifications]);
 
   const onOpen = useCallback(() => {
     setIsOpen(true);
@@ -32,10 +34,19 @@ export function Notification() {
     [markAsReadNotification],
   );
 
+  console.log('notifications : ', notifications);
   return (
     <div>
-      <div onClick={onOpen}>
-        <NotificationIcon size={30} />
+      <div
+        onClick={onOpen}
+        style={{
+          position: 'relative',
+        }}
+      >
+        <div>
+          <NotificationIcon size={30} />
+          {isNewNoti && <div className={styles.newNoti} />}
+        </div>
       </div>
       <PositionModal open={isOpen} onClose={onClose} hasClose={false} top="40px" right="30px">
         <div className={styles.notificationDropdown}>

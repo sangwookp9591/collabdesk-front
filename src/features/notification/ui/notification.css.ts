@@ -7,6 +7,17 @@ export const header = style({
   fontWeight: '600',
 });
 
+export const newNoti = style({
+  position: 'absolute',
+  top: '3px',
+  right: '0px',
+  height: '6px',
+  width: '6px',
+  background: 'red',
+  border: `1px solid ${themeTokens.colors.border}`,
+  borderRadius: '50%',
+});
+
 export const notificationDropdown = style({
   background: '#ffffff',
   borderRadius: '12px',
