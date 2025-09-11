@@ -4,7 +4,7 @@ import { io, Socket } from 'socket.io-client';
 import { EVENT_KEYS } from './socket-event-keys';
 import { UserStatus } from '@/shared/types/user';
 interface MarkMessagePayload {
-  roomId: string;
+  roomId: string | null;
   roomType: 'channel' | 'dm';
   lastReadMessageId?: string;
 }
@@ -192,7 +192,7 @@ export const useSocketStore = create<SocketState>()(
     },
     markAsReadMessage: (payload: MarkMessagePayload) => {
       const { socket } = get();
-      if (socket) {
+      if (socket && payload?.roomId) {
         socket.emit(EVENT_KEYS.PUB_MARK_AS_READ_MESSAGE, payload);
       }
     },
