@@ -50,8 +50,10 @@ export function Notification() {
                       className={styles.notificationTitle}
                       href={
                         nt?.channelId
-                          ? `/worksapce/${wsSlug}/channel/${getChannelSlug(nt?.channelId)}`
-                          : `/worksapce/${wsSlug}/dm/${nt?.dmConversationId}`
+                          ? `/worksapce/${wsSlug}/channel/${getChannelSlug(
+                              nt?.channelId,
+                            )}?messageId=${nt?.messageId}`
+                          : `/worksapce/${wsSlug}/dm/${nt?.dmConversationId}?messageId=${nt?.messageId}`
                       }
                       onClick={() =>
                         handleClick({
