@@ -13,10 +13,12 @@ import { useCallback } from 'react';
 export function ChannelMessage({
   wsSlug,
   chSlug,
+  messageId,
   initData,
 }: {
   wsSlug: string;
   chSlug: string;
+  messageId?: string;
   initData: MessageResponse;
 }) {
   const {
@@ -51,6 +53,7 @@ export function ChannelMessage({
       <MessageList
         roomType={'channel'}
         messages={data?.pages?.flatMap((page) => page.messages) || []}
+        targetMessageId={messageId}
         isLoading={isLoading}
         hasPreviousPage={hasPreviousPage}
         hasNextPage={hasNextPage}
