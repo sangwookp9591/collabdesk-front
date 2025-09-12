@@ -24,6 +24,7 @@ export const useRealtimeSubEvents = () => {
     addNotification,
     markNotification,
     markLastMessage,
+    setIsNewNoti,
   } = useWorkspaceStore();
 
   useEffect(() => {
@@ -128,6 +129,7 @@ export const useRealtimeSubEvents = () => {
           isRead: false,
         };
         addNotification(data);
+        setIsNewNoti(true);
       }
     };
 
@@ -157,7 +159,7 @@ export const useRealtimeSubEvents = () => {
       socket.off(EVENT_KEYS.SUB_MARK_AS_READ_NOTIFICATION);
       socket.off(EVENT_KEYS.SUB_MARK_AS_READ_MESSAGE);
     };
-  }, [socket, currentWorkspace, addNotification, markNotification, markLastMessage]);
+  }, [socket, currentWorkspace, addNotification, markNotification, markLastMessage, setIsNewNoti]);
 
   return {};
 };

@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
 import { themeTokens } from '@/shared/styles/theme.css';
 
 export const header = style({
@@ -35,9 +35,10 @@ export const notificationDropdown = style({
 export const notificationList = style({
   overflowY: 'auto',
   padding: '4px',
+  maxHeight: '200px',
 });
 
-export const notificationItem = style({
+export const item = style({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
@@ -53,6 +54,19 @@ export const notificationItem = style({
   ':hover': {
     backgroundColor: themeTokens.colors.channel.backgroundMention,
   },
+});
+
+export const notificationItem = styleVariants({
+  read: [
+    item,
+    {
+      backgroundColor: 'lightgray',
+      ':hover': {
+        backgroundColor: 'lightgray',
+      },
+    },
+  ],
+  unread: [item],
 });
 
 export const line = style({

@@ -12,14 +12,13 @@ import { useSocketStore } from '@/entities/message';
 export function Notification() {
   const params = useParams();
   const wsSlug = params?.wsSlug as string;
-  const { notifications, getChannelSlug } = useWorkspaceStore();
+  const { notifications, getChannelSlug, isNewNoti, setIsNewNoti } = useWorkspaceStore();
   const { markAsReadNotification } = useSocketStore();
   const [isOpen, setIsOpen] = useState(false);
 
-  const isNewNoti = useMemo(() => notifications.some((item) => !item.isRead), [notifications]);
-
   const onOpen = useCallback(() => {
     setIsOpen(true);
+    setIsNewNoti(false);
   }, []);
 
   const onClose = useCallback(() => {
@@ -56,15 +55,15 @@ export function Notification() {
               notifications.map((nt: INotification, index) => (
                 <div key={index}>
                   <div className={styles.line} />
-                  <div className={styles.notificationItem}>
+                  <div className={styles.notificationItem[nt.isRead ? 'read' : 'unread']}>
                     <Link
                       className={styles.notificationTitle}
                       href={
                         nt?.channelId
-                          ? `/worksapce/${wsSlug}/channel/${getChannelSlug(
+                          ? `/workspace/${wsSlug}/channel/${getChannelSlug(
                               nt?.channelId,
                             )}?messageId=${nt?.messageId}`
-                          : `/worksapce/${wsSlug}/dm/${nt?.dmConversationId}?messageId=${nt?.messageId}`
+                          : `/workspace/${wsSlug}/dm/${nt?.dmConversationId}?messageId=${nt?.messageId}`
                       }
                       onClick={() =>
                         handleClick({

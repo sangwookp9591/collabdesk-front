@@ -40,6 +40,7 @@ interface WorkspaceState {
   dms: DMConversation[];
   currentDm: DMConversation | null;
   userStatuses: Record<string, Status>;
+  isNewNoti: boolean;
   notifications: Notification[];
 
   // Actions
@@ -61,6 +62,7 @@ interface WorkspaceState {
   updateUserStatus: (updateData: Status) => void;
   addNotification: (notification: Notification) => void;
   setNotifications: (notifications: Notification[]) => void;
+  setIsNewNoti: (flag: boolean) => void;
   markNotification: (markNoteData: MarkNoteData) => void;
   markLastMessage: (markLastMessageData: MarkLastMessageData) => void;
   // Async Actions
@@ -90,6 +92,7 @@ export const useWorkspaceStore = create<WorkspaceState>()(
         currentDm: null,
         userStatuses: {},
         notifications: [],
+        isNewNoti: false,
         setInitialized: (flag) =>
           set((state) => {
             state.isInitialized = flag;
@@ -172,11 +175,14 @@ export const useWorkspaceStore = create<WorkspaceState>()(
           set((state) => {
             state.notifications = notifications;
           }),
+        setIsNewNoti: (flag: boolean) =>
+          set((state) => {
+            state.isNewNoti = flag;
+          }),
         addNotification: (notification: Notification) =>
           set((state) => {
             state.notifications.push(notification);
           }),
-
         markNotification: ({ id, messageId, readAt }: MarkNoteData) => {
           set((state) => {
             state.notifications.map((nt) => {
@@ -274,6 +280,8 @@ export const useWorkspaceStore = create<WorkspaceState>()(
             state.dms = [];
             state.currentDm = null;
             state.userStatuses = {};
+            state.notifications = [];
+            state.isNewNoti = false;
           }),
       })),
     ),
